@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class EnemyAI : BaseEntity {
     public float moveSpeed = 2f;
+    public float damage = 2f;
+
     Transform target;
-
-    public int damage = 10;
-
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -23,9 +22,13 @@ public class EnemyAI : BaseEntity {
         }
     }
 
-    protected void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Player")) {
-            PlayerController player = other.GetComponent<PlayerController>();
+    protected virtual void DoDamage(float amount) {
+        throw new System.NotImplementedException();
+    }
+
+    protected void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Player")) {
+            PlayerController player = collision.GetComponent<PlayerController>();
 
             if (player != null) {
                 player.TakeDamage(damage);

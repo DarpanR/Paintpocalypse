@@ -4,12 +4,11 @@ using UnityEngine;
 
 public abstract class BaseEntity : MonoBehaviour {
     [Header("Health Settings")]
-    public int maxHealth = 100;
-    protected int currentHealth;
+    public float maxHealth = 100f;
+    protected float currentHealth;
 
     [Header("Status Settings")]
     public float invincibitilityDuration = 1.0f;
-    public bool canBeInvincible = false;
     private bool isInvincible = false;
 
     SpriteRenderer rend;
@@ -22,11 +21,12 @@ public abstract class BaseEntity : MonoBehaviour {
         rend = GetComponent<SpriteRenderer>();
     }
 
-    public virtual void TakeDamage(int amount) {
-        if (isInvincible && canBeInvincible) {
+    public virtual void TakeDamage(float amount) {
+        if (isInvincible) {
             return;
         }
-        currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
+        currentHealth -= amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         if (currentHealth > 0) {
             isInvincible = true;

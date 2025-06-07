@@ -3,20 +3,44 @@
   "WorkspaceRootPath": "D:\\Documents\\Unity_Project\\Paintpocalypse\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\spawnmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\spawnmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\projectile script\\waveprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\projectile script\\waveprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\baseprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\baseprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\projectile script\\linearprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\projectile script\\linearprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|d:\\documents\\unity_project\\paintpocalypse\\assets\\scripts\\baseweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\baseweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\weaponmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\weaponmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\weapondemo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\weapondemo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\pickuphander.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\pickuphander.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|d:\\documents\\unity_project\\paintpocalypse\\assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|d:\\documents\\unity_project\\paintpocalypse\\assets\\scripts\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,24 +50,125 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BaseProjectile.cs",
+              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\BaseProjectile.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\BaseProjectile.cs",
+              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\BaseProjectile.cs",
+              "RelativeToolTip": "Assets\\Scripts\\BaseProjectile.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAkAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T03:30:30.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "LinearProjectile.cs",
+              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Projectile Script\\LinearProjectile.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Projectile Script\\LinearProjectile.cs",
+              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Projectile Script\\LinearProjectile.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Projectile Script\\LinearProjectile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T03:22:39.748Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "WeaponDemo.cs",
+              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\WeaponDemo.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\WeaponDemo.cs",
+              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\WeaponDemo.cs",
+              "RelativeToolTip": "Assets\\Scripts\\WeaponDemo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T03:15:39.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "WeaponManager.cs",
+              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\WeaponManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\WeaponManager.cs",
+              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\WeaponManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\WeaponManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T20:34:14.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BaseWeapon.cs",
+              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\BaseWeapon.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\BaseWeapon.cs",
+              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\BaseWeapon.cs",
+              "RelativeToolTip": "Assets\\Scripts\\BaseWeapon.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwB8AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T23:01:27.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WaveProjectile.cs",
+              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Projectile Script\\WaveProjectile.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Projectile Script\\WaveProjectile.cs",
+              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Projectile Script\\WaveProjectile.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Projectile Script\\WaveProjectile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T03:22:26.192Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PickupHander.cs",
+              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\PickupHander.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PickupHander.cs",
+              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\PickupHander.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PickupHander.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T20:48:57.697Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "BaseEntity.cs",
               "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\BaseEntity.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\BaseEntity.cs",
               "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\BaseEntity.cs",
               "RelativeToolTip": "Assets\\Scripts\\BaseEntity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-05T19:28:15.687Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-06T21:30:59.477Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
+              "Title": "EnemyAI.cs",
+              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\EnemyAI.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\EnemyAI.cs",
+              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\EnemyAI.cs",
+              "RelativeToolTip": "Assets\\Scripts\\EnemyAI.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAIBJwBkAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T21:29:46.329Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "PlayerController.cs",
               "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\PlayerController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
@@ -51,34 +176,7 @@
               "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-02T19:28:50.132Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SpawnManager.cs",
-              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\SpawnManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\SpawnManager.cs",
-              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\SpawnManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\SpawnManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-02T03:17:17.635Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "EnemyAI.cs",
-              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\EnemyAI.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\EnemyAI.cs",
-              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\EnemyAI.cs",
-              "RelativeToolTip": "Assets\\Scripts\\EnemyAI.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-02T01:30:51.584Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-06T21:31:29.387Z"
             }
           ]
         }
