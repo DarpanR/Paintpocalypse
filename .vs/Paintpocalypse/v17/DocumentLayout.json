@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\",
+  "WorkspaceRootPath": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\mikaka\\documents\\github\\paintpocalypse\\assets\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\owner\\documents\\github\\paintpocalypse\\assets\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -14,31 +14,27 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
-              "Name": "ST:1:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "MainMenu.cs",
-              "DocumentMoniker": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\MainMenu.cs",
+              "DocumentMoniker": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\MainMenu.cs",
               "RelativeDocumentMoniker": "Assets\\MainMenu.cs",
-              "ToolTip": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\MainMenu.cs",
+              "ToolTip": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\MainMenu.cs",
               "RelativeToolTip": "Assets\\MainMenu.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T00:54:05.13Z",
+              "WhenOpened": "2025-06-09T18:15:38.327Z",
               "EditorCaption": ""
             }
           ]

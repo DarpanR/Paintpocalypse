@@ -1,22 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Documents\\Unity_Project\\Paintpocalypse\\",
+  "WorkspaceRootPath": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\spawnmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\spawnmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|d:\\documents\\unity_project\\paintpocalypse\\assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|d:\\documents\\unity_project\\paintpocalypse\\assets\\scripts\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\mikaka\\documents\\github\\paintpocalypse\\assets\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,58 +14,31 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BaseEntity.cs",
-              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\BaseEntity.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\BaseEntity.cs",
-              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\BaseEntity.cs",
-              "RelativeToolTip": "Assets\\Scripts\\BaseEntity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-05T19:28:15.687Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "PlayerController.cs",
-              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\PlayerController.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
-              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\PlayerController.cs",
-              "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-02T19:28:50.132Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "SpawnManager.cs",
-              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\SpawnManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\SpawnManager.cs",
-              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\SpawnManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\SpawnManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
+              "Title": "MainMenu.cs",
+              "DocumentMoniker": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\MainMenu.cs",
+              "RelativeDocumentMoniker": "Assets\\MainMenu.cs",
+              "ToolTip": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\MainMenu.cs",
+              "RelativeToolTip": "Assets\\MainMenu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-02T03:17:17.635Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "EnemyAI.cs",
-              "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\EnemyAI.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\EnemyAI.cs",
-              "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\EnemyAI.cs",
-              "RelativeToolTip": "Assets\\Scripts\\EnemyAI.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-02T01:30:51.584Z",
+              "WhenOpened": "2025-06-08T00:54:05.13Z",
               "EditorCaption": ""
             }
           ]
