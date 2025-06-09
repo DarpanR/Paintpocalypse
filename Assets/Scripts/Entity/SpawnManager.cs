@@ -1,45 +1,77 @@
+//using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public enum SpawnPatternType { Burst, Radial, Linear/*, ZigZag */}
 public class SpawnManager : MonoBehaviour {
-    [Header("Enemey Types")]
-    public List<GameObject> enemies;
 
-    [Header("Spawn Settings")]
-    public float spawnInterval = 3f;
-    public int minEnemiesPerWave = 3;
-    public int maxEnemiesPerWave = 10;
-    public float buffer = 1f;
+    [Header("Phase Instruction")]
+    public List<PhaseDefinition> phases;
 
-    [Header("Pattern Settings")]
-    public float spawnRadius = 2f; // For burst/radial
+    int currentPhase = 0;
+    float timer = 0f;
+    float nextPeriodic = 0f;
+    int nextWave = 0;
 
     Camera mainCam;
     float radius;
+
+    //Pattern logic
+    public int buffer = 1;
+    public float spawnRadius = 2f;
 
     void Start() {
         mainCam = Camera.main;
         // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
         radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
-        InvokeRepeating(nameof(SpawnWave), 2f, spawnInterval);
+
+        foreach (var phase in phases) 
+            phase.specialWaves.Sort((a, b) => a.timeOffSet.CompareTo(b.timeOffSet));
+        BeginPhase(0);
     }
 
-    void SpawnWave() {
-        // Decide what and how to spawn
-        int count = Random.Range(minEnemiesPerWave, maxEnemiesPerWave);
-        SpawnPatternType pattern = (SpawnPatternType)Random.Range(0, System.Enum.GetValues(typeof(SpawnPatternType)).Length);
+    void Update() {
+        timer += Time.deltaTime;
+        var phase = phases[currentPhase];
 
-        // Get spawn positions for the chosen pattern
-        List<Vector2> spawnPosition = GeneratePattern(pattern, count);
+        // Periodic Spawns
+        if (timer>=nextPeriodic) {
+            foreach (var ins in phase.periodicSpawns) FireInstruction(ins);
+            nextPeriodic += phase.periodicInterval;
+        }
 
-        // Spawn!
-        foreach(var pos in spawnPosition) {
-            GameObject enemy = enemies[Random.Range(0, enemies.Count)];
-            Instantiate(enemy, pos, Quaternion.identity);
+        // Special Spawns
+        while(nextWave < phase.specialWaves.Count &&
+            timer >= phase.specialWaves[nextWave].timeOffSet) {
+            foreach (var ins in phase.specialWaves[nextWave].spawns) FireInstruction(ins);
+            nextWave++;
+        }
+
+        // End of phase?
+        if (timer >= phase.duration) {
+            int next = currentPhase + 1;
+
+            if (next >= phases.Count) next = 0;
+            BeginPhase(next);
         }
     }
+
+    void BeginPhase(int phaseIndex) {
+        currentPhase = phaseIndex;
+        timer = 0f;
+        nextPeriodic = phases[phaseIndex].periodicInterval;
+        nextWave = 0;
+    }
+
+    void FireInstruction(SpawnInstruction ins) {
+        int count = Random.Range(ins.minCount, ins.maxCount + 1);
+        List<Vector2> positions = GeneratePattern(ins.pattern, count);
+
+        for (int i = 0; i < count; i++) {
+            Instantiate(ins.enemy, positions[i], Quaternion.identity);
+        }    }
 
     Vector2 GetOffscreenPosition() {
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
