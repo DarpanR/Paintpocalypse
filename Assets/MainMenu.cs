@@ -7,12 +7,12 @@ public class MainMenu : MonoBehaviour
 {
     public void StartGameButton()
     {
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadSceneAsync("MainScene");
     }
 
     public void ControlsButton()
     {
-        SceneManager.LoadSceneAsync(3);
+        SceneManager.LoadSceneAsync("controlMenu");
     }
 
     public void QuitButton()

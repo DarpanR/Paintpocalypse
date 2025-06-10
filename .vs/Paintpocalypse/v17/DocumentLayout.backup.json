@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\mikaka\\documents\\github\\paintpocalypse\\assets\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\mikaka\\documents\\github\\paintpocalypse\\assets\\controlsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\controlsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,15 +34,28 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ControlsMenu.cs",
+              "DocumentMoniker": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\ControlsMenu.cs",
+              "RelativeDocumentMoniker": "Assets\\ControlsMenu.cs",
+              "ToolTip": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\ControlsMenu.cs",
+              "RelativeToolTip": "Assets\\ControlsMenu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T15:14:40.176Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "MainMenu.cs",
               "DocumentMoniker": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\MainMenu.cs",
               "RelativeDocumentMoniker": "Assets\\MainMenu.cs",
               "ToolTip": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\MainMenu.cs",
               "RelativeToolTip": "Assets\\MainMenu.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T00:54:05.13Z",
+              "WhenOpened": "2025-06-09T18:15:38.327Z",
               "EditorCaption": ""
             }
           ]
