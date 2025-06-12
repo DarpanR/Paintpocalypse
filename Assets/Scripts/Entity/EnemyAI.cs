@@ -6,7 +6,6 @@ using UnityEngine;
 public class EnemyAI : BaseEntity {
     [Header("Enemy Logic")]
     public Transform spriteTransform;
-
     public float moveSpeed = 2f;
     public float damage = 2f;
 
@@ -25,7 +24,7 @@ public class EnemyAI : BaseEntity {
         if (target != null) {
             Vector2 direction = (target.position - transform.position).normalized;
             transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
-            
+          
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
 
             transform.rotation = Quaternion.Euler(0f, 0f, angle);

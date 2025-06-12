@@ -24,7 +24,7 @@ public class SpawnManager : MonoBehaviour {
 
     void Start() {
         mainCam = Camera.main;
-        // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
+        // Use the cameraâ€™s orthographic size and aspect ratio to compute the edge for some spawn patterns
         radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
 
         foreach (var phase in phases)
@@ -43,8 +43,7 @@ public class SpawnManager : MonoBehaviour {
         }
 
         // Special Spawns
-        while (nextWave < phase.specialWaves.Count &&
-            timer >= phase.specialWaves[nextWave].timeOffSet) {
+        while(nextWave < phase.specialWaves.Count && timer >= phase.specialWaves[nextWave].timeOffSet) {
             foreach (var ins in phase.specialWaves[nextWave].spawns) FireInstruction(ins);
             nextWave++;
         }
