@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class BaseEntity : MonoBehaviour {
     [Header("Health Settings")]
@@ -13,7 +12,6 @@ public abstract class BaseEntity : MonoBehaviour {
     public bool canBeInvincible = false;
     private bool isInvincible = false;
 
-    public Slider healthBar;
     SpriteRenderer rend;
     public float statFlashSpeed = 0.1f;
 
@@ -21,8 +19,6 @@ public abstract class BaseEntity : MonoBehaviour {
 
     protected virtual void Start() {
         currentHealth = maxHealth;
-        healthBar.maxValue = maxHealth;
-        healthBar.value = maxHealth;
         rend = GetComponent<SpriteRenderer>();
     }
 
@@ -30,9 +26,7 @@ public abstract class BaseEntity : MonoBehaviour {
         if (isInvincible && canBeInvincible) {
             return;
         }
-
         currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
-        healthBar.value = currentHealth;
 
         if (currentHealth > 0) {
             isInvincible = true;
