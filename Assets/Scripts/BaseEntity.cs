@@ -10,7 +10,7 @@ public abstract class BaseEntity : MonoBehaviour {
     [Header("Status Settings")]
     public float invincibitilityDuration = 1.0f;
     public bool canBeInvincible = false;
-    private bool isInvincible = false;
+    protected bool isInvincible = false;
 
     SpriteRenderer rend;
     public float statFlashSpeed = 0.1f;
@@ -26,6 +26,7 @@ public abstract class BaseEntity : MonoBehaviour {
         if (isInvincible && canBeInvincible) {
             return;
         }
+
         currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
 
         if (currentHealth > 0) {
@@ -36,7 +37,7 @@ public abstract class BaseEntity : MonoBehaviour {
         }
     }
 
-    private IEnumerator FlashAndInvincibility() { 
+    protected IEnumerator FlashAndInvincibility() { 
         Color originalColor = rend.color;
         float timer = 0f;
 

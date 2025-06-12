@@ -1,22 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\",
+  "WorkspaceRootPath": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\owner\\documents\\github\\paintpocalypse\\assets\\scripts\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\mikaka\\documents\\github\\paintpocalypse\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\owner\\documents\\github\\paintpocalypse\\assets\\scripts\\timer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\timer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\owner\\documents\\github\\paintpocalypse\\assets\\scripts\\gameoveroverlay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gameoveroverlay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\mikaka\\documents\\github\\paintpocalypse\\assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|c:\\users\\mikaka\\documents\\github\\paintpocalypse\\assets\\scripts\\gameoveroverlay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gameoveroverlay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,66 +22,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "Name": "ST:1:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "GameManager.cs",
-              "DocumentMoniker": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\GameManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\GameManager.cs",
-              "ToolTip": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\GameManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\GameManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T19:08:14.857Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Timer.cs",
-              "DocumentMoniker": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\Timer.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Timer.cs",
-              "ToolTip": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\Timer.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Timer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T19:07:29.26Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "GameOverOverlay.cs",
-              "DocumentMoniker": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\GameOverOverlay.cs",
+              "DocumentMoniker": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\GameOverOverlay.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\GameOverOverlay.cs",
-              "ToolTip": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\GameOverOverlay.cs",
+              "ToolTip": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\GameOverOverlay.cs",
               "RelativeToolTip": "Assets\\Scripts\\GameOverOverlay.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAQwBUAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T18:53:10.273Z",
+              "WhenOpened": "2025-06-12T16:28:04.363Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BaseEntity.cs",
-              "DocumentMoniker": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\BaseEntity.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\BaseEntity.cs",
-              "ToolTip": "C:\\Users\\Owner\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\BaseEntity.cs",
-              "RelativeToolTip": "Assets\\Scripts\\BaseEntity.cs",
-              "ViewState": "AgIAACwAAAAAAAAAAAAwwDcAAAAoAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "PlayerController.cs",
+              "DocumentMoniker": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\PlayerController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
+              "ToolTip": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\PlayerController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwC4AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T18:15:10.296Z"
+              "WhenOpened": "2025-06-12T16:08:18.411Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BaseEntity.cs",
+              "DocumentMoniker": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\BaseEntity.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\BaseEntity.cs",
+              "ToolTip": "C:\\Users\\Mikaka\\Documents\\GitHub\\Paintpocalypse\\Assets\\Scripts\\BaseEntity.cs",
+              "RelativeToolTip": "Assets\\Scripts\\BaseEntity.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwCcAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T18:15:10.296Z",
+              "EditorCaption": ""
             }
           ]
         }
