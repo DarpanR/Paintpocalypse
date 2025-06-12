@@ -1,0 +1,49 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+
+[CreateAssetMenu(menuName = "Custom/Weapons/Spread Shot")]
+public class SpreadDefinition : WeaponDefinition {
+    [Header("Advanced Projectile Setting")]
+    public float baseSpreadAngle = 30f;
+
+    [Header("Advanced Level Stats")]
+    public float luSpreadAngle = 0f;
+
+    public override IWeaponModule CreateModule(Transform firePoint, string target) {
+        return new Spread(this, firePoint, target);
+    }
+}
+
+public class Spread : WeaponModule<SpreadDefinition> {
+    public Spread(SpreadDefinition def, Transform fp, string t) : base(def, fp, t) {}
+
+    protected override void Fire() {
+        foreach (var rots in UpdateSpawnRotations())
+            Fire(rots);
+    }
+
+    public IEnumerable<Quaternion> UpdateSpawnRotations() {
+        var rots = new List<Quaternion>();
+
+        if (ProjectileCount <= 1) {
+            rots.Add(firePoint.rotation);
+            return rots;
+        }
+        float step = SpreadAngle / (ProjectileCount - 1);
+        float start = -SpreadAngle / 2f;
+
+        for (int i = 0; i < ProjectileCount; i++) {
+            float ang = start + step * i;
+            // rotate the firePoint’s forward by +ang degrees around Z
+            rots.Add(firePoint.rotation * Quaternion.Euler(0, 0, ang));
+        }
+        return rots;
+    }
+
+    public float SpreadAngle =>
+        Definition.baseSpreadAngle + Definition.luSpreadAngle * (Level - 1);
+        
+}
