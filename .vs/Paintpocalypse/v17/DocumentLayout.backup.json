@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "D:\\Documents\\Unity_Project\\Paintpocalypse\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\weapon\\weaponmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\weapon\\weaponmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|d:\\documents\\unity_project\\paintpocalypse\\assets\\scripts\\weapon\\weapon type\\weaponmodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\weapon\\weapon type\\weaponmodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|d:\\documents\\unity_project\\paintpocalypse\\assets\\scripts\\weapon\\weapon type\\spread.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\weapon\\weapon type\\spread.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\weapon\\weapon type\\spread.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|d:\\documents\\unity_project\\paintpocalypse\\assets\\scripts\\weapon\\weaponmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\weapon\\weaponmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6ECB5CDD-C297-D0B7-68CD-FDF56275FE5B}|Assembly-CSharp.csproj|D:\\Documents\\Unity_Project\\Paintpocalypse\\assets\\scripts\\weapon\\projectile types\\sine shot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,24 +34,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "WeaponManager.cs",
               "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Weapon\\WeaponManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Weapon\\WeaponManager.cs",
               "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Weapon\\WeaponManager.cs",
               "RelativeToolTip": "Assets\\Scripts\\Weapon\\WeaponManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADcAAAA9AAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAswDcAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-12T00:41:30.433Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Spread.cs",
               "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Weapon\\Weapon Type\\Spread.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Weapon\\Weapon Type\\Spread.cs",
@@ -59,18 +59,17 @@
               "RelativeToolTip": "Assets\\Scripts\\Weapon\\Weapon Type\\Spread.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAQwAsAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-12T00:37:49.402Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-12T00:37:49.402Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "WeaponModule.cs",
               "DocumentMoniker": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Weapon\\Weapon Type\\WeaponModule.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Weapon\\Weapon Type\\WeaponModule.cs",
               "ToolTip": "D:\\Documents\\Unity_Project\\Paintpocalypse\\Assets\\Scripts\\Weapon\\Weapon Type\\WeaponModule.cs",
               "RelativeToolTip": "Assets\\Scripts\\Weapon\\Weapon Type\\WeaponModule.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAIwDcAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAACYAAAAAAAAAAAAwwDcAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-12T00:36:27.567Z",
               "EditorCaption": ""
