@@ -27,3 +27,4 @@ sysinfo.txt
 
 # Exclude cache and local config
 UserSettings/
+/.vs

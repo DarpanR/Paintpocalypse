@@ -19,7 +19,7 @@ public abstract class BaseEntity : MonoBehaviour {
     public float GetHealth () { return currentHealth; }
 
     protected virtual void Start() {
-        currentHealth = maxHealth
+        currentHealth = maxHealth;
           
         if (rend == null) rend = GetComponent<SpriteRenderer>();
     }
