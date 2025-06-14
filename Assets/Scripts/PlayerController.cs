@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerController : BaseEntity {
     public float moveSpeed = 5f;
     Rigidbody2D rb;
     Vector2 moveInput;
+
     public HealthBar healthBar;
+    public GameOverOverlay gameOverOverlay;
 
     // Start is called before the first frame update
     protected override void Start() {
@@ -46,5 +50,14 @@ public class PlayerController : BaseEntity {
         {
             Die();
         }
+    }
+    protected override void Die()
+    {
+        int score = 0;                      //   PLACEHOLDER, IF WE WANT SCORE NEED CHANGE
+
+        Debug.Log(gameObject.name + " Died");
+        Destroy(gameObject);
+
+        gameOverOverlay.Setup(score);
     }
 }
