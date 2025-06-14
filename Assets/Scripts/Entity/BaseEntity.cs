@@ -11,16 +11,17 @@ public abstract class BaseEntity : MonoBehaviour {
     public float invincibitilityDuration = 1.0f;
     private bool isInvincible = false;
 
-    SpriteRenderer rend;
+    [Header("Visual Settings")]
+    public SpriteRenderer rend;
     public float statFlashSpeed = 0.1f;
-
     public Color dmgColor = Color.red;
 
     public float GetHealth () { return currentHealth; }
 
     protected virtual void Start() {
         currentHealth = maxHealth;
-        rend = GetComponent<SpriteRenderer>();
+          
+        if (rend == null) rend = GetComponent<SpriteRenderer>();
     }
 
     public virtual void TakeDamage(float amount) {

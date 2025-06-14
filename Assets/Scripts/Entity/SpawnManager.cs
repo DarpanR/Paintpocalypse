@@ -24,10 +24,10 @@ public class SpawnManager : MonoBehaviour {
 
     void Start() {
         mainCam = Camera.main;
-        // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
+        // Use the cameraâ€™s orthographic size and aspect ratio to compute the edge for some spawn patterns
         radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
 
-        foreach (var phase in phases) 
+        foreach (var phase in phases)
             phase.specialWaves.Sort((a, b) => a.timeOffSet.CompareTo(b.timeOffSet));
         BeginPhase(0);
     }
@@ -37,14 +37,13 @@ public class SpawnManager : MonoBehaviour {
         var phase = phases[currentPhase];
 
         // Periodic Spawns
-        if (timer>=nextPeriodic) {
-            foreach (var ins in phase.periodicSpawns) FireInstruction(ins);
+        if (timer >= nextPeriodic) {
+            FireInstruction(phase.periodicSpawns[Random.Range(0, phase.periodicSpawns.Count)]);
             nextPeriodic += phase.periodicInterval;
         }
 
         // Special Spawns
-        while(nextWave < phase.specialWaves.Count &&
-            timer >= phase.specialWaves[nextWave].timeOffSet) {
+        while(nextWave < phase.specialWaves.Count && timer >= phase.specialWaves[nextWave].timeOffSet) {
             foreach (var ins in phase.specialWaves[nextWave].spawns) FireInstruction(ins);
             nextWave++;
         }
@@ -71,7 +70,8 @@ public class SpawnManager : MonoBehaviour {
 
         for (int i = 0; i < count; i++) {
             Instantiate(ins.enemy, positions[i], Quaternion.identity);
-        }    }
+        }
+    }
 
     Vector2 GetOffscreenPosition() {
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
@@ -91,43 +91,45 @@ public class SpawnManager : MonoBehaviour {
 
         switch (pattern) {
             case SpawnPatternType.Burst: {
-                // Choose offscreen anchor
-                Vector2 anchor = GetOffscreenPosition();
+                    // Choose offscreen anchor
+                    Vector2 anchor = GetOffscreenPosition();
 
-                for (int i = 0; i < count; i++) {
-                    positions.Add(anchor + Random.insideUnitCircle * spawnRadius);
+                    for (int i = 0; i < count; i++) {
+                        positions.Add(anchor + Random.insideUnitCircle * spawnRadius);
+                    }
+                    break;
                 }
-                break;
-            } case SpawnPatternType.Radial: {
-                float angleStep = 360f / count;
-                Vector2 camCenter = (Vector2)mainCam.transform.position;
+            case SpawnPatternType.Radial: {
+                    float angleStep = 360f / count;
+                    Vector2 camCenter = (Vector2)mainCam.transform.position;
 
-                for (int i = 0; i < count; i++) {
-                    float angle = angleStep * i * Mathf.Deg2Rad;
-                    Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-                    Vector2 spawnPos = camCenter + offset * radius;
-                    positions.Add(spawnPos);
+                    for (int i = 0; i < count; i++) {
+                        float angle = angleStep * i * Mathf.Deg2Rad;
+                        Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+                        Vector2 spawnPos = camCenter + offset * radius;
+                        positions.Add(spawnPos);
+                    }
+                    break;
                 }
-                break;
-            }  case SpawnPatternType.Linear: {
-                float angle = Random.Range(0, Mathf.PI * 2);
-                //TODO: Change the spacing to be dynamic
-                float spacing = 2f;
+            case SpawnPatternType.Linear: {
+                    float angle = Random.Range(0, Mathf.PI * 2);
+                    //TODO: Change the spacing to be dynamic
+                    float spacing = 2f;
 
-                Vector2 dirFromPlayer = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-                Vector2 lineCenter = (Vector2)mainCam.transform.position + dirFromPlayer * radius;
+                    Vector2 dirFromPlayer = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+                    Vector2 lineCenter = (Vector2)mainCam.transform.position + dirFromPlayer * radius;
 
-                Vector2 prep = new Vector2(-dirFromPlayer.y, dirFromPlayer.x).normalized;
+                    Vector2 prep = new Vector2(-dirFromPlayer.y, dirFromPlayer.x).normalized;
 
-                Vector2 lineStart = lineCenter - prep * ((count - 1 * spacing) / 2);
+                    Vector2 lineStart = lineCenter - prep * ((count - 1 * spacing) / 2);
 
-                for (int i = 0; i < count; i++) {
-                    Vector2 spawnPos = lineStart + prep * (i * spacing);
-                    positions.Add(spawnPos);
+                    for (int i = 0; i < count; i++) {
+                        Vector2 spawnPos = lineStart + prep * (i * spacing);
+                        positions.Add(spawnPos);
+                    }
+                    break;
                 }
-                break;
-            }
-            // More patterns here!
+                // More patterns here!
         }
         return positions;
     }

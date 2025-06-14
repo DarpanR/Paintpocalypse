@@ -9,6 +9,7 @@ MemoryCaptures/
 
 # Visual Studio / VS Code files
 .vscode/
+.vs/
 *.csproj
 *.unityproj
 *.sln
@@ -26,3 +27,4 @@ sysinfo.txt
 
 # Exclude cache and local config
 UserSettings/
+/.vs

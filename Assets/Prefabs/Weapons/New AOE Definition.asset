@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6ac0b1265d261040b6de144cdb79d1a, type: 3}
+  m_Name: New AOE Definition
+  m_EditorClassIdentifier: 
+  weaponName: AOE Test
+  weaponIcon: {fileID: 21300000, guid: 35b961685a36b214fbc02c4c00d39644, type: 3}
+  poolSize: 20
+  projectile: {fileID: 0}
+  baseDamage: 10
+  baseFireRate: 1
+  baseVelocity: {x: 0, y: 0}
+  baseLifetime: 2
+  basePenetration: 1
+  baseProjectileCount: 1
+  maxLevel: 5
+  luDamage: 10
+  luFireRate: 1
+  luVelocity: {x: 0, y: 0}
+  luLifetime: 2
+  luPenetration: 1
+  luProjectileCount: 1
+  aoeRadius: 2
+  spawnRadius: 1.5
+  luAoeRadius: 0
+  luSpawnRadius: 0
