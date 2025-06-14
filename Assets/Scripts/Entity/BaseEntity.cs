@@ -11,6 +11,7 @@ public abstract class BaseEntity : MonoBehaviour {
     public float invincibitilityDuration = 1.0f;
     private bool isInvincible = false;
 
+
     [Header("Visual Settings")]
     public SpriteRenderer rend;
     public float statFlashSpeed = 0.1f;
@@ -39,7 +40,7 @@ public abstract class BaseEntity : MonoBehaviour {
         }
     }
 
-    private IEnumerator FlashAndInvincibility() { 
+    protected IEnumerator FlashAndInvincibility() { 
         Color originalColor = rend.color;
         float timer = 0f;
 
