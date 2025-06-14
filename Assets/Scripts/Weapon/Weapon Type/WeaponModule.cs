@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponModule<Tdef> : IWeaponModule
+public abstract class WeaponModule<Tdef> : IWeaponModule
     where Tdef : WeaponDefinition
 {
     public Tdef Definition { get; }
@@ -70,6 +70,7 @@ public class WeaponModule<Tdef> : IWeaponModule
                 (int)Damage,
                 LifeTime,
                 Penetration,
+                FireRate,
                 Target
             );
         proj.onDestroyed = () => {

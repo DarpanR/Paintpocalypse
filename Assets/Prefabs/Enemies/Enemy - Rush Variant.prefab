@@ -87,6 +87,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 456647007761070526, guid: 6dc84e393b1271f43b9e80b933c00b81, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 694524218127828814, guid: 6dc84e393b1271f43b9e80b933c00b81, type: 3}
       propertyPath: maxHealth
       value: 25

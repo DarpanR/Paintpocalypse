@@ -52,7 +52,7 @@ MonoBehaviour:
   firePoint: {fileID: 8871929672640792997}
   target: Player
   allWeapons:
-  - {fileID: 11400000, guid: 442b7beb2c8e188439bd0cfacd39633e, type: 2}
+  - {fileID: 11400000, guid: 116f03547b9c1754e94eac96afc8e4cb, type: 2}
 --- !u!114 &128960939950200183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +85,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

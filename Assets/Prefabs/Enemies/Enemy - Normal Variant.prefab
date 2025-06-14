@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.32
       objectReference: {fileID: 0}
+    - target: {fileID: 1026553923074026375, guid: ef4d73a027a210f4083838d29e697417, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7283722905499594032, guid: ef4d73a027a210f4083838d29e697417, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -95,7 +99,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
