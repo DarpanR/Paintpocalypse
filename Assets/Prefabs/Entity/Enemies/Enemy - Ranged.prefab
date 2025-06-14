@@ -52,7 +52,7 @@ MonoBehaviour:
   firePoint: {fileID: 8871929672640792997}
   target: Player
   allWeapons:
-  - {fileID: 11400000, guid: 116f03547b9c1754e94eac96afc8e4cb, type: 2}
+  - {fileID: 11400000, guid: a8a4f5aa37c416b4ca8924767b5e419c, type: 2}
 --- !u!114 &128960939950200183
 MonoBehaviour:
   m_ObjectHideFlags: 0

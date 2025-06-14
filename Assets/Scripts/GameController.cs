@@ -1,24 +1,19 @@
-using JetBrains.Annotations;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class GameController : MonoBehaviour {
-    [Header("Player")]
-    [SerializeField] PlayerController stickMan;
+    //[Header("Player")]
+    //[SerializeField] PlayerController stickMan;
     //public PlayerController mounse;
 
-    [Header("Enemy Phase Handling")]
-    public PhaseManager phaseManager;
-    public List<PhaseDefinition> phases;
+    //[Header("Controlboards")]
+    //[SerializeField] PhaseManager phaseManager;
 
     [Header("Menu Panels")]
     public GameObject pauseMenuPanel;
     public GameObject gameOverPanel;
     public GameObject settingsPanel;
-    public HUDPanel hud;
+    public GameObject hudPanel;
 
     // Singleton instance
     public static GameController Instance { get; private set; }
@@ -26,7 +21,7 @@ public class GameController : MonoBehaviour {
     //Game Paramenter
     public enum GameState { Start, Play, Pause, End }
 
-    public GameState CurrentState { get; private set; } = GameState.Start;
+    public GameState CurrentState { get; private set; }
 
     public int Score { get; private set; } = 0;
 
@@ -36,9 +31,12 @@ public class GameController : MonoBehaviour {
 
     private void Awake() {
         if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        else Destroy(this);
+    }
 
-        CurrentState = GameState.Start;
+    private void Start() {
+        //phaseManager = phaseManager ?? GetComponent<PhaseManager>();
+        ChangeState(GameState.Play);
     }
 
     public void ChangeState(GameState newState) {
@@ -46,9 +44,6 @@ public class GameController : MonoBehaviour {
         OnStateChanged?.Invoke(newState);
 
         switch (newState) {
-            case GameState.Start:
-                HandlePreGame();
-                break;
             case GameState.Play:
                 HandleResume();
                 break;
@@ -60,15 +55,6 @@ public class GameController : MonoBehaviour {
                 break;
         }
     }
-    void HandlePreGame() {
-        Time.timeScale = 0f;
-
-        // Handle Managers
-        phaseManager.Init(phases);
-        hud.Init(phaseManager.totalDuration, stickMan.maxHealth, stickMan.CurrentHealth);
-
-        ChangeState(GameState.Play);
-    }
 
     void HandleResume() {
         Time.timeScale = 1f;
@@ -77,6 +63,7 @@ public class GameController : MonoBehaviour {
         pauseMenuPanel.SetActive(false);
         gameOverPanel.SetActive(false);
         settingsPanel.SetActive(false);
+        hudPanel.SetActive(true);
     }
 
     void HandlePause() {
@@ -98,7 +85,15 @@ public class GameController : MonoBehaviour {
     }
 
     private void Update() {
-        if (CurrentState != GameState.Play) return;
-        if (phaseManager.IsDone) ChangeState(GameState.End);
+        if (CurrentState == GameState.Play) {
+            if (PhaseManager.Instance.IsDone) ChangeState(GameState.End);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (CurrentState == GameState.Play)
+                ChangeState(GameState.Pause);
+            else if (CurrentState == GameState.Pause)
+                ChangeState(GameState.Play);
+        }
     }
 }

@@ -9,19 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 133cbe87d057bb74ba7e209104184bdf, type: 3}
-  m_Name: New AOE Definition
+  m_Script: {fileID: 11500000, guid: 41a1d9353da946a449545f53bb30aa52, type: 3}
+  m_Name: player weapon
   m_EditorClassIdentifier: 
-  weaponName: AOE TEST
+  weaponName: Stronger Player Weapon
   weaponIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
-  poolSize: 10
-  projectile: {fileID: 4913505686419141161, guid: 80c1142d336dbf44faea1ed71077b43a, type: 3}
+  poolSize: 20
+  projectile: {fileID: 8884467172457997179, guid: 02abb141a0f1b2d4c94adb460531aed2, type: 3}
   baseDamage: 10
   baseFireRate: 1
-  baseVelocity: {x: 0, y: 0}
+  baseVelocity: {x: 0, y: 20}
   baseLifetime: 2
-  basePenetration: 1
-  baseProjectileCount: 1
+  basePenetration: 2
+  baseProjectileCount: 3
   maxLevel: 5
   luDamage: 10
   luFireRate: 1
@@ -29,7 +29,5 @@ MonoBehaviour:
   luLifetime: 2
   luPenetration: 1
   luProjectileCount: 1
-  aoeRadius: 2
-  spawnRadius: 1.5
-  luAoeRadius: 0
-  luSpawnRadius: 0
+  baseSpreadAngle: 30
+  luSpreadAngle: 0

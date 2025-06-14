@@ -13,11 +13,18 @@ public class HUDPanel : MonoBehaviour
     public TextMeshProUGUI timerText;
     float globalTimer;
 
-    public void Init(float totalDuration, int maxHealth, int CurrentHealth) {
-        // Handle UI
-        globalTimer = totalDuration;
-        SetMaxHealth(maxHealth);
-        SetHealth(CurrentHealth);
+    // Stick Reference
+    PlayerController stickman;
+
+    private void Start() {
+        globalTimer = PhaseManager.Instance.totalDuration;
+        
+        stickman = PlayerController.Instance;
+        
+        SetMaxHealth();
+        SetHealth();
+
+        stickman.OnTakeDamage += SetHealth;
     }
 
     void Update() {
@@ -35,11 +42,11 @@ public class HUDPanel : MonoBehaviour
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    public void SetMaxHealth(int maxHealth) {
-        healthSlider.maxValue = maxHealth;
+    public void SetMaxHealth() {
+        healthSlider.maxValue = stickman.maxHealth;
     }
 
-    public void SetHealth(int health) {
-        healthSlider.value = health;
+    public void SetHealth() {
+        healthSlider.value = stickman.CurrentHealth;
     }
 }

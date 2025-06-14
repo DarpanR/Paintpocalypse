@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : BaseEntity {
+    public static PlayerController Instance { get; private set; }
+
     public float moveSpeed = 5f;
     Rigidbody2D rb;
-    Vector2 moveInput;
 
     // Remember last non-zero aim so you keep facing when no arrow is pressed
     Vector2 lastAim = Vector2.up;
 
-
     // Start is called before the first frame update
+
+    private void Awake() {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
     protected override void Start() {
         base.Start();
 

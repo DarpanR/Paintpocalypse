@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameOverPanel : MonoBehaviour
 {
-    public Text scoreText;
+    public TMP_Text scoreText;
 
     void OnEnable() {
         int score = GameController.Instance.Score;

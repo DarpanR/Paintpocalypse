@@ -1,19 +1,19 @@
-//using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Cryptography;
 using UnityEngine;
 
-public enum SpawnPatternType { Burst, Radial, Linear/*, ZigZag */}
+public enum SpawnPatternType { Random, Burst, Radial, Linear /*, ZigZag */}
+
 public class PhaseManager : MonoBehaviour {
+    public static PhaseManager Instance { get; private set; }
+
+    [Header("Enemy Phases")]
+    [SerializeField] List<PhaseDefinition> phases;
+    public List<PhaseDefinition> Phases { get { return phases; } }
+
     [Header("Pattern logic")]
     public int buffer = 1;
     public float spawnRadius = 2f;
-
     public float totalDuration {  get; private set; }
-
-    List<PhaseDefinition> phases;
 
     int currentPhase;
     // Time tracker for current phase
@@ -23,18 +23,23 @@ public class PhaseManager : MonoBehaviour {
     // Index tracker for rush waves
     int nextRush = 0;
     bool finished;
-    bool active = false;
+    bool initialized = false;
 
     Camera mainCam;
     float radius;
 
-    public void Init(List<PhaseDefinition> _phases) {
-        phases = _phases;
+    private void Awake() {
+        if (Instance == null) Instance = this;
+        else Destroy(this);
+    }
+
+    private void Start() {
         currentPhase = 0;
         finished = false;
-        active = true;
+        initialized = true;
 
         mainCam = Camera.main;
+
         // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
         radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
 
@@ -48,7 +53,7 @@ public class PhaseManager : MonoBehaviour {
     }
 
     void Update() {
-        if (!active || finished) return;
+        if (!initialized || finished) return;
         timer += Time.deltaTime;
         var phase = phases[currentPhase];
 
@@ -70,11 +75,8 @@ public class PhaseManager : MonoBehaviour {
 
             if (next < phases.Count)
                 BeginPhase(next);
-            else {
-                active = false;
-                finished = true;
-            }
-                
+            else
+                finished = true;                
         }
     }
 
@@ -150,6 +152,9 @@ public class PhaseManager : MonoBehaviour {
                     }
                     break;
                 }
+            case SpawnPatternType.Random:
+                //System.Random rand = new Syste.Random();
+                break;
                 // More patterns here!
         }
         return positions;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,10 @@ public abstract class BaseEntity : MonoBehaviour {
     public float statFlashSpeed = 0.1f;
     public Color dmgColor = Color.red;
 
+    public event Action OnTakeDamage;
+    //public event Action<int> OnUpgrade;
+    //public event Action OnDie;
+
     protected virtual void Start() {
         CurrentHealth = maxHealth;
           
@@ -24,9 +29,8 @@ public abstract class BaseEntity : MonoBehaviour {
     }
 
     public virtual void TakeDamage(int amount) {
-        if (isInvincible) {
+        if (isInvincible)
             return;
-        }
         CurrentHealth -= amount;
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, maxHealth);
 
@@ -36,6 +40,7 @@ public abstract class BaseEntity : MonoBehaviour {
         } else {
             Die();
         }
+        OnTakeDamage?.Invoke();
     }
 
     protected IEnumerator FlashAndInvincibility() { 
@@ -52,6 +57,10 @@ public abstract class BaseEntity : MonoBehaviour {
         rend.color = originalColor;
         isInvincible = false;
     } 
+
+    protected virtual void Upgrade() {
+
+    }
 
     protected virtual void Die() {
         Debug.Log(gameObject.name + " Died");
