@@ -10,6 +10,7 @@ public class PlayerController : BaseEntity {
     // Remember last non-zero aim so you keep facing when no arrow is pressed
     Vector2 lastAim = Vector2.up;
 
+
     // Start is called before the first frame update
     protected override void Start() {
         base.Start();
@@ -41,5 +42,11 @@ public class PlayerController : BaseEntity {
             float angle = Mathf.Atan2(lastAim.y, lastAim.x) * Mathf.Rad2Deg - 90f;
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
+    }
+
+    protected override void Die() {
+        Debug.Log(gameObject.name + " Died");
+        GameController.Instance.ChangeState(GameController.GameState.End);
+        //int score = 0;                      //   PLACEHOLDER, IF WE WANT SCORE NEED CHANGE
     }
 }

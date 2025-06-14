@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class BaseEntity : MonoBehaviour {
     [Header("Health Settings")]
-    public float maxHealth = 100f;
-    protected float currentHealth;
+    public int maxHealth = 100;
+    [HideInInspector]public int CurrentHealth { get; private set; }
 
     [Header("Status Settings")]
     public float invincibitilityDuration = 1.0f;
@@ -17,22 +17,20 @@ public abstract class BaseEntity : MonoBehaviour {
     public float statFlashSpeed = 0.1f;
     public Color dmgColor = Color.red;
 
-    public float GetHealth () { return currentHealth; }
-
     protected virtual void Start() {
-        currentHealth = maxHealth;
+        CurrentHealth = maxHealth;
           
         if (rend == null) rend = GetComponent<SpriteRenderer>();
     }
 
-    public virtual void TakeDamage(float amount) {
+    public virtual void TakeDamage(int amount) {
         if (isInvincible) {
             return;
         }
-        currentHealth -= amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        CurrentHealth -= amount;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, maxHealth);
 
-        if (currentHealth > 0) {
+        if (CurrentHealth > 0) {
             isInvincible = true;
             StartCoroutine(FlashAndInvincibility());
         } else {

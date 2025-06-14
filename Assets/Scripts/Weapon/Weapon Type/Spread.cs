@@ -1,21 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-
-[CreateAssetMenu(menuName = "Custom/Weapons/Spread Shot")]
-public class SpreadDefinition : WeaponDefinition {
-    [Header("Advanced Projectile Setting")]
-    public float baseSpreadAngle = 30f;
-
-    [Header("Advanced Level Stats")]
-    public float luSpreadAngle = 0f;
-
-    public override IWeaponModule CreateModule(Transform firePoint, string target) {
-        return new Spread(this, firePoint, target);
-    }
-}
 
 public class Spread : WeaponModule<SpreadDefinition> {
     public Spread(SpreadDefinition def, Transform fp, string t) : base(def, fp, t) {}

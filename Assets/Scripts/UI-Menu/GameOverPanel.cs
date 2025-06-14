@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameOverOverlay : MonoBehaviour
+public class GameOverPanel : MonoBehaviour
 {
-    public Text scoresText;
+    public Text scoreText;
 
-    public void Setup(int score)    // Called to make overlay visible
-    {
-        gameObject.SetActive(true);
-        scoresText.text = "Score: " + score.ToString();
+    void OnEnable() {
+        int score = GameController.Instance.Score;
+        scoreText.text = score.ToString();
     }
 
     public void Restart()   // Button restart game

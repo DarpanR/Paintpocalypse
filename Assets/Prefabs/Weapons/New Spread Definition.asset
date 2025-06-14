@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: Spread Test
-  m_EditorClassIdentifier: Assembly-CSharp::SpreadDefinition
-  weaponName: Spread
-  weaponIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
+  m_Script: {fileID: 11500000, guid: 41a1d9353da946a449545f53bb30aa52, type: 3}
+  m_Name: New Spread Definition
+  m_EditorClassIdentifier: 
+  weaponName: 
+  weaponIcon: {fileID: 0}
   poolSize: 20
-  projectile: {fileID: 8884467172457997179, guid: 02abb141a0f1b2d4c94adb460531aed2, type: 3}
+  projectile: {fileID: 0}
   baseDamage: 10
   baseFireRate: 1
-  baseVelocity: {x: 0, y: 20}
+  baseVelocity: {x: 0, y: 0}
   baseLifetime: 2
   basePenetration: 1
   baseProjectileCount: 1

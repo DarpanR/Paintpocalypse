@@ -7,7 +7,7 @@ public class EnemyAI : BaseEntity {
     [Header("Enemy Logic")]
     public Transform spriteTransform;
     public float moveSpeed = 2f;
-    public float damage = 2f;
+    public int damage = 2;
 
     Transform target;
     // Start is called before the first frame update
@@ -35,7 +35,7 @@ public class EnemyAI : BaseEntity {
         spriteTransform.rotation = quaternion.identity;
     }
 
-    protected virtual void DoDamage(float amount) {
+    protected virtual void DoDamage(int amount) {
         throw new System.NotImplementedException();
     }
 
