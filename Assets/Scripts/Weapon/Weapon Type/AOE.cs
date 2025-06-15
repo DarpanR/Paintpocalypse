@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AreaOfEffect : WeaponModule<AOEDefinition> {
-    public AreaOfEffect(AOEDefinition def, Transform fp, string target):base(def, fp, target) { }
+    public AreaOfEffect(AOEDefinition def, Transform fp, string target):base(def, fp, target) {
+        Fire();
+    }
 
     protected override void Fire() {
         for (int i = 0; i < ProjectileCount;i++) {

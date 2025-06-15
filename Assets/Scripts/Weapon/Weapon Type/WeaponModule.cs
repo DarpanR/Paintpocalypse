@@ -33,7 +33,6 @@ public abstract class WeaponModule<Tdef> : IWeaponModule
             go.SetActive(false);
             pool.Enqueue(go);
         }
-        Fire();
     }
 
 

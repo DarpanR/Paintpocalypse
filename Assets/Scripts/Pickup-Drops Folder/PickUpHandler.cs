@@ -7,9 +7,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class DropItemHandler : MonoBehaviour
+public class PickUpHandler : MonoBehaviour
 {
-    
     [SerializeField] WeaponDefinition weapon;
 
     [Tooltip("Degrees per second")]
@@ -19,13 +18,6 @@ public class DropItemHandler : MonoBehaviour
 
     private void Awake() {
         sr = GetComponent<SpriteRenderer>();
-
-        // Temporary delete after making Weapon Choose Menu
-        if (weapon != null && weapon.weaponIcon != null) {
-            sr.sprite = weapon.weaponIcon;
-            sr.sortingLayerName = "Pickups";
-            sr.sortingOrder = 0;
-        }
     }
 
     void Update()
@@ -44,20 +36,13 @@ public class DropItemHandler : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        // Only react to the player
+    void OnTriggerEnter2D(Collider2D other) {
         if (!other.CompareTag("Player")) return;
-
-        // Find the WeaponManager on the player (could be on the same GameObject or a child)
         var manager = other.GetComponentInChildren<WeaponManager>();
-        if (manager != null)
-        {
-            // Equip or upgrade the weapon
+        
+        if (manager != null) {
             manager.Equip(weapon);
         }
-
-        // Destroy the pickup object so it can’t be grabbed twice
         Destroy(gameObject);
     }
 

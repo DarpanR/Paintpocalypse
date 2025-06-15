@@ -16,4 +16,6 @@ MonoBehaviour:
   - weapon: {fileID: 11400000, guid: a040704e6a55640478eaf41d66566dea, type: 2}
     weight: 13
   - weapon: {fileID: 11400000, guid: 1c6a5e046a8a03b4c9e3a606bf2d975f, type: 2}
+    weight: 13
+  - weapon: {fileID: 11400000, guid: 8e236575a0d34294f83624a4aa678c0a, type: 2}
     weight: 25

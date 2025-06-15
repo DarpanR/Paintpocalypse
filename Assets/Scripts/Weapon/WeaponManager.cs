@@ -15,7 +15,6 @@ public class TagMaskFieldAttributeEditor : PropertyDrawer {
 }
 #endif
 
-
 public class WeaponManager : MonoBehaviour
 {
     [Header("Where bullets originate")]
