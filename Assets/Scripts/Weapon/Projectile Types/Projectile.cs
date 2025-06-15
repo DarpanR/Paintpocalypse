@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
+[RequireComponent(typeof(Collider2D))]
 public abstract class Projectile : MonoBehaviour {
     // called when this projectile should die (pool will disable & recycle)
     public Action onDestroyed;
@@ -18,7 +17,7 @@ public abstract class Projectile : MonoBehaviour {
 
     // internal Counters
     protected int hits;
-    protected HashSet<int> enemiesHit = new HashSet<int>();
+    protected Dictionary<int, float> enemiesHit = new Dictionary<int, float>();
 
     /// <summary>
     /// Initialize all parameters. Call immediately after Instantiate().
@@ -51,6 +50,14 @@ public abstract class Projectile : MonoBehaviour {
         //    // no pool -> destory normally
         //    Destroy(gameObject);
     }
+
+    private void LateUpdate() {
+        lifetime -= Time.deltaTime;
+
+        if (lifetime <= 0)
+            Die();
+    }
+
 
     private void OnDisable() {
         // In case someone re-enables from pool without re-init

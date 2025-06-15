@@ -1,43 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Xsl;
 using UnityEngine;
 
 public class AOEShot : Projectile
 {
     public float minRadius = 0f;
     public float maxRadius = 3f;
-    public float expansionRate = 0.5f;
+    [SerializeField]
+    AnimationCurve expansionCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
+    float lt;
     float timer = 0f;
     float currentRadius = 0f;
 
     public override void Init(Vector2 velocity, int damage, float lifetime, int penetration, float fireRate, string target) {
-        base.Init(velocity, damage, lifetime, penetration, fireRate, target);
-        
+        currentRadius = minRadius;
+        timer = 0;
+        lt = lifetime;
+
         transform.localScale = Vector3.one * minRadius;
+        base.Init(velocity, damage, lifetime, penetration, fireRate, target);
     }
 
     protected override void Update() {
         timer += Time.deltaTime;
-        currentRadius = Mathf.Min(currentRadius + expansionRate * Time.deltaTime, maxRadius);
-        transform.localScale = Vector3.one * currentRadius * 2f;
 
-        if (timer >= fireRate) {
-            timer -= fireRate;
-            DoDamage();
+        float normalizedTime = Mathf.Clamp01(timer / lt);
+        float curveValue = expansionCurve.Evaluate(normalizedTime);
+
+        currentRadius = Mathf.Lerp(minRadius, maxRadius, curveValue);
+        transform.localScale = Vector3.one * currentRadius * 2f;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag(target)) {
+            var id = collision.gameObject.GetInstanceID();
+
+            enemiesHit[id] = 0f;
+            DoDamage(collision);
         }
     }
 
-    void DoDamage() {
-        var hits = Physics2D.OverlapCircleAll(transform.position, currentRadius);
+    private void OnTriggerStay2D(Collider2D collision) {
+        if (collision.CompareTag(target)) {
+            var id = collision.gameObject.GetInstanceID();
 
-        foreach (var hit in hits) {
-            if (!hit.CompareTag(target)) {
-                var enemy = hit.GetComponent<EnemyAI>();
-
-                if (enemy != null)
-                    enemy.TakeDamage(damage);
+            if(enemiesHit[id] > fireRate) {
+                enemiesHit[id] -= fireRate;
+                DoDamage(collision);
             }
         }
     }
+
+    void DoDamage(Collider2D collision) {
+        var enemy = collision.GetComponent<EnemyAI>();
+
+        if (enemy != null)
+            enemy.TakeDamage(damage);
+    }    
 }

@@ -3,20 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
 public class LinearShot : Projectile
 {
     // 1) Move
     protected override void Update() {
         transform.position += (Vector3)velocity * Time.deltaTime;
-    }
-
-    // 2) Age & expire
-    private void LateUpdate() {
-        lifetime -= Time.deltaTime;
-
-        if (lifetime <= 0)
-            Die();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -26,9 +17,9 @@ public class LinearShot : Projectile
         // Prevent double-hitting the same enemy
         int id = collision.gameObject.GetInstanceID();
 
-        if (enemiesHit.Contains(id))
+        if (enemiesHit.ContainsKey(id))
             return;
-        enemiesHit.Add(id);
+        enemiesHit[id] = 0f;
         hits++;
 
         //Apply damage if enemy has a health component

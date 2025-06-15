@@ -17,8 +17,6 @@ public class AreaOfEffect : WeaponModule<AOEDefinition> {
         }
     }
 
-    public float AoeRadius =>
-        Definition.aoeRadius + Definition.luAoeRadius * (Level - 1);
     public float spawnRadius =>
         Definition.spawnRadius + Definition.luSpawnRadius * (Level - 1);
 }
