@@ -48,4 +48,9 @@ public class EnemyAI : BaseEntity {
             }
         }
     }
+
+    protected override void Die() {
+        base.Die();
+        DropManager.Instance.TryDrop(transform.position);
+    }
 }

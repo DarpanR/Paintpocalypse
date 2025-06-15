@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Drop Table
+  m_EditorClassIdentifier: Assembly-CSharp::DropTable
+  drops:
+  - weapon: {fileID: 11400000, guid: a040704e6a55640478eaf41d66566dea, type: 2}
+    weight: 13
+  - weapon: {fileID: 11400000, guid: 1c6a5e046a8a03b4c9e3a606bf2d975f, type: 2}
+    weight: 25

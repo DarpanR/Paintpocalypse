@@ -7,10 +7,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class PickupHandler : MonoBehaviour
+public class DropItemHandler : MonoBehaviour
 {
-    [Tooltip("Which weapon this pickup grants")]
-    public WeaponDefinition weapon;
+    
+    [SerializeField] WeaponDefinition weapon;
 
     [Tooltip("Degrees per second")]
     public float rotationSpeed = 45f;
@@ -20,7 +20,8 @@ public class PickupHandler : MonoBehaviour
     private void Awake() {
         sr = GetComponent<SpriteRenderer>();
 
-        if(weapon != null && weapon.weaponIcon != null) {
+        // Temporary delete after making Weapon Choose Menu
+        if (weapon != null && weapon.weaponIcon != null) {
             sr.sprite = weapon.weaponIcon;
             sr.sortingLayerName = "Pickups";
             sr.sortingOrder = 0;
@@ -31,6 +32,16 @@ public class PickupHandler : MonoBehaviour
     {
         // Simple rotation to catch the eye
         transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
+    }
+
+    public void SetWeaponDefinition(WeaponDefinition def) {
+        weapon = def;
+
+        if (weapon != null && weapon.weaponIcon != null) {
+            sr.sprite = weapon.weaponIcon;
+            sr.sortingLayerName = "Pickups";
+            sr.sortingOrder = 0;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
@@ -8,6 +9,7 @@ public class GameController : MonoBehaviour {
 
     //[Header("Controlboards")]
     //[SerializeField] PhaseManager phaseManager;
+    //[SerializeField] DropManager dropManager;
 
     [Header("Menu Panels")]
     public GameObject pauseMenuPanel;
@@ -35,7 +37,6 @@ public class GameController : MonoBehaviour {
     }
 
     private void Start() {
-        //phaseManager = phaseManager ?? GetComponent<PhaseManager>();
         ChangeState(GameState.Play);
     }
 

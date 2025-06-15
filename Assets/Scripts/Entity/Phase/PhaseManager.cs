@@ -91,7 +91,7 @@ public class PhaseManager : MonoBehaviour {
         int count = Random.Range(ins.minCount, ins.maxCount + 1);
         List<Vector2> positions = GeneratePattern(ins.pattern, count);
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < positions.Count; i++) {
             Instantiate(ins.enemy, positions[i], Quaternion.identity);
         }
     }
