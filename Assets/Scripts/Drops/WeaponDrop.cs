@@ -7,7 +7,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class PickUpHandler : MonoBehaviour
+public class WeaponDrop : MonoBehaviour
 {
     [SerializeField] WeaponDefinition weapon;
 

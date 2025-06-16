@@ -31,6 +31,9 @@ public class PhaseManager : MonoBehaviour {
     private void Awake() {
         if (Instance == null) Instance = this;
         else Destroy(this);
+
+        //temporary
+        if (Phases.Count == 0) Destroy(this);
     }
 
     private void Start() {

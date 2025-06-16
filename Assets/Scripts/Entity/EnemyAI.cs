@@ -6,7 +6,6 @@ using UnityEngine;
 public class EnemyAI : BaseEntity {
     [Header("Enemy Logic")]
     public Transform spriteTransform;
-    public float moveSpeed = 2f;
     public int damage = 2;
 
     Transform target;
@@ -20,7 +19,9 @@ public class EnemyAI : BaseEntity {
     }
 
     // Update is called once per frame
-    void Update() {
+    protected override void Update() {
+        base.Update();
+
         if (target != null) {
             Vector2 direction = (target.position - transform.position).normalized;
             transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
@@ -30,6 +31,7 @@ public class EnemyAI : BaseEntity {
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
     }
+
     private void LateUpdate() {
         // Reset the visual child to stay upright
         spriteTransform.rotation = quaternion.identity;

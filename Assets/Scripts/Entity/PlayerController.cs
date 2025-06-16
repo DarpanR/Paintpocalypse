@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerController : BaseEntity {
     public static PlayerController Instance { get; private set; }
 
-    public float moveSpeed = 5f;
     Rigidbody2D rb;
 
     // Remember last non-zero aim so you keep facing when no arrow is pressed
@@ -25,7 +24,9 @@ public class PlayerController : BaseEntity {
     }
 
     // Update is called once per frame
-    void Update() {
+    protected override void Update() {
+        base.Update();
+
         // 1) Movement with WASD
         Vector2 move = Vector2.zero;
         if (Input.GetKey(KeyCode.W)) move.y += 1;
