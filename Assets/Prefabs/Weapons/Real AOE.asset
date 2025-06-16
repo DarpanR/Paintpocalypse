@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Real AOE
   m_EditorClassIdentifier: 
   weaponName: Aoe Shot Weapon
-  weaponIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
+  weaponIcon: {fileID: 21300000, guid: ba1567a682e9fd44a9543f30223ebc39, type: 3}
   poolSize: 20
   projectile: {fileID: 4913505686419141161, guid: 80c1142d336dbf44faea1ed71077b43a, type: 3}
   baseDamage: 10

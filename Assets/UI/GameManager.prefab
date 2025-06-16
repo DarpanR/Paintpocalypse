@@ -1744,7 +1744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phases:
   - {fileID: 11400000, guid: adbe3121094c36e43b7c021db98b2fe1, type: 2}
-  - {fileID: 11400000, guid: adbe3121094c36e43b7c021db98b2fe1, type: 2}
+  - {fileID: 11400000, guid: ca59c5eb44fa7fb4f86c6167dad869f8, type: 2}
   buffer: 1
   spawnRadius: 2
 --- !u!114 &3425353267876616281
@@ -1760,8 +1760,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropPrefab: {fileID: 1824443047001969138, guid: 82fe775eb263dcb4a94f5503a7a3e816, type: 3}
-  dropTable: {fileID: 11400000, guid: 1ff0a29a5b0cc2544b4f35daa0e5736a, type: 2}
-  dropChance: 20
+  dropTable: {fileID: 11400000, guid: 4660b2b4cd3180f498a4fcf2025879e9, type: 2}
+  dropChance: 10
 --- !u!114 &3630279892218838457
 MonoBehaviour:
   m_ObjectHideFlags: 0

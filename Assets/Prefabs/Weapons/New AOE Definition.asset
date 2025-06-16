@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New AOE Definition
   m_EditorClassIdentifier: 
   weaponName: AOE TEST
-  weaponIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
+  weaponIcon: {fileID: 21300000, guid: 8d14119d44269df4891a8ee2b61c1231, type: 3}
   poolSize: 10
   projectile: {fileID: 1441220537783115536, guid: 7c552f0350f9ad544a21769098d1081d, type: 3}
   baseDamage: 5
