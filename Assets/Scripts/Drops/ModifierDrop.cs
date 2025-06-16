@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ModifierDrop : MonoBehaviour {
@@ -15,7 +11,7 @@ public class ModifierDrop : MonoBehaviour {
     StatModifier mod;
 
     private void Awake() {
-         sr = GetComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     public void Init(StatModifier modifier) {
@@ -26,7 +22,7 @@ public class ModifierDrop : MonoBehaviour {
     private void Update() {
         if (!dropped) return;
         duration -= Time.deltaTime;
-        
+
         if (duration <= 0)
             Destroy(gameObject);
     }

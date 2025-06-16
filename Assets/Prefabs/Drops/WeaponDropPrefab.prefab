@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4534907434649240729}
   - component: {fileID: 5905419280399533408}
   m_Layer: 0
-  m_Name: DroppedItemPrefab
+  m_Name: WeaponDropPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
