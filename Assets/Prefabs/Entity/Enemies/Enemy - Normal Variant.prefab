@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 825016782551868248, guid: ef4d73a027a210f4083838d29e697417, type: 3}
+      propertyPath: allWeapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7150fcc07c6ea024391349b470bb3190, type: 2}
     - target: {fileID: 974057190339115752, guid: ef4d73a027a210f4083838d29e697417, type: 3}
       propertyPath: m_Name
       value: Enemy - Normal Variant
@@ -73,7 +77,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 825016782551868248, guid: ef4d73a027a210f4083838d29e697417, type: 3}
     - {fileID: 3792872888251445156, guid: ef4d73a027a210f4083838d29e697417, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

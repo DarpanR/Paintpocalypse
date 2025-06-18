@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseEntity : MonoBehaviour {
+<<<<<<< Updated upstream
     [Header("Health Settings")]
+=======
+    public float moveSpeed = 2f;
+>>>>>>> Stashed changes
     public int maxHealth = 100;
     [HideInInspector]public int CurrentHealth { get; private set; }
 

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133cbe87d057bb74ba7e209104184bdf, type: 3}
+  m_Name: Melee (Enemy)
+  m_EditorClassIdentifier: 
+  weaponName: Melee (Enemy)
+  weaponIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
+  poolSize: 20
+  projectile: {fileID: 4913505686419141161, guid: bef817445996a69459f1e4393f15df92, type: 3}
+  baseDamage: 5
+  baseFireRate: 10
+  baseVelocity: {x: 0, y: 0}
+  baseLifetime: 0.5
+  basePenetration: 1
+  baseProjectileCount: 1
+  maxLevel: 1
+  luDamage: 10
+  luFireRate: 1
+  luVelocity: {x: 0, y: 0}
+  luLifetime: 2
+  luPenetration: 1
+  luProjectileCount: 1
+  spawnRadius: 0
+  luSpawnRadius: 0

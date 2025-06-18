@@ -153,7 +153,9 @@ public class PhaseManager : MonoBehaviour {
                     break;
                 }
             case SpawnPatternType.Random:
-                //System.Random rand = new Syste.Random();
+                System.Array values = System.Enum.GetValues(typeof(SpawnPatternType));
+                int ind = Random.Range(0, values.Length);
+                positions = GeneratePattern((SpawnPatternType)values.GetValue(ind), count);
                 break;
                 // More patterns here!
         }

@@ -24,6 +24,10 @@ public class PlayerController : BaseEntity {
         rb = GetComponent<Rigidbody2D>();
     }
 
+    public override void TakeDamage(int amount) {
+        base.TakeDamage(amount);
+    }
+
     // Update is called once per frame
     void Update() {
         // 1) Movement with WASD

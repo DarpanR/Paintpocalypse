@@ -4,10 +4,12 @@ using Unity.Mathematics;
 using UnityEngine;
 
 public class EnemyAI : BaseEntity {
-    [Header("Enemy Logic")]
     public Transform spriteTransform;
+<<<<<<< Updated upstream
     public float moveSpeed = 2f;
     public int damage = 2;
+=======
+>>>>>>> Stashed changes
 
     Transform target;
     // Start is called before the first frame update
@@ -20,7 +22,14 @@ public class EnemyAI : BaseEntity {
     }
 
     // Update is called once per frame
+<<<<<<< Updated upstream
     void Update() {
+=======
+    protected override void Update() {
+        base.Update();
+
+        /// Turns the gameObject to face the player but prevents the sprite object from rotating along with it.
+>>>>>>> Stashed changes
         if (target != null) {
             Vector2 direction = (target.position - transform.position).normalized;
             transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
@@ -35,6 +44,7 @@ public class EnemyAI : BaseEntity {
         spriteTransform.rotation = quaternion.identity;
     }
 
+<<<<<<< Updated upstream
     protected virtual void DoDamage(int amount) {
         throw new System.NotImplementedException();
     }
@@ -47,5 +57,10 @@ public class EnemyAI : BaseEntity {
                 player.TakeDamage(damage);
             }
         }
+=======
+    protected override void Die() {
+        base.Die();
+        DropManager.Instance.TryDrop(transform.position);
+>>>>>>> Stashed changes
     }
 }
