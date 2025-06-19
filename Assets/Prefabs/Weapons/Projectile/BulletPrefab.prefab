@@ -133,3 +133,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e41d8eea7ebfa0448fb2346bb315ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shotName: Shot Shot

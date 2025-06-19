@@ -37,9 +37,8 @@ public class WeaponManager : MonoBehaviour
 
     private void Update() {
         // each weapon shoots at its own fire-rate
-        foreach(var weapon in weapons) {
+        foreach(var weapon in weapons)
             weapon.TryFire();
-        }
     }
 
     /// <summary>
@@ -48,7 +47,7 @@ public class WeaponManager : MonoBehaviour
     public void Equip(WeaponDefinition def) {
         // find existing
         var existing = weapons.FirstOrDefault(m => m.Definition == def);
-
+        
         if (existing != null)
             existing.Upgrade();
         else

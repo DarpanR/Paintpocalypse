@@ -54,7 +54,7 @@ public class AOEShot : Projectile
     }
 
     void DoDamage(Collider2D collision) {
-        var enemy = collision.GetComponent<EnemyAI>();
+        var enemy = collision.GetComponent<BaseEntity>();
 
         if (enemy != null)
             enemy.TakeDamage(damage);

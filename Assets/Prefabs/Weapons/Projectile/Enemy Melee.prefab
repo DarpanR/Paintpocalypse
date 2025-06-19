@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 358420119102673653}
   - component: {fileID: 5857681597631415919}
   m_Layer: 0
-  m_Name: AOETest
+  m_Name: Enemy Melee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,30 +133,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c394d28a8b365984b916a1bc4f68ee3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotName: AOE Shot
-  minRadius: 0.5
-  maxRadius: 1.5
+  shotName: Enemy Melee Shot
+  minRadius: 0.4
+  maxRadius: 0.4
   expansionCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.03793335
+      value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.39138702
-      value: 1.0449529
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
-    m_PostInfinity: 0
+    m_PostInfinity: 2
     m_RotationOrder: 4

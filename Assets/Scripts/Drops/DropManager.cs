@@ -12,6 +12,8 @@ public class DropManager : MonoBehaviour
     private void Awake() {
         if (Instance == null) Instance = this;
         else Destroy(this);
+
+        if (dropTable == null) Destroy(this);
     }
 
     WeaponDefinition GetRandomDrop(DropTable table) {

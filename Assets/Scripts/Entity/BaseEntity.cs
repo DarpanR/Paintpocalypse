@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseEntity : MonoBehaviour {
-    public float moveSpeed = 2f;
 
-    [Header("Health Settings")]
+    [Header("Entity Settings")]
+    public float moveSpeed = 2f;
     public int maxHealth = 100;
     [HideInInspector]public int CurrentHealth { get; private set; }
 
-    [Header("Status Settings")]
     public float invincibitilityDuration = 1.0f;
     private bool isInvincible = false;
 

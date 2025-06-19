@@ -9,16 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 133cbe87d057bb74ba7e209104184bdf, type: 3}
-  m_Name: Real AOE
+  m_Script: {fileID: 11500000, guid: 41a1d9353da946a449545f53bb30aa52, type: 3}
+  m_Name: Enemy Shot
   m_EditorClassIdentifier: 
-  weaponName: Aoe Shot Weapon
-  weaponIcon: {fileID: 21300000, guid: ba1567a682e9fd44a9543f30223ebc39, type: 3}
+  weaponIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
   poolSize: 20
-  projectile: {fileID: 4913505686419141161, guid: 80c1142d336dbf44faea1ed71077b43a, type: 3}
-  baseDamage: 10
+  projPrefab: {fileID: 1441220537783115536, guid: 7c552f0350f9ad544a21769098d1081d, type: 3}
+  baseDamage: 5
   baseFireRate: 1
-  baseVelocity: {x: 0, y: 0}
+  baseVelocity: {x: 0, y: 10}
   baseLifetime: 2
   basePenetration: 1
   baseProjectileCount: 1
@@ -29,5 +28,5 @@ MonoBehaviour:
   luLifetime: 2
   luPenetration: 1
   luProjectileCount: 1
-  spawnRadius: 1.5
-  luSpawnRadius: 0
+  baseSpreadAngle: 30
+  luSpreadAngle: 0

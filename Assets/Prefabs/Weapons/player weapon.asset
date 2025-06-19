@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a1d9353da946a449545f53bb30aa52, type: 3}
   m_Name: player weapon
   m_EditorClassIdentifier: 
-  weaponName: Stronger Player Weapon
   weaponIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
   poolSize: 20
-  projectile: {fileID: 8884467172457997179, guid: 02abb141a0f1b2d4c94adb460531aed2, type: 3}
+  projPrefab: {fileID: 8884467172457997179, guid: 02abb141a0f1b2d4c94adb460531aed2, type: 3}
   baseDamage: 10
   baseFireRate: 1
   baseVelocity: {x: 0, y: 20}

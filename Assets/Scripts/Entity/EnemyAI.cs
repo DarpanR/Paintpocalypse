@@ -4,9 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 public class EnemyAI : BaseEntity {
-    [Header("Enemy Logic")]
     public Transform spriteTransform;
-    public int damage = 2;
 
     Transform target;
     // Start is called before the first frame update
@@ -35,20 +33,6 @@ public class EnemyAI : BaseEntity {
     private void LateUpdate() {
         // Reset the visual child to stay upright
         spriteTransform.rotation = quaternion.identity;
-    }
-
-    protected virtual void DoDamage(int amount) {
-        throw new System.NotImplementedException();
-    }
-
-    protected void OnTriggerStay2D(Collider2D collision) {
-        if (collision.CompareTag("Player")) {
-            PlayerController player = collision.GetComponent<PlayerController>();
-
-            if (player != null) {
-                player.TakeDamage(damage);
-            }
-        }
     }
 
     protected override void Die() {

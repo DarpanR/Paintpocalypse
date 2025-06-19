@@ -4,12 +4,11 @@ using UnityEngine;
 
 public abstract class WeaponDefinition : ScriptableObject {
     [Header("Identity & UI")]
-    public string weaponName;
     public Sprite weaponIcon;
     public int poolSize = 20;
 
     [Header("Projectile Settings")]
-    public GameObject projectile;
+    public GameObject projPrefab;
 
     [Header("Base Stats")]
     public float baseDamage = 10f;

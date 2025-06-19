@@ -4,6 +4,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public abstract class Projectile : MonoBehaviour {
+
+    [SerializeField]
+    string shotName;
+    public string ShotName => shotName;
     // called when this projectile should die (pool will disable & recycle)
     public Action onDestroyed;
 
@@ -33,9 +37,6 @@ public abstract class Projectile : MonoBehaviour {
         hits = 0;
         enemiesHit.Clear();
     }
-
-    protected abstract void Update();
-
     protected void Die() {
         // Fire the pool callback if set
         if (onDestroyed != null) {
@@ -51,13 +52,14 @@ public abstract class Projectile : MonoBehaviour {
         //    Destroy(gameObject);
     }
 
+    protected abstract void Update();
+
     private void LateUpdate() {
         lifetime -= Time.deltaTime;
 
         if (lifetime <= 0)
             Die();
     }
-
 
     private void OnDisable() {
         // In case someone re-enables from pool without re-init

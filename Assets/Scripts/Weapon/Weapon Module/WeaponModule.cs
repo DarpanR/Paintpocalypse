@@ -14,7 +14,6 @@ public abstract class WeaponModule<Tdef> : IWeaponModule
     public int Level { get; private set; }
     protected Transform firePoint;
     protected float fireTimer;
-    protected Queue<GameObject> pool;
     // Tag reference for projectile targeting
     protected string Target;
 
@@ -24,15 +23,6 @@ public abstract class WeaponModule<Tdef> : IWeaponModule
         firePoint = fp;
         Level = 1;
         fireTimer = 0f;
-
-        // **Per-weapon pool**:
-        pool = new Queue<GameObject>();
-
-        for (int i = 0; i < Definition.poolSize; i++) {
-            var go = GameObject.Instantiate(Definition.projectile);
-            go.SetActive(false);
-            pool.Enqueue(go);
-        }
     }
 
 
@@ -57,25 +47,21 @@ public abstract class WeaponModule<Tdef> : IWeaponModule
     }
 
     protected void Fire (Vector3 spawnPoint, Quaternion rotation) {
-        GameObject go = pool.Count > 0 ?
-            pool.Dequeue() :
-            GameObject.Instantiate(Definition.projectile);
+        var go = ProjectileManager.Instance.Request(Definition.projPrefab);
         go.transform.SetPositionAndRotation(spawnPoint, rotation);
-        go.SetActive(true);
 
-        var proj = go.GetComponent<Projectile>();
+        Projectile proj = go.GetComponent<Projectile>();
 
         proj.Init(
-                rotation * Velocity,
-                (int)Damage,
-                LifeTime,
-                Penetration,
-                FireRate,
-                Target
-            );
+            rotation * Velocity,
+            (int)Damage,
+            LifeTime,
+            Penetration,
+            FireRate,
+            Target
+        );
         proj.onDestroyed = () => {
-            go.SetActive(false);
-            pool.Enqueue(go);
+            ProjectileManager.Instance.Return(go);
         };
     }
 

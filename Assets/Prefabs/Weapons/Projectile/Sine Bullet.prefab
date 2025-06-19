@@ -133,5 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4a9a4fb3417534bb40dd92181f8c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shotName: Sine Shot
   sineAmp: 10
   sineFreq: 20
