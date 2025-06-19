@@ -13,11 +13,17 @@ MonoBehaviour:
   m_Name: Phase 1
   m_EditorClassIdentifier: 
   discription: 
-  duration: 15
+  duration: 30
   periodicInterval: 5
   periodicSpawns:
-  - enemy: {fileID: 427226824617519313, guid: 6dc84e393b1271f43b9e80b933c00b81, type: 3}
-    minCount: 3
-    maxCount: 5
-    pattern: 1
-  specialWaves: []
+  - enemy: {fileID: 974057190339115752, guid: ef4d73a027a210f4083838d29e697417, type: 3}
+    minCount: 10
+    maxCount: 15
+    pattern: 2
+  specialWaves:
+  - timeOffSet: 7
+    spawns:
+    - enemy: {fileID: 974057190339115752, guid: 2b3c6fb6253d4c34088fd65affff10c6, type: 3}
+      minCount: 0
+      maxCount: 0
+      pattern: 0
