@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class StatModifier
-{
-    public ModifierDefinition def;
-    public float lifetime;
+public abstract class StatModifier<Tdef> where Tdef: ModifierDefintion {
     
-    public StatModifier(ModifierDefinition _def) {
-        def = _def;
-        lifetime = def.duration;
+    public Tdef Definition { get; private set; }
+    public float lifetime;
+
+    public StatModifier(Tdef definition) {
+        Definition = definition;
+        lifetime = definition.duration;
     }
 
-    public abstract void Add(BaseEntity entity);
-    public abstract void Remove(BaseEntity entity); 
+    public abstract void Activate(BaseEntity entity);
+    public abstract void Deactivate();
 }
