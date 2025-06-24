@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseEntity : MonoBehaviour {
-    public string entityName;
     public float moveSpeed = 2f;
 
     [Header("Health Settings")]
@@ -20,7 +19,7 @@ public abstract class BaseEntity : MonoBehaviour {
     public float statFlashSpeed = 0.1f;
     public Color dmgColor = Color.red;
 
-    List<StatModifier> activeModifiers = new();
+    List<StatModifier> activeMods = new List<StatModifier>();
 
     public event Action OnTakeDamage;
     //public event Action<int> OnUpgrade;
@@ -32,14 +31,14 @@ public abstract class BaseEntity : MonoBehaviour {
         if (rend == null) rend = GetComponent<SpriteRenderer>();
     }
 
-    void LateUpdate() {
-        for (int i = activeModifiers.Count - 1; i >= 0; i--) {
-            var modifier = activeModifiers[i];
-            modifier.lifetime -= Time.deltaTime;
+    protected virtual void Update() {
+        for (int i = activeMods.Count - 1; i >= 0; i--) {
 
-            if (modifier.lifetime <= 0) {
-                modifier.Deactivate();
-                activeModifiers.RemoveAt(i);
+            activeMods[i].lifetime -= Time.deltaTime;
+
+            if (activeMods[i].lifetime <= 0) {
+                activeMods[i].Remove(this);
+                activeMods.RemoveAt(i);
             }
         }
     }
@@ -74,11 +73,11 @@ public abstract class BaseEntity : MonoBehaviour {
         isInvincible = false;
     }
 
-    public bool AddStatModifier(StatModifier newStatMod) {
-        if (activeModifiers.Exists(sm => sm.Definition == newStatMod.Definition))
+    public bool AddBuff(StatModifier mod) {
+        if (activeMods.Exists(b => b.def == mod.def))
             return false;
-        activeModifiers.Add(newStatMod);
-        newStatMod.Activate(this);
+        mod.Add(this);
+        activeMods.Add(mod);
         return true;
     }
 
@@ -87,6 +86,4 @@ public abstract class BaseEntity : MonoBehaviour {
         //TODO: GAME OVER SCREEN TRIGGER
         Destroy(gameObject);
     }
-
-    internal abstract void AddStatModifier(MagnifyingGlass magnifyingGlass);
 }

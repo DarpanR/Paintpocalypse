@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6567641517151419935}
   - component: {fileID: -2759839424987225683}
   - component: {fileID: 1061379882880588165}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Stickman
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -127,12 +127,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf497933134a41040a0e4fbf5fc62495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   maxHealth: 100
   invincibitilityDuration: 0.5
   rend: {fileID: 0}
   statFlashSpeed: 0.1
   dmgColor: {r: 1, g: 0, b: 0, a: 1}
+  moveSpeed: 5
 --- !u!114 &-2759839424987225683
 MonoBehaviour:
   m_ObjectHideFlags: 0

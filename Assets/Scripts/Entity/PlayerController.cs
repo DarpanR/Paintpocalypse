@@ -24,7 +24,9 @@ public class PlayerController : BaseEntity {
     }
 
     // Update is called once per frame
-    void Update() {
+    protected override void Update() {
+        base.Update();
+
         // 1) Movement with WASD
         Vector2 move = Vector2.zero;
         if (Input.GetKey(KeyCode.W)) move.y += 1;

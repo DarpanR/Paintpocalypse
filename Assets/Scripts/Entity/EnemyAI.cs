@@ -19,7 +19,9 @@ public class EnemyAI : BaseEntity {
     }
 
     // Update is called once per frame
-    void Update() {
+    protected override void Update() {
+        base.Update();
+
         if (target != null) {
             Vector2 direction = (target.position - transform.position).normalized;
             transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
