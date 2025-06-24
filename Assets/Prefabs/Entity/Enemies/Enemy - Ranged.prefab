@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3792872888251445156}
   - component: {fileID: 1026553923074026375}
   - component: {fileID: 320765039667596287}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Enemy - Ranged
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -65,13 +65,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1e80cfbb01b8b4eb58f15d78656a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 2
   maxHealth: 50
   invincibitilityDuration: 0.1
   rend: {fileID: 7283722905499594032}
   statFlashSpeed: 0.1
   dmgColor: {r: 1, g: 0, b: 0, a: 1}
   spriteTransform: {fileID: 1134003136420443235}
-  moveSpeed: 2
   damage: 2
 --- !u!61 &3792872888251445156
 BoxCollider2D:
@@ -190,7 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1134003136420443235}
   - component: {fileID: 7283722905499594032}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Sprite
   m_TagString: Enemy
   m_Icon: {fileID: 0}
