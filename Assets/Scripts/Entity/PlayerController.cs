@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : BaseEntity {
@@ -31,7 +29,7 @@ public class PlayerController : BaseEntity {
         if (Input.GetKey(KeyCode.S)) move.y -= 1;
         if (Input.GetKey(KeyCode.D)) move.x += 1;
         if (Input.GetKey(KeyCode.A)) move.x -= 1;
-        move = move.normalized * moveSpeed;
+        move = move.normalized * Stats[StatType.MoveSpeed].value;
         rb.velocity = move;
 
         // 2) Facing/Aiming with arrows

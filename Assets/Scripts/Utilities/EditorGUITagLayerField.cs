@@ -5,6 +5,14 @@ using UnityEngine;
 using UnityEditor;
 
 // Change the Tag and/or the layer of the selected GameObjects.
+public sealed class TagMaskFieldAttribute : PropertyAttribute { }
+
+[CustomPropertyDrawer(typeof(TagMaskFieldAttribute))]
+public class TagMaskFieldAttributeEditor : PropertyDrawer {
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+        property.stringValue = EditorGUI.TagField(position, label, property.stringValue);
+    }
+}
 
 class EditorGUITagLayerField : EditorWindow {
     string selectedTag = "";

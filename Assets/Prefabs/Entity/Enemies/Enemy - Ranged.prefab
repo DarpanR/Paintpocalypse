@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8871929672640792997}
-  - component: {fileID: 825016782551868248}
   - component: {fileID: 128960939950200183}
   - component: {fileID: 3792872888251445156}
   - component: {fileID: 1026553923074026375}
@@ -37,22 +36,6 @@ Transform:
   - {fileID: 1134003136420443235}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &825016782551868248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 974057190339115752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d039005de9f40ab4aa26f05a676fd82d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firePoint: {fileID: 8871929672640792997}
-  target: Player
-  allWeapons:
-  - {fileID: 11400000, guid: a8a4f5aa37c416b4ca8924767b5e419c, type: 2}
 --- !u!114 &128960939950200183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,14 +48,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1e80cfbb01b8b4eb58f15d78656a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  maxHealth: 50
-  invincibitilityDuration: 0.1
+  entityName: Ranged Basic
+  target: Player
+  stats:
+    statList:
+    - type: 0
+      value: 25
+    - type: 1
+      value: 2
+    - type: 2
+      value: 1
+  weapons:
+  - {fileID: 11400000, guid: a8a4f5aa37c416b4ca8924767b5e419c, type: 2}
   rend: {fileID: 7283722905499594032}
   statFlashSpeed: 0.1
   dmgColor: {r: 1, g: 0, b: 0, a: 1}
   spriteTransform: {fileID: 1134003136420443235}
-  damage: 2
 --- !u!61 &3792872888251445156
 BoxCollider2D:
   m_ObjectHideFlags: 0

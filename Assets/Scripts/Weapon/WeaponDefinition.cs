@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public abstract class WeaponDefinition : ScriptableObject {
-    [Header("Identity & UI")]
-    public string weaponName;
-    public Sprite weaponIcon;
-    public int poolSize = 20;
+public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
+    [Header("Pickup Setting")]
+    public Sprite pickupIcon;
+    [Min(1)]
+    public int amount = 1;
+    public PickupType pickupType = PickupType.Weapon;
 
     [Header("Projectile Settings")]
     public GameObject projectile;
+    public int poolSize = 20;
 
     [Header("Base Stats")]
     public float baseDamage = 10f;
@@ -28,5 +31,10 @@ public abstract class WeaponDefinition : ScriptableObject {
     public int luPenetration = 1;
     public int luProjectileCount = 1;
 
+    public PickupType PickupType => pickupType;
+    public Sprite PickupIcon => pickupIcon;
+    public int Amount => amount;
+
     public abstract IWeaponModule CreateModule(Transform firePoint, string target);
+
 }

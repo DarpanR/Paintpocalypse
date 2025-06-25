@@ -4,57 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class MagnifyingGlass : StatModifier<MagnifyingGlassDefinition>, IMouseAbility
+public class MagnifyingGlass : StatModifier, IStatSetModifier, IWeaponModifier
 {
-    BaseEntity e;
-    Vector3 originalSize;
-    float originalSpeed;
-    Dictionary<WeaponDefinition, float> originalDamages;
+    public MultiplyOperation speedOperation;
+    public MultiplyOperation damageOperation;
+    public MultiplyOperation sizeOperation;
 
-    public MagnifyingGlass(MagnifyingGlassDefinition definition) : base(definition) {}
+    public MagnifyingGlass(ModifierDefinition definition) : base(definition) {
+        MagnifyingGlassDefinition def = definition as MagnifyingGlassDefinition;
 
-    public float CoolDown { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        speedOperation = new MultiplyOperation(def.speedMultplier);
+        damageOperation = new MultiplyOperation(def.damageMultiplier);
+        sizeOperation = new MultiplyOperation(def.sizeMultiplier);
+    }
 
-    public override void Activate(BaseEntity entity) {
-        if (entity == null) return;
-        e = entity;
+    public void Activate(StatSet stats) {
+        stats[StatType.MoveSpeed].Apply(speedOperation);
+        stats[StatType.LocalScale].Apply(speedOperation);
+    }
 
-        originalSize = entity.transform.localScale;
-        originalSpeed = entity.moveSpeed;
-
-        entity.transform.localScale *= Definition.sizeMultiplier;
-        entity.moveSpeed *= Definition.speedMultplier;
-
-        WeaponManager wm = entity.GetComponent<WeaponManager>();
-
-        foreach(var weapon in wm.allWeapons) {
-            originalDamages.Add(weapon, weapon.baseDamage);
-            weapon.baseDamage *= Definition.damageMultiplier;
+    public void Activate(WeaponManager weaponManager) {
+        foreach(var weapon in weaponManager.allWeapons) {
+            if (weapon is IstatSetTarget statTarget) 
+                statTarget.StatBroker.Add(this);
         }
-    }
-
-    public override void Deactivate() {
-        e.transform.localScale = originalSize;
-        e.moveSpeed = originalSpeed;
-
-        WeaponManager wm = e.GetComponent<WeaponManager>();
-
-        foreach(var damage in originalDamages) {
-            wm.allWeapons.Find(w => w == damage.Key).baseDamage = damage.Value;
-        }
-    }
-
-    public void OnSelect() {
-        //throw new System.NotImplementedException();
-    }
-
-    public bool OnUse(Vector3 clickPos) {
-        List<BaseEntity> entities = TargetingFactory.GetTargets(Definition.targetingMode, clickPos, "Enemy");
-
-        if (entities.Count == 0) return false;
-
-        foreach (BaseEntity entity in entities)
-            entity.AddStatModifier(new MagnifyingGlass(Definition));
-        return true;
     }
 }

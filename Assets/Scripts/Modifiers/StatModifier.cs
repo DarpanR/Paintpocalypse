@@ -1,17 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+public abstract class StatModifier : IDisposable {
 
-public abstract class StatModifier<Tdef> where Tdef: ModifierDefintion {
-    
-    public Tdef Definition { get; private set; }
-    public float lifetime;
+    public bool Remove { get; private set; }
+    public ModifierDefinition Definition { get; private set; }
+    public event Action<StatModifier> OnDispose = delegate { };
 
-    public StatModifier(Tdef definition) {
+    CountdownTimer timer;
+
+    public void ResetTimer() => timer.Reset();
+    public void Tick(float deltaTime) => timer?.Tick(deltaTime);
+
+    public StatModifier(ModifierDefinition definition) {
         Definition = definition;
-        lifetime = definition.duration;
+        Remove = false;
+
+        timer = new CountdownTimer(definition.duration);
+        timer.OnTimerStop += () => Remove = true;
+        timer.Start();
     }
 
-    public abstract void Activate(BaseEntity entity);
-    public abstract void Deactivate();
+    // Guard against multiple disposals
+    bool disposed = false;
+    public void Dispose() {
+        if (disposed) return;
+        disposed = true;
+
+        OnDispose?.Invoke(this);
+    }
 }

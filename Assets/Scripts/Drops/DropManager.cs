@@ -5,7 +5,7 @@ public class DropManager : MonoBehaviour
 {
     public static DropManager Instance;
 
-    public GameObject dropPrefab;
+    public GameObject pickupPrefab;
     public DropTable dropTable;
     [SerializeField, Range(0f, 100f)] float dropChance;
 
@@ -38,8 +38,8 @@ public class DropManager : MonoBehaviour
             WeaponDefinition def = GetRandomDrop(table);
 
             if (def != null) {
-                GameObject pf = Instantiate(dropPrefab, position, Quaternion.identity);
-                pf.GetComponent<WeaponDrop>().SetWeaponDefinition(def);
+                GameObject pf = Instantiate(pickupPrefab, position, Quaternion.identity);
+                pf.GetComponent<WeaponPickup>().Init(def);
             }
         }
     }

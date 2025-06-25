@@ -43,7 +43,7 @@ public class HUDPanel : MonoBehaviour
     }
 
     public void SetMaxHealth() {
-        healthSlider.maxValue = stickman.maxHealth;
+        healthSlider.maxValue = stickman.Stats[StatType.MaxHealth].value;
     }
 
     public void SetHealth() {

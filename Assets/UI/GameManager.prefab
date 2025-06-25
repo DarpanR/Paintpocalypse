@@ -146,8 +146,6 @@ GameObject:
   - component: {fileID: 1700387122766986357}
   - component: {fileID: 3335460756839901321}
   - component: {fileID: 3860316565135774885}
-  - component: {fileID: 4439345909975096288}
-  - component: {fileID: 5565792424818193410}
   m_Layer: 5
   m_Name: MagnifyingGlass
   m_TagString: Untagged
@@ -257,35 +255,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4439345909975096288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305661027120261539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5ba0c2bfc2470b41b0a153071bde9eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifetime: 0
-  sizeMultiplier: 0
-  damageMultiplier: 0
-  speedMultplier: 0
---- !u!114 &5565792424818193410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305661027120261539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc438e8b46ef814a8c5f078b1220a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 3860316565135774885}
 --- !u!1 &572345786634302000
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,8 +403,6 @@ GameObject:
   - component: {fileID: 805413767917351289}
   - component: {fileID: 171844553755185636}
   - component: {fileID: 8023389802284146152}
-  - component: {fileID: 7298662746771248293}
-  - component: {fileID: 948195074016930357}
   m_Layer: 5
   m_Name: EyeDropper
   m_TagString: Untagged
@@ -545,33 +512,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7298662746771248293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 793753938669136113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b571b915325e4dc43913e7f0664dd910, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetingMode: 0
-  cooldown: 0
---- !u!114 &948195074016930357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 793753938669136113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc438e8b46ef814a8c5f078b1220a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 8023389802284146152}
 --- !u!1 &890167041203979648
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,7 +524,6 @@ GameObject:
   - component: {fileID: 6421700031680130497}
   - component: {fileID: 8808453500332772427}
   - component: {fileID: 4171581605545892614}
-  - component: {fileID: 2829673802877068434}
   m_Layer: 5
   m_Name: ActionBarPanel
   m_TagString: Untagged
@@ -678,18 +617,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2829673802877068434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 890167041203979648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83ce481466b6c36428694491596f6043, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &959934843734737265
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,30 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class WeaponModule<Tdef> : IWeaponModule
+public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     where Tdef : WeaponDefinition
 {
     public Tdef Definition { get; }
     // explicit interface impl so consumer sees only the base type
     WeaponDefinition IWeaponModule.Definition => Definition;
 
+    protected StatBroker statBroker;
+    public StatSet Stats => statBroker.CurrentStats;
+    public StatBroker StatBroker => statBroker;
+    
+
     //Current Stats
     [HideInInspector]
     public int Level { get; private set; }
+    protected StatBroker damageBroker;
     protected Transform firePoint;
-    protected float fireTimer;
+    protected StopwatchTimer fireTimer;
     protected Queue<GameObject> pool;
     // Tag reference for projectile targeting
     protected string Target;
+    float interval;
 
     public WeaponModule(Tdef def, Transform fp, string t) {
+        StatSet baseStats = new StatSet();
+        baseStats.AddStat(StatType.Damage, Damage);
+        baseStats.AddStat(StatType.FireRate, FireRate);
+        // Add other desired stats: Velocity, Penetration, etc. as needed
+        statBroker = new StatBroker(baseStats);
+
         Definition = def;
         Target = t;
         firePoint = fp;
         Level = 1;
-        fireTimer = 0f;
+        fireTimer = new StopwatchTimer();
+        // reverse firerate
+        interval = 1f / Stats[StatType.FireRate].value;
+        fireTimer.Start();
 
-        // **Per-weapon pool**:
+        // **Per-weapon projectile pool**:
         pool = new Queue<GameObject>();
 
         for (int i = 0; i < Definition.poolSize; i++) {
@@ -35,13 +51,9 @@ public abstract class WeaponModule<Tdef> : IWeaponModule
         }
     }
 
-
     public void TryFire() {
-        fireTimer += Time.deltaTime;
-        float interval = 1f / FireRate;
-
-        if (fireTimer > interval) {
-            fireTimer -= interval;
+        if (fireTimer.Progress > interval) {
+            fireTimer.Reset();
 
             Fire ();
         }
@@ -67,10 +79,10 @@ public abstract class WeaponModule<Tdef> : IWeaponModule
 
         proj.Init(
                 rotation * Velocity,
-                (int)Damage,
+                (int)Stats[StatType.Damage].value,
                 LifeTime,
                 Penetration,
-                FireRate,
+                Stats[StatType.FireRate].value,
                 Target
             );
         proj.onDestroyed = () => {
@@ -82,6 +94,9 @@ public abstract class WeaponModule<Tdef> : IWeaponModule
     public virtual void Upgrade() {
         if (Level < Definition.maxLevel)
             Level++;
+        statBroker.UpdateBaseStat(StatType.Damage, Damage);
+        statBroker.UpdateBaseStat(StatType.FireRate, FireRate);
+        // Recalculate with new base stats while preserving modifiers
     }
 
     // -- Computed Properties (base + level up stat) --
