@@ -62,6 +62,7 @@ public abstract class PickupHandler : MonoBehaviour, IVisitable {
     }
 
     public void OnTriggerEnter2D(Collider2D other) {
+        if (!dropped) return;
         other.GetComponent<IVisitor>()?.Visit(this);
     }
 

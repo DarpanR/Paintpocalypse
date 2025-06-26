@@ -11,7 +11,6 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     WeaponDefinition IWeaponModule.Definition => Definition;
 
     protected StatBroker statBroker;
-    public StatBroker StatBroker => statBroker;
     public StatSet CurrentStats => statBroker.CurrentStats;
 
     //Current Stats

@@ -9,10 +9,9 @@ public class MagnifyingGlass : StatModifier, IWeaponModifier
     public MagnifyingGlass(ModifierDefinition definition) : base(definition) {}
 
     public void Activate(WeaponManager weaponManager) {
-        foreach(var weapon in weaponManager.allWeapons) {
-            if (weapon is IstatSetTarget statTarget) 
+        foreach (var weapon in weaponManager.Weapons)
+            if (weapon is IstatSetTarget statTarget)
                 statTarget.AddStatModifier(this);
-        }
     }
 
     public override List<IoperationStrategy> Activate() {

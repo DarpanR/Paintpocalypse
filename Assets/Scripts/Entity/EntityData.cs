@@ -9,5 +9,6 @@ public class EntityData : ScriptableObject
     [TagMaskField]
     public string targetTag;
     public StatSet stats;
-    public List<WeaponDefinition> weapons;
+    public List<WeaponDefinition> allWeapons;
+    public List<StatusFlasher> allEffects;
 }

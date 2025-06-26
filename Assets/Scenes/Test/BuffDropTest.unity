@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e3421541692c14ca5edb39352b63ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupPrefab: {fileID: 6724489019657003851, guid: f191feda2489432459ddbc29e5ecae43, type: 3}
+  pickupPrefab: {fileID: 4625181235242908043, guid: a1e9b8804e0cd284082d6101ef17351c, type: 3}
 --- !u!1001 &421781482
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -240,6 +240,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 128960939950200183, guid: ef4d73a027a210f4083838d29e697417, type: 3}
+      propertyPath: entityData
+      value: 
+      objectReference: {fileID: 11400000, guid: 3355d13ea91fb27498be409301d386f6, type: 2}
     - target: {fileID: 974057190339115752, guid: ef4d73a027a210f4083838d29e697417, type: 3}
       propertyPath: m_Name
       value: Enemy - Ranged

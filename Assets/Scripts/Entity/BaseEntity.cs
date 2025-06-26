@@ -8,11 +8,10 @@ using UnityEngine;
 public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWeaponManagerTarget {
     public SpriteRenderer rend;
     [SerializeField]
-    EntityData entityData;
+    StatusFlasher flasher;
 
     StatBroker statBroker;
     WeaponManager weaponManager;
-    StatusFlasher flasher;
 
     bool isInvincible = false;
 
@@ -25,7 +24,7 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
 
     protected virtual void Awake() {
         statBroker = new StatBroker(InitializeStat());
-        weaponManager = new WeaponManager(transform, entityData.targetTag, entityData.weapons);
+        weaponManager = new WeaponManager(transform, allWeapons, targetTag);
         flasher = GetComponent<StatusFlasher>();
     }
 
@@ -67,7 +66,7 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
         if (isInvincible) return;
         isInvincible = true;
         float duration = CurrentStats.GetValueOrDefault(StatType.InvincibitilityDuration, 0.1f);
-
+        //Debug.Log(operation.Value);
         flasher?.Trigger(StatusEffectType.Damage, duration, () => isInvincible = false);
         statBroker.UpdateBaseStat(operation);
 
@@ -90,7 +89,9 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
     }
 
     public bool AddStatModifier(StatModifier modifier) {
-        if (modifier is IWeaponModifier wmMod) wmMod.Activate(weaponManager);
+        if (modifier is IWeaponModifier weapMod) {
+            weapMod.Activate(WeaponManager);
+        }
         return statBroker.Add(modifier);
     }
 

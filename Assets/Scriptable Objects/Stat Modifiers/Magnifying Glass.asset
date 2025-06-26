@@ -19,7 +19,7 @@ MonoBehaviour:
   dropType: 0
   dropCount: 1
   modName: Magnifying Glass
-  duration: 2
+  duration: 5
   settable: 2
   target: Enemy
   guid: e775dac9-3eb7-4186-88ea-7294f11ff1b5

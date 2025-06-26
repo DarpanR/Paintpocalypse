@@ -10,6 +10,7 @@ public enum OperationType {
 
 public interface IoperationStrategy {
     StatType Type { get; }
+    float Value { get; }
     float Calculate(float value);
 }
 
@@ -23,6 +24,7 @@ public class AddOperation : IoperationStrategy {
     }
 
     public StatType Type => type;
+    public float Value => value;
 
     public float Calculate(float value) => value + this.value;
 }
@@ -36,6 +38,7 @@ public class MultiplyOperation : IoperationStrategy {
     }
 
     public StatType Type => type;
+    public float Value => value;
 
     public float Calculate(float value) => value * this.value;
 }

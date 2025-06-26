@@ -1,22 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 public class WeaponManager {
-    [Header("Where bullets originate")]
-    public Transform firePoint;
+    string targetTag;
+    Transform firePoint;
+    Dictionary<WeaponDefinition, IWeaponModule> weapons = new();
 
-    // all the list of SO defintion
-    public List<WeaponDefinition> allWeapons = new List<WeaponDefinition>();
+    public IEnumerable<IWeaponModule> Weapons => weapons.Values;
 
-    List<IWeaponModule> weapons = new();
-    string target;
-
-    public WeaponManager(Transform firePoint, string target, List<WeaponDefinition> weapons) {
+    public WeaponManager(Transform firePoint, List<WeaponDefinition> allWeapons, string targetTag) {
         this.firePoint = firePoint;
-        this.target = target;
-        allWeapons = weapons;
+        this.targetTag = targetTag;
 
         foreach (var weapon in allWeapons)
             Equip(weapon);
@@ -24,7 +22,7 @@ public class WeaponManager {
 
     public void Update() {
         // each weapon shoots at its own fire-rate
-        foreach(var weapon in weapons) {
+        foreach(var weapon in weapons.Values) {
             weapon.TryFire();
         }
     }
@@ -33,13 +31,12 @@ public class WeaponManager {
     /// Call this when the player picks up a weapon drop or levels up.
     /// </summary>
     public void Equip(WeaponDefinition def) {
-        // find existing
-        var existing = weapons.FirstOrDefault(m => m.Definition == def);
-
-        if (existing != null)
+        if(weapons.TryGetValue(def, out var existing))
             existing.Upgrade();
-        else
-            weapons.Add(def.CreateModule(firePoint, target));
+        else {
+            var module = def.CreateModule(firePoint, targetTag);
+            weapons[def]= module;   
+        }
         // TODO: notify HUD with new weapon icon
     }
 }

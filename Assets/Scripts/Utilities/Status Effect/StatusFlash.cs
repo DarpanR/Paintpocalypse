@@ -3,22 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class StatusFlasher : MonoBehaviour {
     [SerializeField]
-    StatusEffectDefinition definition;
+    StatusFlasherDefinition allEffects;
 
-    public SpriteRenderer rend;
     Dictionary<StatusEffectType, Coroutine> activeEffects = new();
     Dictionary<StatusEffectType, StatusFlashEffect> effectMap = new();
 
-    void Awake() {
-        foreach (var flash in definition.flashEffects) {
-            if (!effectMap.ContainsKey(flash.type)) {
-                effectMap[flash.type] = flash;
-            }
-        }
+    private void Awake() {
+        if (allEffects != null) Init(allEffects);
+    }
+
+    public void Init (List<StatusFlashEffect> effects) {
+        foreach(var effect in effects) 
+            if (!effectMap.ContainsKey(effect.type)) 
+                effectMap[effect.type] = effect;
     }
 
     public void Trigger(StatusEffectType type, float duration, Action onEnd = null) {
