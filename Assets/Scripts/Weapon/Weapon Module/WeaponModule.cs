@@ -103,6 +103,10 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         // Recalculate with new base stats while preserving modifiers
     }
 
+    public bool AddStatModifier(StatModifier modifier) {
+        return statBroker.Add(modifier);
+    }
+
     // -- Computed Properties (base + level up stat) --
     public float Damage =>
         statBroker.CurrentStats[StatType.Damage].value + Definition.luDamage * (Level - 1);

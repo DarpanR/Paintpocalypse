@@ -91,8 +91,8 @@ public interface IStatSetModifier {
 }
 
 public interface IstatSetTarget {
-    StatBroker StatBroker { get; }
     StatSet CurrentStats { get; }
+    bool AddStatModifier(StatModifier modifier);
 }
 
 public interface IWeaponManagerTarget {

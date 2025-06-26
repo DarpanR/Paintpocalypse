@@ -11,7 +11,7 @@ public class MagnifyingGlass : StatModifier, IWeaponModifier
     public void Activate(WeaponManager weaponManager) {
         foreach(var weapon in weaponManager.allWeapons) {
             if (weapon is IstatSetTarget statTarget) 
-                statTarget.StatBroker.Add(this);
+                statTarget.AddStatModifier(this);
         }
     }
 

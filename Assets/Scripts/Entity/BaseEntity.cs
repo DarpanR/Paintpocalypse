@@ -1,28 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(StatusFlasher))]
 public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWeaponManagerTarget {
-    public string entityName;
-    [SerializeField, TagMaskField]
-    string target = "Untagged";
-    // Only use in Serialize. Never in run time;
-    [SerializeField]
-    StatSet stats;
-    [SerializeField]
-    List<WeaponDefinition> weapons;
-
-
-    [Header("Visual Settings")]
     public SpriteRenderer rend;
-    public float statFlashSpeed = 0.1f;
-    public Color dmgColor = Color.red;
-
-    public event Action OnTakeDamage;
-    //public event Action<int> OnUpgrade;
-    public event Action<BaseEntity> OnDie;
+    [SerializeField]
+    EntityData entityData;
 
     StatBroker statBroker;
     WeaponManager weaponManager;
@@ -30,36 +16,24 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
 
     bool isInvincible = false;
 
-    public StatBroker StatBroker => statBroker;
+    public event Action OnTakeDamage;
+    //public event Action<int> OnUpgrade;
+    public event Action<BaseEntity> OnDie;
+
     public StatSet CurrentStats => statBroker.CurrentStats;
     public WeaponManager WeaponManager => weaponManager;
 
     protected virtual void Awake() {
-        InitializeStat();
-
-        statBroker = new StatBroker(stats);
-        weaponManager = new WeaponManager(transform, target, weapons);
+        statBroker = new StatBroker(InitializeStat());
+        weaponManager = new WeaponManager(transform, entityData.targetTag, entityData.weapons);
         flasher = GetComponent<StatusFlasher>();
-    }
-
-    void InitializeStat() {
-        // Ensure MaxHealth exists before accessing its value
-        float maxHealth = stats.GetValueOrAdd(StatType.MaxHealth, 100f);
-
-        // Then initialize CurrentHealth if missing
-        if (!stats.HasStat(StatType.CurrentHealth)) {
-            stats.AddStat(StatType.CurrentHealth, maxHealth);
-        }
-        // Set LocalScale
-        stats.GetValueOrAdd(StatType.LocalScale, 1f);
-        stats.GetValueOrAdd(StatType.MoveSpeed, 2f);
     }
 
     protected virtual void Start() {
         statBroker.UpdateStats += OnStatUpdated;
 
         if (rend == null) rend = GetComponent<SpriteRenderer>();
-        flasher.rend = rend;
+        flasher.rend = flasher.rend != null ? flasher.rend : rend;
     }
 
     protected virtual void LateUpdate() {
@@ -67,10 +41,32 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
         weaponManager.Update();
     }
 
+    void OnDestroy() {
+        if (statBroker != null)
+            statBroker.UpdateStats -= OnStatUpdated;
+    }
+
+    StatSet InitializeStat() {
+        StatSet sSet = entityData.stats.Clone();
+
+        // Ensure MaxHealth exists before accessing its value
+        float maxHealth = sSet.GetValueOrAdd(StatType.MaxHealth, 100f);
+
+        // Then initialize CurrentHealth if missing
+        if (!sSet.HasStat(StatType.CurrentHealth)) {
+            sSet.AddStat(StatType.CurrentHealth, maxHealth);
+        }
+        // Set LocalScale
+        sSet.GetValueOrAdd(StatType.LocalScale, 1f);
+        sSet.GetValueOrAdd(StatType.MoveSpeed, 2f);
+
+        return sSet;
+    }
+
     public virtual void TakeDamage(IoperationStrategy operation) {
         if (isInvincible) return;
         isInvincible = true;
-        float duration = stats.GetValueOrDefault(StatType.InvincibitilityDuration, 0.1f);
+        float duration = CurrentStats.GetValueOrDefault(StatType.InvincibitilityDuration, 0.1f);
 
         flasher?.Trigger(StatusEffectType.Damage, duration, () => isInvincible = false);
         statBroker.UpdateBaseStat(operation);
@@ -93,12 +89,10 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
         Destroy(gameObject);
     }
 
-    void OnDestroy() {
-        if (statBroker != null) 
-            statBroker.UpdateStats -= OnStatUpdated;
+    public bool AddStatModifier(StatModifier modifier) {
+        if (modifier is IWeaponModifier wmMod) wmMod.Activate(weaponManager);
+        return statBroker.Add(modifier);
     }
-
-    public bool AddStatModifier(StatModifier modifier) => statBroker.Add(modifier);
 
     public void Visit(IVisitable visitable) => visitable.Accept(this);
 }

@@ -164,17 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityName: StickMan
   target: Enemy
-  stats:
-    statList:
-    - type: 0
-      value: 100
-    - type: 0
-      value: 100
-    - type: 2
-      value: 5
-    - type: 4
-      value: 0.5
-  weapons: []
+  entityData: {fileID: 11400000, guid: 869d9249e9700b44f96278f552627606, type: 2}
   rend: {fileID: 0}
   statFlashSpeed: 0.1
   dmgColor: {r: 1, g: 0, b: 0, a: 1}
