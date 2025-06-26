@@ -20,7 +20,7 @@ public class EnemyAI : BaseEntity {
     void Update() {
         if (player != null) {
             Vector2 direction = (player.position - transform.position).normalized;
-            transform.position += (Vector3)direction * Stats[StatType.MoveSpeed].value * Time.deltaTime;
+            transform.position += (Vector3)direction * CurrentStats[StatType.MoveSpeed].value * Time.deltaTime;
 
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
 

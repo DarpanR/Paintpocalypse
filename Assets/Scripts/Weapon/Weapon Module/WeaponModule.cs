@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
@@ -10,36 +11,31 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     WeaponDefinition IWeaponModule.Definition => Definition;
 
     protected StatBroker statBroker;
-    public StatSet Stats => statBroker.CurrentStats;
     public StatBroker StatBroker => statBroker;
-    
+    public StatSet CurrentStats => statBroker.CurrentStats;
 
     //Current Stats
     [HideInInspector]
     public int Level { get; private set; }
+
     protected StatBroker damageBroker;
     protected Transform firePoint;
-    protected StopwatchTimer fireTimer;
+    protected CountdownTimer fireTimer;
     protected Queue<GameObject> pool;
     // Tag reference for projectile targeting
-    protected string Target;
-    float interval;
+    protected string target;
 
-    public WeaponModule(Tdef def, Transform fp, string t) {
-        StatSet baseStats = new StatSet();
-        baseStats.AddStat(StatType.Damage, Damage);
-        baseStats.AddStat(StatType.FireRate, FireRate);
-        // Add other desired stats: Velocity, Penetration, etc. as needed
-        statBroker = new StatBroker(baseStats);
-
+    public WeaponModule(Tdef def, Transform fp, string target) {
         Definition = def;
-        Target = t;
+        this.target = target;
         firePoint = fp;
         Level = 1;
-        fireTimer = new StopwatchTimer();
-        // reverse firerate
-        interval = 1f / Stats[StatType.FireRate].value;
-        fireTimer.Start();
+
+        StatSet baseStats = new StatSet();
+        baseStats.AddStat(StatType.Damage, Definition.baseDamage);
+        baseStats.AddStat(StatType.FireRate, Definition.baseFireRate);
+        // Add other desired stats: Velocity, Penetration, etc. as needed
+        statBroker = new StatBroker(baseStats);
 
         // **Per-weapon projectile pool**:
         pool = new Queue<GameObject>();
@@ -49,14 +45,18 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
             go.SetActive(false);
             pool.Enqueue(go);
         }
+        fireTimer = new CountdownTimer(CurrentStats[StatType.FireRate].value);
+        fireTimer.Start();
     }
 
     public void TryFire() {
-        if (fireTimer.Progress > interval) {
-            fireTimer.Reset();
+        fireTimer.Tick(Time.deltaTime);
 
+        if (fireTimer.IsFinished) { 
+            fireTimer.Reset();
             Fire ();
         }
+        statBroker.Tick(Time.deltaTime);
     }
 
     /// <summary>Spawn bullets with velocity and direction.</summary>
@@ -68,7 +68,7 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         Fire(firePoint.position, rotation);
     }
 
-    protected void Fire (Vector3 spawnPoint, Quaternion rotation) {
+    protected void Fire(Vector3 spawnPoint, Quaternion rotation) {
         GameObject go = pool.Count > 0 ?
             pool.Dequeue() :
             GameObject.Instantiate(Definition.projectile);
@@ -79,11 +79,15 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
 
         proj.Init(
                 rotation * Velocity,
-                (int)Stats[StatType.Damage].value,
+                OperationFactory.GetOperation(
+                    Definition.operationType,
+                    Definition.affectedType,
+                    -CurrentStats[StatType.Damage].value
+                    ),
                 LifeTime,
                 Penetration,
-                Stats[StatType.FireRate].value,
-                Target
+                CurrentStats[StatType.FireRate].value,
+                target
             );
         proj.onDestroyed = () => {
             go.SetActive(false);
@@ -101,9 +105,9 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
 
     // -- Computed Properties (base + level up stat) --
     public float Damage =>
-        Definition.baseDamage + Definition.luDamage * (Level - 1);
+        statBroker.CurrentStats[StatType.Damage].value + Definition.luDamage * (Level - 1);
     public float FireRate =>
-        Definition.baseFireRate + Definition.luFireRate * (Level - 1);
+        statBroker.CurrentStats[StatType.FireRate].value + Definition.luFireRate * (Level - 1);
     public Vector2 Velocity =>
         Definition.baseVelocity + Definition.luVelocity * (Level - 1);
     public float LifeTime =>

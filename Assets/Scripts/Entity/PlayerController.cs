@@ -10,9 +10,11 @@ public class PlayerController : BaseEntity {
 
     // Start is called before the first frame update
 
-    private void Awake() {
+    protected override void Awake() {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        
+        base.Awake();
     }
 
     protected override void Start() {
@@ -29,7 +31,7 @@ public class PlayerController : BaseEntity {
         if (Input.GetKey(KeyCode.S)) move.y -= 1;
         if (Input.GetKey(KeyCode.D)) move.x += 1;
         if (Input.GetKey(KeyCode.A)) move.x -= 1;
-        move = move.normalized * Stats[StatType.MoveSpeed].value;
+        move = move.normalized * CurrentStats[StatType.MoveSpeed].value;
         rb.velocity = move;
 
         // 2) Facing/Aiming with arrows

@@ -26,7 +26,7 @@ public abstract class PickupHandler : MonoBehaviour, IVisitable {
     public virtual void Init(IPickupDefinition definition) {
         Definition = definition;
         dropped = false;
-        remainingUsage = definition.Amount;
+        remainingUsage = definition.DropCount;
     }
 
     private void Awake() {

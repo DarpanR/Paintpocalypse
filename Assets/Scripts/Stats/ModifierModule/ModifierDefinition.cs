@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,11 +7,15 @@ using UnityEditor;
 public enum settableType { Single, Timer, Multi}
 
 public abstract class ModifierDefinition : ScriptableObject, IPickupDefinition {
-
-    [Header("Pickup Setting")]
+    [Header("Pickup Settings")]
     public Sprite pickupIcon;
+    public Sprite dropIcon;
     public PickupType pickupType = PickupType.StatModifier;
-    public int amount = 1;
+    [Min(1)]
+    public int pickupCount = 1;
+    public DropType dropType = DropType.Counter;
+    [Min(1)]
+    public int dropCount = 1;
 
     [Header("Modifier Setting")]
     public string modName;
@@ -23,7 +25,7 @@ public abstract class ModifierDefinition : ScriptableObject, IPickupDefinition {
     public string target = "Untagged";
 
     [SerializeField, HideInInspector]
-    public string guid = Guid.NewGuid().ToString();
+    string guid = Guid.NewGuid().ToString();
 
     public string GUID {
         get {
@@ -36,11 +38,12 @@ public abstract class ModifierDefinition : ScriptableObject, IPickupDefinition {
         }
     }
 
-    public PickupType PickupType => pickupType;
-    public int Amount => amount;
     public Sprite PickupIcon => pickupIcon;
+    public Sprite DropIcon => dropIcon;
+    public PickupType PickupType => pickupType;
+    public DropType DropType => DropType;
+    public int DropCount => dropCount;
+    public float PickupCount => pickupCount;
 
     public abstract StatModifier CreateModule(ModifierDefinition definition);
-
-
 }

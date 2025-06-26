@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(StatusFlasher))]
 public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWeaponManagerTarget {
     public string entityName;
-    [SerializeField, TagMaskField] string target = "Untagged";
+    [SerializeField, TagMaskField]
+    string target = "Untagged";
     // Only use in Serialize. Never in run time;
     [SerializeField]
-    public StatSet stats;
-    public List<WeaponDefinition> weapons;
+    StatSet stats;
+    [SerializeField]
+    List<WeaponDefinition> weapons;
 
 
     [Header("Visual Settings")]
@@ -23,68 +26,63 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
 
     StatBroker statBroker;
     WeaponManager weaponManager;
+    StatusFlasher flasher;
 
     bool isInvincible = false;
 
-    public int CurrentHealth { get; private set; }
-    public StatSet Stats => statBroker.CurrentStats;
     public StatBroker StatBroker => statBroker;
+    public StatSet CurrentStats => statBroker.CurrentStats;
     public WeaponManager WeaponManager => weaponManager;
 
-    protected virtual void Start() {
-        statBroker = new StatBroker(stats);
-        statBroker.UpdateStats += OnStatUpdated;
-        
-        CurrentHealth = (int)Stats[StatType.MaxHealth].value;
+    protected virtual void Awake() {
+        InitializeStat();
 
-        weaponManager = new WeaponManager(this.transform, target, weapons);
+        statBroker = new StatBroker(stats);
+        weaponManager = new WeaponManager(transform, target, weapons);
+        flasher = GetComponent<StatusFlasher>();
+    }
+
+    void InitializeStat() {
+        // Ensure MaxHealth exists before accessing its value
+        float maxHealth = stats.GetValueOrAdd(StatType.MaxHealth, 100f);
+
+        // Then initialize CurrentHealth if missing
+        if (!stats.HasStat(StatType.CurrentHealth)) {
+            stats.AddStat(StatType.CurrentHealth, maxHealth);
+        }
+        // Set LocalScale
+        stats.GetValueOrAdd(StatType.LocalScale, 1f);
+        stats.GetValueOrAdd(StatType.MoveSpeed, 2f);
+    }
+
+    protected virtual void Start() {
+        statBroker.UpdateStats += OnStatUpdated;
 
         if (rend == null) rend = GetComponent<SpriteRenderer>();
+        flasher.rend = rend;
     }
 
     protected virtual void LateUpdate() {
         statBroker.Tick(Time.deltaTime);
+        weaponManager.Update();
     }
 
-    public virtual void TakeDamage(int amount) {
-        if (isInvincible)
-            return;
-        CurrentHealth -= amount;
-        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, (int)stats[StatType.MaxHealth].value);
+    public virtual void TakeDamage(IoperationStrategy operation) {
+        if (isInvincible) return;
+        isInvincible = true;
+        float duration = stats.GetValueOrDefault(StatType.InvincibitilityDuration, 0.1f);
 
-        if (CurrentHealth > 0) {
-            isInvincible = true;
-            StartCoroutine(FlashAndInvincibility());
-        } else {
-            Die();
-        }
+        flasher?.Trigger(StatusEffectType.Damage, duration, () => isInvincible = false);
+        statBroker.UpdateBaseStat(operation);
+
         OnTakeDamage?.Invoke();
     }
 
-    protected IEnumerator FlashAndInvincibility() { 
-        Color originalColor = rend.color;
-        CountdownTimer timer = new CountdownTimer(stats[StatType.InvincibitilityDuration].value);
-        timer.Start();
-
-        while (!timer.IsFinished) {
-            rend.color = dmgColor;
-            yield return new WaitForSeconds(statFlashSpeed);
-            rend.color = originalColor;
-            yield return new WaitForSeconds(statFlashSpeed);
-            timer.Tick(statFlashSpeed * 2);
-        }
-        rend.color = originalColor;
-        isInvincible = false;
-    }
-
-    protected virtual void OnStatUpdated(StatSet newStats) {
-        stats = newStats;
-
-        var newValue = stats[StatType.LocalScale].value;
+    protected virtual void OnStatUpdated() {
+        var newValue = CurrentStats[StatType.LocalScale].value;
         transform.localScale = new Vector3(newValue, newValue);
 
-        newValue = stats[StatType.MaxHealth].value;
-        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, (int)newValue);
+        if (CurrentStats[StatType.CurrentHealth].value <= 0) Die();
     }
 
     protected virtual void Die() {
@@ -100,7 +98,7 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
             statBroker.UpdateStats -= OnStatUpdated;
     }
 
-    public void AddStatModifier(StatModifier modifier) => statBroker.Add(modifier);
+    public bool AddStatModifier(StatModifier modifier) => statBroker.Add(modifier);
 
     public void Visit(IVisitable visitable) => visitable.Accept(this);
 }

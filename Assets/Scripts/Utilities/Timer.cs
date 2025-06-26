@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 public abstract class Timer {
     protected float initialTime;
@@ -42,13 +43,18 @@ public class CountdownTimer : Timer {
     public CountdownTimer(float value) : base(value) { }
 
     public override void Tick(float deltaTime) {
-        if (IsRunning && Time > 0) Time -= deltaTime;
-        if (IsRunning && Time < 0) Stop();
+        if (IsRunning) {
+            if (Time > 0) Time -= deltaTime;
+            else Stop();
+        }
     }
 
     public bool IsFinished => Time <= 0;
 
-    public void Reset() => Time = initialTime;
+    public void Reset() {
+        Time = initialTime;
+        Start();
+    }
     
     public void Reset(float newTime) {
         initialTime = newTime;

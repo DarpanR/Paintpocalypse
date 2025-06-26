@@ -24,7 +24,7 @@ public class LinearShot : Projectile
 
         //Apply damage if enemy has a health component
         var enemy = collision.GetComponent<BaseEntity>();
-        enemy?.TakeDamage(damage);
+        enemy?.TakeDamage(operation);
 
         // Check penetration limit
         if (hits >= penetration)

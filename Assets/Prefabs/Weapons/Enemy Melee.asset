@@ -10,16 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 133cbe87d057bb74ba7e209104184bdf, type: 3}
-  m_Name: Real AOE
+  m_Name: Enemy Melee
   m_EditorClassIdentifier: 
-  weaponName: Aoe Shot Weapon
-  weaponIcon: {fileID: 21300000, guid: ba1567a682e9fd44a9543f30223ebc39, type: 3}
-  poolSize: 20
-  projectile: {fileID: 4913505686419141161, guid: 80c1142d336dbf44faea1ed71077b43a, type: 3}
-  baseDamage: 10
-  baseFireRate: 1
+  pickupIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
+  dropIcon: {fileID: 0}
+  pickupType: 0
+  pickupCount: 1
+  dropType: 0
+  dropCount: 1
+  projectile: {fileID: 4913505686419141161, guid: ec870403f73fc714a92f0e235c127aae, type: 3}
+  poolSize: 10
+  baseDamage: 25
+  baseFireRate: 0.1
   baseVelocity: {x: 0, y: 0}
-  baseLifetime: 2
+  baseLifetime: 0.1
   basePenetration: 1
   baseProjectileCount: 1
   maxLevel: 5
@@ -29,5 +33,6 @@ MonoBehaviour:
   luLifetime: 2
   luPenetration: 1
   luProjectileCount: 1
-  spawnRadius: 1.5
+  guid: faa303c1-9239-4e58-a60b-dfa87d48d4ce
+  spawnRadius: 0
   luSpawnRadius: 0

@@ -9,8 +9,16 @@ public enum PickupType {
     EXP,
 }
 
+public enum DropType { 
+    Counter, 
+    Timer
+}
+
 public interface IPickupDefinition {
-    PickupType PickupType { get; }
-    int Amount { get; }
     Sprite PickupIcon { get; }
+    Sprite DropIcon { get; }
+    PickupType PickupType { get; }
+    DropType DropType { get; }
+    int DropCount { get; }
+    float PickupCount { get; }
 }

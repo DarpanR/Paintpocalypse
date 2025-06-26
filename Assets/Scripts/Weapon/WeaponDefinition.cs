@@ -1,20 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
     [Header("Pickup Setting")]
     public Sprite pickupIcon;
-    [Min(1)]
-    public int amount = 1;
+    public Sprite dropIcon;
     public PickupType pickupType = PickupType.Weapon;
+    [Min(1)]
+    public int pickupCount = 1;
+    public DropType dropType = DropType.Counter;
+    [Min(1)]
+    public int dropCount = 1;
 
     [Header("Projectile Settings")]
     public GameObject projectile;
     public int poolSize = 20;
 
     [Header("Base Stats")]
+    public OperationType operationType = OperationType.Addition;
+    public StatType affectedType = StatType.CurrentHealth;
     public float baseDamage = 10f;
     public float baseFireRate = 1f;
     public Vector2 baseVelocity = new Vector2();
@@ -30,10 +37,26 @@ public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
     public float luLifetime = 2f;
     public int luPenetration = 1;
     public int luProjectileCount = 1;
+    
+    [SerializeField, HideInInspector]
+    string guid = Guid.NewGuid().ToString();
 
-    public PickupType PickupType => pickupType;
+    public string GUID {
+        get {
+            if (string.IsNullOrEmpty(guid))
+                guid = Guid.NewGuid().ToString();
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            return guid;
+        }
+    }
     public Sprite PickupIcon => pickupIcon;
-    public int Amount => amount;
+    public Sprite DropIcon => dropIcon;
+    public PickupType PickupType => pickupType;
+    public DropType DropType => dropType;
+    public int DropCount => dropCount;
+    public float PickupCount => pickupCount;
 
     public abstract IWeaponModule CreateModule(Transform firePoint, string target);
 

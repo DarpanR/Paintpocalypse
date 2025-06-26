@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum StatType {
     MaxHealth,
+    CurrentHealth,
     MoveSpeed,
     LocalScale,
     InvincibitilityDuration,
@@ -16,6 +17,11 @@ public enum StatType {
 public class Stat {
     public StatType type;
     public float value;
+
+    public Stat(StatType type, float value) {
+        this.type = type;
+        this.value = value;
+    }
 
     public void Apply(IoperationStrategy operation) {
         value = operation.Calculate(value);
@@ -33,9 +39,8 @@ public class StatSet : ISerializationCallbackReceiver {
     }
     public Stat this[StatType type] => stats[type];
 
-
     public void AddStat(StatType type, float baseValue) {
-        AddStat(new Stat { type = type, value = baseValue });
+        AddStat(new Stat(type, baseValue));
     }
 
     public void AddStat(Stat stat) {
@@ -61,18 +66,33 @@ public class StatSet : ISerializationCallbackReceiver {
             stats[s.type] = s;
     }
 
+    public float GetValueOrAdd(StatType type, float defaultVal = 0f) {
+        if (!stats.TryGetValue(type, out var s)) {
+            s = new Stat(type, defaultVal);
+            statList.Add(s);
+            stats[type] = s; 
+        }
+        return s.value;
+    }
+
+    public bool HasStat(StatType type) => stats.ContainsKey(type);
+    
+    public Stat GetStatOrNull(StatType type) => stats.TryGetValue(type, out var s) ? s : null;
+    
+    public float GetValueOrDefault(StatType type, float defaultValue = 0f) => 
+        stats.TryGetValue(type, out var s) ? s.value : defaultValue;
     public void OnAfterDeserialize() => RebuildDictionary();
+    
     public void OnBeforeSerialize() { }
 }
 
 public interface IStatSetModifier {
-    void Activate(StatSet stats);
-    void Activate(WeaponManager weaponManager);
+    List<IoperationStrategy> Activate();
 }
 
 public interface IstatSetTarget {
-    StatSet Stats { get; }
     StatBroker StatBroker { get; }
+    StatSet CurrentStats { get; }
 }
 
 public interface IWeaponManagerTarget {

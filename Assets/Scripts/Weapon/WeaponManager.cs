@@ -22,7 +22,7 @@ public class WeaponManager {
             Equip(weapon);
     }
 
-    private void Update() {
+    public void Update() {
         // each weapon shoots at its own fire-rate
         foreach(var weapon in weapons) {
             weapon.TryFire();

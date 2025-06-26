@@ -13,7 +13,7 @@ public class ModifierPickup : PickupHandler
         if (!entity.CompareTag(definition.target)) return;
         var modifier = definition.CreateModule(definition);
 
-        if (entity.StatBroker.Add(modifier) && --remainingUsage <= 0) { 
+        if (entity.AddStatModifier(modifier) && --remainingUsage <= 0) { 
             Debug.Log(entity.name + " Picked up " + definition.modName);
             Destroy(gameObject);
         }

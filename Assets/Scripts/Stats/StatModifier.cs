@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 public abstract class StatModifier : IDisposable {
 
     public bool Remove { get; private set; }
@@ -6,7 +8,6 @@ public abstract class StatModifier : IDisposable {
     public event Action<StatModifier> OnDispose = delegate { };
 
     CountdownTimer timer;
-
     public void ResetTimer() => timer.Reset();
     public void Tick(float deltaTime) => timer?.Tick(deltaTime);
 
@@ -18,6 +19,8 @@ public abstract class StatModifier : IDisposable {
         timer.OnTimerStop += () => Remove = true;
         timer.Start();
     }
+
+    public abstract List<IoperationStrategy> Activate();
 
     // Guard against multiple disposals
     bool disposed = false;

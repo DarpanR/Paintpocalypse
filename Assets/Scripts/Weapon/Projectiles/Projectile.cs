@@ -9,7 +9,7 @@ public abstract class Projectile : MonoBehaviour {
 
     // Runtime State
     protected Vector2 velocity;
-    protected int damage;
+    protected IoperationStrategy operation;
     protected float lifetime;
     protected int penetration;
     protected string target;
@@ -22,9 +22,9 @@ public abstract class Projectile : MonoBehaviour {
     /// <summary>
     /// Initialize all parameters. Call immediately after Instantiate().
     /// </summary>
-    public virtual void Init(Vector2 _velocity, int _damage, float _lifetime, int _penetration, float _fireRate, string _target) {
+    public virtual void Init(Vector2 _velocity, IoperationStrategy _operation, float _lifetime, int _penetration, float _fireRate, string _target) {
         velocity = _velocity;
-        damage = _damage;
+        operation = _operation;
         lifetime = _lifetime;
         penetration = _penetration;
         target = _target;

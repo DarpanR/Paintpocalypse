@@ -9,10 +9,10 @@ public class SineShot : LinearShot
     Vector3 baseDirection;
     float phaseOffset;
 
-    public override void Init(Vector2 _velocity, int _damage, float _lifetime, int _penetration, float _fireRate, string _target) {
+    public override void Init(Vector2 _velocity, IoperationStrategy operation, float _lifetime, int _penetration, float _fireRate, string _target) {
         baseDirection = _velocity.normalized;
         phaseOffset = Random.value * Mathf.PI * 2;
-        base.Init(_velocity, _damage, _lifetime, _penetration, _fireRate, _target);
+        base.Init(_velocity, operation, _lifetime, _penetration, _fireRate, _target);
     }
 
     protected override void Update() {
