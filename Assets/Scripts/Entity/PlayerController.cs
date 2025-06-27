@@ -31,7 +31,7 @@ public class PlayerController : BaseEntity {
         if (Input.GetKey(KeyCode.S)) move.y -= 1;
         if (Input.GetKey(KeyCode.D)) move.x += 1;
         if (Input.GetKey(KeyCode.A)) move.x -= 1;
-        move = move.normalized * CurrentStats[StatType.MoveSpeed].value;
+        move = move.normalized * CurrentStats[StatType.Velocity].value;
         rb.velocity = move;
 
         // 2) Facing/Aiming with arrows

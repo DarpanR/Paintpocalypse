@@ -19,7 +19,9 @@ public class ActionBarPanel : MonoBehaviour
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPos.z = 0f;
 
-            ModifierPickup pickup = Instantiate(ModPickup, worldPos, Quaternion.identity).GetComponent<ModifierPickup>();
+            var prefab = Instantiate(ModPickup, worldPos, Quaternion.identity);
+            var pickup = prefab.GetComponent<ModifierPickup>();
+            Debug.Log("Before Pass " + magnifyingGlass.ToString());
             pickup.Init(magnifyingGlass);
             pickup.Dropped += () => active = false;
 

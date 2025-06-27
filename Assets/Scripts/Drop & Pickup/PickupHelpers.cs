@@ -15,6 +15,7 @@ public enum DropType {
 }
 
 public interface IPickupDefinition {
+    string DisplayName { get; }
     Sprite PickupIcon { get; }
     Sprite DropIcon { get; }
     string PickupTag { get; }

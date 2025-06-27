@@ -8,12 +8,11 @@ public abstract class Projectile : MonoBehaviour {
     public Action onDestroyed;
 
     // Runtime State
-    protected Vector2 velocity;
+    protected StatSet stats;
     protected IoperationStrategy operation;
     protected float lifetime;
     protected int penetration;
     protected string target;
-    protected float fireRate;
 
     // internal Counters
     protected int hits;
@@ -22,13 +21,12 @@ public abstract class Projectile : MonoBehaviour {
     /// <summary>
     /// Initialize all parameters. Call immediately after Instantiate().
     /// </summary>
-    public virtual void Init(Vector2 _velocity, IoperationStrategy _operation, float _lifetime, int _penetration, float _fireRate, string _target) {
-        velocity = _velocity;
+    public virtual void Init(StatSet _stats, string _target, IoperationStrategy _operation, float _lifetime, int _penetration) {
+        stats = _stats;
         operation = _operation;
         lifetime = _lifetime;
         penetration = _penetration;
         target = _target;
-        fireRate = _fireRate;
 
         hits = 0;
         enemiesHit.Clear();

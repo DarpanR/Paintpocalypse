@@ -10,13 +10,13 @@ public class MagnifyingGlassDefinition : ModifierDefinition, IPickupDefinition
     public Sprite dropIcon;
     [TagMaskField]
     public string pickupTag;
-    public PickupType pickupType = PickupType.StatModifier;
     [Min(1)]
     public int pickupCount = 1;
     public DropType dropType = DropType.Counter;
     [Min(1)]
     public int dropCount = 1;
 
+    [Header("Magnifying Glass Setting")]
     public float sizeMultiplier = 2f;
     public float damageMultiplier = 2f;
     public float speedMultplier = 2f;
@@ -24,11 +24,13 @@ public class MagnifyingGlassDefinition : ModifierDefinition, IPickupDefinition
     public override StatModifier CreateModule(ModifierDefinition definition) {
         return new MagnifyingGlass(definition);
     }
+
+    public string DisplayName => modName;
     public Sprite PickupIcon => pickupIcon;
     public Sprite DropIcon => dropIcon;
     public string PickupTag => pickupTag;
-    public PickupType PickupType => pickupType;
-    public DropType DropType => DropType;
+    public PickupType PickupType => PickupType.StatModifier;
+    public DropType DropType => dropType;
     public int DropCount => dropCount;
     public float PickupCount => pickupCount;
 }

@@ -30,11 +30,7 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         firePoint = fp;
         Level = 1;
 
-        StatSet baseStats = new StatSet();
-        baseStats.AddStat(StatType.Damage, Definition.baseDamage);
-        baseStats.AddStat(StatType.FireRate, Definition.baseFireRate);
-        // Add other desired stats: Velocity, Penetration, etc. as needed
-        statBroker = new StatBroker(baseStats);
+        statBroker = new StatBroker(Definition.baseStats);
 
         // **Per-weapon projectile pool**:
         pool = new Queue<GameObject>();
@@ -72,21 +68,21 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
             pool.Dequeue() :
             GameObject.Instantiate(Definition.projectile);
         go.transform.SetPositionAndRotation(spawnPoint, rotation);
+        go.transform.localScale = Vector3.one * CurrentStats.GetValueOrDefault(StatType.LocalScale, 1f);
         go.SetActive(true);
 
         var proj = go.GetComponent<Projectile>();
 
         proj.Init(
-                rotation * Velocity,
+                CurrentStats.Clone(),
+                target,
                 OperationFactory.GetOperation(
                     Definition.operationType,
                     Definition.affectedType,
                     -CurrentStats[StatType.Damage].value
                     ),
                 LifeTime,
-                Penetration,
-                CurrentStats[StatType.FireRate].value,
-                target
+                Penetration
             );
         proj.onDestroyed = () => {
             go.SetActive(false);
@@ -97,8 +93,10 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     public virtual void Upgrade() {
         if (Level < Definition.maxLevel)
             Level++;
-        statBroker.UpdateBaseStat(StatType.Damage, Damage);
-        statBroker.UpdateBaseStat(StatType.FireRate, FireRate);
+        statBroker.UpdateBaseStat(StatType.Damage, GetComputedProperties(StatType.Damage));
+        statBroker.UpdateBaseStat(StatType.FireRate, GetComputedProperties(StatType.FireRate));
+
+        fireTimer.Reset(CurrentStats[StatType.FireRate].value);
         // Recalculate with new base stats while preserving modifiers
     }
 
@@ -106,13 +104,11 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         return statBroker.Add(modifier);
     }
 
+    float GetComputedProperties (StatType type) {
+        return CurrentStats[type].value + Definition.LevelStats.GetValueOrDefault(type, 1f);
+    }
+
     // -- Computed Properties (base + level up stat) --
-    public float Damage =>
-        statBroker.CurrentStats[StatType.Damage].value + Definition.luDamage * (Level - 1);
-    public float FireRate =>
-        statBroker.CurrentStats[StatType.FireRate].value + Definition.luFireRate * (Level - 1);
-    public Vector2 Velocity =>
-        Definition.baseVelocity + Definition.luVelocity * (Level - 1);
     public float LifeTime =>
         Definition.baseLifetime + Definition.luLifetime * (Level - 1);
     public int Penetration =>

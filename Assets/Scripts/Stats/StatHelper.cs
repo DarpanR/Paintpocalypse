@@ -6,7 +6,7 @@ using UnityEngine;
 public enum StatType {
     MaxHealth,
     CurrentHealth,
-    MoveSpeed,
+    Velocity,
     LocalScale,
     InvincibilityDuration,
     Damage,
@@ -37,6 +37,12 @@ public class StatSet : ISerializationCallbackReceiver {
     public StatSet() {
         RebuildDictionary();
     }
+
+    public StatSet(params Stat[] stats) {
+        statList = new List<Stat>(stats);
+        RebuildDictionary();
+    }
+
     public Stat this[StatType type] => stats[type];
 
     public void AddStat(StatType type, float baseValue) {

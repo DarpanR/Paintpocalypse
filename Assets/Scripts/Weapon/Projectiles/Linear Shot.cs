@@ -7,7 +7,7 @@ public class LinearShot : Projectile
 {
     // 1) Move
     protected override void Update() {
-        transform.position += (Vector3)velocity * Time.deltaTime;
+        transform.position += new Vector3(0f, stats[StatType.Velocity].value* Time.deltaTime, 0f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

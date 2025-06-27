@@ -20,20 +20,23 @@ public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
     public int poolSize = 20;
 
     [Header("Base Stats")]
+    public string weaponName;
+    public int maxLevel = 5;
     public OperationType operationType = OperationType.Addition;
     public StatType affectedType = StatType.CurrentHealth;
-    public float baseDamage = 10f;
-    public float baseFireRate = 1f;
-    public Vector2 baseVelocity = new Vector2();
+    public StatSet baseStats = new StatSet(
+        new Stat(StatType.Damage, 10f),
+        new Stat(StatType.FireRate, 1f),
+        new Stat(StatType.Velocity, 5f)
+    );
     public float baseLifetime = 2f;
     public int basePenetration = 1;
     public int baseProjectileCount = 1;
-    public int maxLevel = 5;
 
     [Header("Levelling Stats")]
-    public float luDamage = 10f;
-    public float luFireRate = 1f;
-    public Vector2 luVelocity = new Vector2();
+    public StatSet LevelStats = new StatSet(
+        new Stat (StatType.Damage, 10)
+    );
     public float luLifetime = 2f;
     public int luPenetration = 1;
     public int luProjectileCount = 1;
@@ -51,6 +54,8 @@ public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
             return guid;
         }
     }
+
+    public String DisplayName => weaponName;
     public Sprite PickupIcon => pickupIcon;
     public Sprite DropIcon => pickupIcon;
     public string PickupTag => pickupTag;

@@ -14,13 +14,13 @@ public class AOEShot : Projectile
     float timer = 0f;
     float currentRadius = 0f;
 
-    public override void Init(Vector2 velocity, IoperationStrategy operation, float lifetime, int penetration, float fireRate, string target) {
+    public override void Init(StatSet stats, string target, IoperationStrategy operation, float lifetime, int penetration) {
         currentRadius = minRadius;
         timer = 0;
         lt = lifetime;
 
         transform.localScale = Vector3.one * minRadius;
-        base.Init(velocity, operation, lifetime, penetration, fireRate, target);
+        base.Init(stats, target, operation, lifetime, penetration);
     }
 
     protected override void Update() {
@@ -46,8 +46,8 @@ public class AOEShot : Projectile
         if (collision.CompareTag(target)) {
             var id = collision.gameObject.GetInstanceID();
 
-            if(enemiesHit[id] > fireRate) {
-                enemiesHit[id] -= fireRate;
+            if(enemiesHit[id] > stats[StatType.FireRate].value) {
+                enemiesHit[id] -= stats[StatType.FireRate].value;
                 collision.GetComponent<BaseEntity>().TakeDamage(operation);
             }
         }

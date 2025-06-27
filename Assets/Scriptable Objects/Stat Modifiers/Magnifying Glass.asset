@@ -12,17 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76377b2a3819db24c97bf4e5549f1007, type: 3}
   m_Name: Magnifying Glass
   m_EditorClassIdentifier: 
+  modName: Magnifying Glass
+  duration: 5
+  settable: 1
+  guid: e775dac9-3eb7-4186-88ea-7294f11ff1b5
   pickupIcon: {fileID: 21300000, guid: 4c8e088dd00271e4da08630dda137360, type: 3}
   dropIcon: {fileID: 21300000, guid: 999f07b54f6fe4149b5f5ca28b4571f7, type: 3}
   pickupTag: Enemy
-  pickupType: 1
   pickupCount: 1
   dropType: 0
   dropCount: 1
-  modName: Magnifying Glass
-  duration: 5
-  settable: 2
-  guid: e775dac9-3eb7-4186-88ea-7294f11ff1b5
   sizeMultiplier: 2
   damageMultiplier: 2
   speedMultplier: 0.75

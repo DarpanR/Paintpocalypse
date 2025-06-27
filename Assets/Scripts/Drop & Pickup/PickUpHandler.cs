@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UIElements;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,23 +16,22 @@ public abstract class PickupHandler : MonoBehaviour, IVisitable {
     protected SpriteRenderer rend;
     protected int remainingUsage;
 
-    bool dropped;
+    protected bool dropped;
 
     public PickupType PickupType { get; protected set; }
-    protected virtual IPickupDefinition Definition { get; private set; }
+    protected abstract IPickupDefinition Definition { get; }
 
     // Event here
     public event Action Dropped = delegate { };
 
-    protected abstract void Awake();
-
-    private void Start() {
+    protected virtual void Awake() {
         rend = GetComponent<SpriteRenderer>();
-        SetVisual();
-
         /// for any prebuilt pickup object. it will be existed as a dropped objcet instead.
         /// allows for placing pickup object scene! ^-^
-        if(Definition != null) dropped = true;
+        if (Definition != null) 
+            Init(Definition, true);
+        else
+            Debug.LogWarning($"{name} has no pickup definition in Start(). Visuals will not be set until Init() is called.");
     }
 
     void Update() {
@@ -47,20 +48,17 @@ public abstract class PickupHandler : MonoBehaviour, IVisitable {
             transform.Rotate(0, rotationSpeed * Time.deltaTime, 0f);
     }
 
-    public virtual void Init(bool dropIt = false) {
-        Init(Definition, dropIt);
-    }
-
     public virtual void Init(IPickupDefinition definition, bool dropIt = false) {
         if (definition == null)
             throw new NullReferenceException("Missing definition here dawg!");
         if (definition.PickupType != PickupType)
             throw new Exception("Mismatched Drop Item and Dropper");
-        this.Definition = definition;
         remainingUsage = definition.DropCount;
+        dropped = dropIt;
+        SetVisual();
     }
 
-    void SetVisual() {
+    protected void SetVisual() {
         rend.sprite = Definition.PickupIcon;
         rend.sortingLayerName = "Pickups";
         rend.sortingOrder = 0;
@@ -86,6 +84,10 @@ public abstract class PickupHandler : MonoBehaviour, IVisitable {
             Gizmos.DrawIcon(transform.position,
                 AssetDatabase.GetAssetPath(Definition.PickupIcon), true);
         }
+    }
+    private void OnValidate() {
+        if (Definition != null)
+            gameObject.name = $"Pickup_{Definition.DisplayName}";
     }
 #endif
 }

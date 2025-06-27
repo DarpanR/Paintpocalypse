@@ -57,7 +57,7 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
         }
         // Set LocalScale
         sSet.GetValueOrAdd(StatType.LocalScale, 1f);
-        sSet.GetValueOrAdd(StatType.MoveSpeed, 2f);
+        sSet.GetValueOrAdd(StatType.Velocity, 2f);
 
         return sSet;
     }

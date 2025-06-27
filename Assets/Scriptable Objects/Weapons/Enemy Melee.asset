@@ -19,18 +19,27 @@ MonoBehaviour:
   dropCount: 1
   projectile: {fileID: 4913505686419141161, guid: ec870403f73fc714a92f0e235c127aae, type: 3}
   poolSize: 10
+  weaponName: 
+  maxLevel: 5
   operationType: 1
   affectedType: 1
-  baseDamage: 10
-  baseFireRate: 0.1
-  baseVelocity: {x: 0, y: 0}
+  baseStats:
+    statList:
+    - type: 5
+      value: 10
+    - type: 6
+      value: 0.1
+    - type: 3
+      value: 1
+    - type: 2
+      value: 0
   baseLifetime: 0.1
   basePenetration: 1
   baseProjectileCount: 1
-  maxLevel: 5
-  luDamage: 10
-  luFireRate: 1
-  luVelocity: {x: 0, y: 0}
+  LevelStats:
+    statList:
+    - type: 5
+      value: 2
   luLifetime: 2
   luPenetration: 1
   luProjectileCount: 1
