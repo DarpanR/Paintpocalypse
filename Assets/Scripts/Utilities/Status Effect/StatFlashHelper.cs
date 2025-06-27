@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum StatusEffectType {
+public enum StatEffectType {
     None,
     Damage,
     Poison,
@@ -14,8 +14,8 @@ public enum StatusEffectType {
 }
 
 [Serializable]
-public class StatusFlashEffect {
-    public StatusEffectType type;
+public class StatFlashEffect {
+    public StatEffectType type;
     public Color color;
     public float flashSpeed;
 }

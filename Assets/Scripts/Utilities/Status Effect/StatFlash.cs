@@ -6,32 +6,40 @@ using UnityEngine;
 using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class StatusFlasher : MonoBehaviour {
+public class StatFlasher : MonoBehaviour {
     [SerializeField]
-    StatusFlasherDefinition allEffects;
+    StatFlashDefinition allEffects;
 
-    Dictionary<StatusEffectType, Coroutine> activeEffects = new();
-    Dictionary<StatusEffectType, StatusFlashEffect> effectMap = new();
+    SpriteRenderer rend;
+
+    Dictionary<StatEffectType, Coroutine> activeEffects = new();
+    Dictionary<StatEffectType, StatFlashEffect> effectMap = new();
 
     private void Awake() {
-        if (allEffects != null) Init(allEffects);
+        rend = GetComponent<SpriteRenderer>();
+        if (allEffects != null) Init();
     }
 
-    public void Init (List<StatusFlashEffect> effects) {
-        foreach(var effect in effects) 
+    public void Init() {
+        Init(allEffects.AllEffects);
+    }
+
+    public void Init (List<StatFlashEffect> effects) {
+        foreach (var effect in effects) 
             if (!effectMap.ContainsKey(effect.type)) 
                 effectMap[effect.type] = effect;
     }
 
-    public void Trigger(StatusEffectType type, float duration, Action onEnd = null) {
-        if (!effectMap.TryGetValue(type, out StatusFlashEffect effect)) return;
-        if (activeEffects.ContainsKey(type)) return;
+    public void Trigger(StatEffectType type, float duration, Action onEnd = null) {
+        if (activeEffects.ContainsKey(type) ||
+            !effectMap.TryGetValue(type, out StatFlashEffect effect))
+            return;
         Coroutine routine = StartCoroutine(FlashRoutine(effect, duration, onEnd));
         activeEffects[type] = routine;
     }
 
 
-    IEnumerator FlashRoutine(StatusFlashEffect effect, float duration, Action onEnd = null) {
+    IEnumerator FlashRoutine(StatFlashEffect effect, float duration, Action onEnd = null) {
         Color original = rend.color;
         CountdownTimer timer = new CountdownTimer(duration);
         timer.Start();

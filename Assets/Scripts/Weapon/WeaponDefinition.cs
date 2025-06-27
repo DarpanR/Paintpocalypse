@@ -7,10 +7,10 @@ using UnityEditor;
 public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
     [Header("Pickup Setting")]
     public Sprite pickupIcon;
-    public Sprite dropIcon;
-    public PickupType pickupType = PickupType.Weapon;
     [Min(1)]
     public int pickupCount = 1;
+    [TagMaskField]
+    public string pickupTag;
     public DropType dropType = DropType.Counter;
     [Min(1)]
     public int dropCount = 1;
@@ -52,12 +52,12 @@ public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
         }
     }
     public Sprite PickupIcon => pickupIcon;
-    public Sprite DropIcon => dropIcon;
-    public PickupType PickupType => pickupType;
+    public Sprite DropIcon => pickupIcon;
+    public string PickupTag => pickupTag;
+    public PickupType PickupType => PickupType.Weapon;
     public DropType DropType => dropType;
     public int DropCount => dropCount;
     public float PickupCount => pickupCount;
-
     public abstract IWeaponModule CreateModule(Transform firePoint, string target);
 
 }

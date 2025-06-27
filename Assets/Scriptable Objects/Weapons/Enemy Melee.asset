@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Enemy Melee
   m_EditorClassIdentifier: 
   pickupIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
-  dropIcon: {fileID: 0}
-  pickupType: 0
   pickupCount: 1
+  pickupTag: Enemy
   dropType: 0
   dropCount: 1
   projectile: {fileID: 4913505686419141161, guid: ec870403f73fc714a92f0e235c127aae, type: 3}
   poolSize: 10
-  baseDamage: 25
+  operationType: 1
+  affectedType: 1
+  baseDamage: 10
   baseFireRate: 0.1
   baseVelocity: {x: 0, y: 0}
   baseLifetime: 0.1

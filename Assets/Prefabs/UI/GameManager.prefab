@@ -524,6 +524,7 @@ GameObject:
   - component: {fileID: 6421700031680130497}
   - component: {fileID: 8808453500332772427}
   - component: {fileID: 4171581605545892614}
+  - component: {fileID: 8336227359845435124}
   m_Layer: 5
   m_Name: ActionBarPanel
   m_TagString: Untagged
@@ -617,6 +618,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8336227359845435124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890167041203979648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8e3421541692c14ca5edb39352b63ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ModPickup: {fileID: 6724489019657003851, guid: f191feda2489432459ddbc29e5ecae43, type: 3}
+  magnifyingGlass: {fileID: 11400000, guid: f88a08fae75847a4ca9f4946112f94d1, type: 2}
 --- !u!1 &959934843734737265
 GameObject:
   m_ObjectHideFlags: 0
@@ -2096,9 +2111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235090530d526af4ba97591237db7caa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phases:
-  - {fileID: 11400000, guid: adbe3121094c36e43b7c021db98b2fe1, type: 2}
-  - {fileID: 11400000, guid: ca59c5eb44fa7fb4f86c6167dad869f8, type: 2}
+  phases: []
   buffer: 1
   spawnRadius: 2
 --- !u!114 &3425353267876616281
@@ -2113,7 +2126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac3afbed2112c742abdb8d9b86c6fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropPrefab: {fileID: 1824443047001969138, guid: 82fe775eb263dcb4a94f5503a7a3e816, type: 3}
+  pickupPrefab: {fileID: 1824443047001969138, guid: 82fe775eb263dcb4a94f5503a7a3e816, type: 3}
   dropTable: {fileID: 11400000, guid: 4660b2b4cd3180f498a4fcf2025879e9, type: 2}
   dropChance: 10
 --- !u!1 &3423765833711013801

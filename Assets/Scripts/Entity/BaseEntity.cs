@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(StatusFlasher))]
 public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWeaponManagerTarget {
-    public SpriteRenderer rend;
+    public EntityData eData;
     [SerializeField]
-    StatusFlasher flasher;
+    StatFlasher flasher;
 
     StatBroker statBroker;
     WeaponManager weaponManager;
@@ -23,16 +19,20 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
     public WeaponManager WeaponManager => weaponManager;
 
     protected virtual void Awake() {
+        flasher = flasher ?? GetComponent<StatFlasher>();
+
+        if (flasher == null)
+            throw new NullReferenceException("flasher missing homeslice");
+
         statBroker = new StatBroker(InitializeStat());
-        weaponManager = new WeaponManager(transform, allWeapons, targetTag);
-        flasher = GetComponent<StatusFlasher>();
+
+        weaponManager = new WeaponManager(transform, eData.loadOutWeapons, eData.targetTag);
     }
 
     protected virtual void Start() {
+        flasher.Init(eData.VisualStatusEffects);
         statBroker.UpdateStats += OnStatUpdated;
-
-        if (rend == null) rend = GetComponent<SpriteRenderer>();
-        flasher.rend = flasher.rend != null ? flasher.rend : rend;
+        isInvincible = false;
     }
 
     protected virtual void LateUpdate() {
@@ -46,7 +46,7 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
     }
 
     StatSet InitializeStat() {
-        StatSet sSet = entityData.stats.Clone();
+        StatSet sSet = eData.baseStats.Clone();
 
         // Ensure MaxHealth exists before accessing its value
         float maxHealth = sSet.GetValueOrAdd(StatType.MaxHealth, 100f);
@@ -63,13 +63,17 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
     }
 
     public virtual void TakeDamage(IoperationStrategy operation) {
-        if (isInvincible) return;
-        isInvincible = true;
-        float duration = CurrentStats.GetValueOrDefault(StatType.InvincibitilityDuration, 0.1f);
-        //Debug.Log(operation.Value);
-        flasher?.Trigger(StatusEffectType.Damage, duration, () => isInvincible = false);
-        statBroker.UpdateBaseStat(operation);
+        if (isInvincible)
+            return;
+        float duration = CurrentStats.GetValueOrDefault(StatType.InvincibilityDuration, 0.1f);
 
+        if (duration > 0) {
+            isInvincible = true;
+            flasher?.Trigger(StatEffectType.Damage, duration, () => isInvincible = false);
+        } else {
+            flasher?.Trigger(StatEffectType.Damage, 0.1f);
+        }
+        statBroker.UpdateBaseStat(operation);
         OnTakeDamage?.Invoke();
     }
 
@@ -84,7 +88,7 @@ public abstract class BaseEntity : MonoBehaviour, IVisitor, IstatSetTarget, IWea
         Debug.Log(gameObject.name + " Died");
         //TODO: GAME OVER SCREEN TRIGGER
 
-        OnDie.Invoke(this);
+        OnDie?.Invoke(this);
         Destroy(gameObject);
     }
 

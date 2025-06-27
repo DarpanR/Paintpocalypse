@@ -8,7 +8,7 @@ public enum StatType {
     CurrentHealth,
     MoveSpeed,
     LocalScale,
-    InvincibitilityDuration,
+    InvincibilityDuration,
     Damage,
     FireRate,
 }

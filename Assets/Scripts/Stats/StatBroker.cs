@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
+public enum settableType { Single, Timer, Multi }
+
 public class StatBroker {
     Dictionary<String, StatModifier> activeMods = new();
     StatSet stats;

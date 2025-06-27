@@ -9,8 +9,13 @@ public class ModifierPickup : PickupHandler
 
     protected override IPickupDefinition Definition => definition;
 
+    protected override void Awake()
+    {
+        PickupType = PickupType.StatModifier;
+    }
+
     protected override void PickUp(BaseEntity entity) { 
-        if (!entity.CompareTag(definition.target)) return;
+        if (!entity.CompareTag(definition.pickupTag)) return;
         var modifier = definition.CreateModule(definition);
 
         if (entity.AddStatModifier(modifier) && --remainingUsage <= 0) { 

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ActionBarPanel : MonoBehaviour
 {
-    public GameObject pickupPrefab;
+    public GameObject ModPickup;
+    public MagnifyingGlassDefinition magnifyingGlass;
 
     /// returns true if there is an ability already selected
     bool active;
@@ -18,12 +19,12 @@ public class ActionBarPanel : MonoBehaviour
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPos.z = 0f;
 
-            ModifierPickup pickup = Instantiate(pickupPrefab, worldPos, Quaternion.identity).GetComponent<ModifierPickup>();
-            pickup.Init();
+            ModifierPickup pickup = Instantiate(ModPickup, worldPos, Quaternion.identity).GetComponent<ModifierPickup>();
+            pickup.Init(magnifyingGlass);
             pickup.Dropped += () => active = false;
 
             active = true;
-        }    
+        }
     }
 
     public void Eyedropper() {

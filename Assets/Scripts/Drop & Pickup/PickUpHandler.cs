@@ -10,34 +10,27 @@ using UnityEditor;
 public abstract class PickupHandler : MonoBehaviour, IVisitable {
     [Tooltip("Degrees per second")]
     public float rotationSpeed = 45f;
-    protected virtual IPickupDefinition Definition { get; private set; }
-    protected SpriteRenderer sr;
+
+    protected SpriteRenderer rend;
     protected int remainingUsage;
 
     bool dropped;
-    
+
+    public PickupType PickupType { get; protected set; }
+    protected virtual IPickupDefinition Definition { get; private set; }
+
     // Event here
     public event Action Dropped = delegate { };
 
-    public virtual void Init() {
-        Init(Definition);
-    }
+    protected abstract void Awake();
 
-    public virtual void Init(IPickupDefinition definition) {
-        Definition = definition;
-        dropped = false;
-        remainingUsage = definition.DropCount;
-    }
-
-    private void Awake() {
-        sr = GetComponent<SpriteRenderer>();
+    private void Start() {
+        rend = GetComponent<SpriteRenderer>();
         SetVisual();
-    }
 
-    void SetVisual() {
-        sr.sprite = Definition.PickupIcon;
-        sr.sortingLayerName = "Pickups";
-        sr.sortingOrder = 0;
+        /// for any prebuilt pickup object. it will be existed as a dropped objcet instead.
+        /// allows for placing pickup object scene! ^-^
+        if(Definition != null) dropped = true;
     }
 
     void Update() {
@@ -52,6 +45,25 @@ public abstract class PickupHandler : MonoBehaviour, IVisitable {
             }
         } else
             transform.Rotate(0, rotationSpeed * Time.deltaTime, 0f);
+    }
+
+    public virtual void Init(bool dropIt = false) {
+        Init(Definition, dropIt);
+    }
+
+    public virtual void Init(IPickupDefinition definition, bool dropIt = false) {
+        if (definition == null)
+            throw new NullReferenceException("Missing definition here dawg!");
+        if (definition.PickupType != PickupType)
+            throw new Exception("Mismatched Drop Item and Dropper");
+        this.Definition = definition;
+        remainingUsage = definition.DropCount;
+    }
+
+    void SetVisual() {
+        rend.sprite = Definition.PickupIcon;
+        rend.sortingLayerName = "Pickups";
+        rend.sortingOrder = 0;
     }
 
     protected abstract void PickUp(BaseEntity entity);
