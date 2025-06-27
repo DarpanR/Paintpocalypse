@@ -7,7 +7,7 @@ public class ModifierPickup : PickupHandler
     [SerializeField]
     ModifierDefinition definition;
 
-    protected override IPickupDefinition Definition => definition;
+    protected override IPickupDefinition Definition => definition as IPickupDefinition;
 
     protected override void Awake()
     {
@@ -15,7 +15,7 @@ public class ModifierPickup : PickupHandler
     }
 
     protected override void PickUp(BaseEntity entity) { 
-        if (!entity.CompareTag(definition.pickupTag)) return;
+        if (!entity.CompareTag(Definition.PickupTag)) return;
         var modifier = definition.CreateModule(definition);
 
         if (entity.AddStatModifier(modifier) && --remainingUsage <= 0) { 
