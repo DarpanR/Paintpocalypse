@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133cbe87d057bb74ba7e209104184bdf, type: 3}
+<<<<<<<< HEAD:Assets/Scriptable Objects/Weapons/Enemy melee.asset
+  m_Name: Enemy melee
+  m_EditorClassIdentifier: 
+  weaponIcon: {fileID: 21300000, guid: 8d14119d44269df4891a8ee2b61c1231, type: 3}
+  poolSize: 20
+  projPrefab: {fileID: 4913505686419141161, guid: a3c040f18c0f06f41b5562b00824332a, type: 3}
+  baseDamage: 10
+  baseFireRate: 10
+  baseVelocity: {x: 0, y: 0}
+  baseLifetime: 0.1
+  basePenetration: 1
+  baseProjectileCount: 1
+  maxLevel: 5
+  luDamage: 10
+  luFireRate: 1
+  luVelocity: {x: 0, y: 0}
+  luLifetime: 0.1
+  luPenetration: 1
+  luProjectileCount: 1
+  spawnRadius: 0
+========
+  m_Name: Player Aoe 2
+  m_EditorClassIdentifier: 
+  pickupIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
+  pickupCount: 1
+  pickupTag: Player
+  dropType: 0
+  dropCount: 1
+  projectile: {fileID: 4913505686419141161, guid: 80c1142d336dbf44faea1ed71077b43a, type: 3}
+  poolSize: 3
+  weaponName: Aoe Aoe
+  maxLevel: 5
+  operationType: 1
+  affectedType: 1
+  baseStats:
+    statList:
+    - type: 5
+      value: 50
+    - type: 6
+      value: 1
+    - type: 2
+      value: 0
+    - type: 7
+      value: 2
+  baseLifetime: 2
+  basePenetration: 1
+  baseProjectileCount: 1
+  LevelStats:
+    statList:
+    - type: 5
+      value: 10
+    - type: 6
+      value: 2
+  luLifetime: 2
+  luPenetration: 1
+  luProjectileCount: 1
+  guid: 079e29db-83f0-4f31-bd71-f0c7368b1a50
+  spawnRadius: 1.5
+>>>>>>>> feature/mouse-character:Assets/Scriptable Objects/Weapons/Player Aoe 2.asset
+  luSpawnRadius: 0

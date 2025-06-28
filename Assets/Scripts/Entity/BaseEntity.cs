@@ -1,88 +1,102 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseEntity : MonoBehaviour {
+public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManagerTarget {
+    public EntityData eData;
+    [SerializeField]
+    StatFlasher flasher;
 
-    [Header("Entity Settings")]
-    public float moveSpeed = 2f;
-    public int maxHealth = 100;
-    [HideInInspector]public int CurrentHealth { get; private set; }
+    StatBroker statBroker;
+    WeaponManager weaponManager;
 
-    public float invincibitilityDuration = 1.0f;
-    private bool isInvincible = false;
-
-    [Header("Visual Settings")]
-    public SpriteRenderer rend;
-    public float statFlashSpeed = 0.1f;
-    public Color dmgColor = Color.red;
-
-    List<StatModifier> activeMods = new List<StatModifier>();
+    bool isInvincible = false;
 
     public event Action OnTakeDamage;
-    //public event Action<int> OnUpgrade;
-    //public event Action OnDie;
+    public event Func<StatModifier, bool> OnAddStatModifier;
+    public event Action<BaseEntity> OnDie;
+
+    public StatSet CurrentStats => statBroker.CurrentStats;
+    public WeaponManager WeaponManager => weaponManager;
+
+    protected virtual void Awake() {
+        flasher = flasher ?? GetComponent<StatFlasher>();
+
+        if (flasher == null)
+            throw new NullReferenceException("flasher missing homeslice");
+        statBroker = new StatBroker(InitializeStat());
+        weaponManager = new WeaponManager(transform, eData.loadOutWeapons, eData.targetTag);
+    }
 
     protected virtual void Start() {
-        CurrentHealth = maxHealth;
-          
-        if (rend == null) rend = GetComponent<SpriteRenderer>();
-    }
-
-    protected virtual void Update() {
-        for (int i = activeMods.Count - 1; i >= 0; i--) {
-
-            activeMods[i].lifetime -= Time.deltaTime;
-
-            if (activeMods[i].lifetime <= 0) {
-                activeMods[i].Remove(this);
-                activeMods.RemoveAt(i);
-            }
-        }
-    }
-
-    public virtual void TakeDamage(int amount) {
-        if (isInvincible)
-            return;
-        CurrentHealth -= amount;
-        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, maxHealth);
-
-        if (CurrentHealth > 0) {
-            isInvincible = true;
-            StartCoroutine(FlashAndInvincibility());
-        } else {
-            Die();
-        }
-        OnTakeDamage?.Invoke();
-    }
-
-    protected IEnumerator FlashAndInvincibility() { 
-        Color originalColor = rend.color;
-        float timer = 0f;
-
-        while (timer < invincibitilityDuration) {
-            rend.color = dmgColor;
-            yield return new WaitForSeconds(statFlashSpeed);
-            rend.color = originalColor;
-            yield return new WaitForSeconds(statFlashSpeed);
-            timer += statFlashSpeed * 2f;
-        }
-        rend.color = originalColor;
+        flasher.Init(eData.VisualStatusEffects);
+        OnDie += _ => flasher.OnDestroy();
+        statBroker.UpdateStats += OnStatUpdated;
         isInvincible = false;
     }
 
-    public bool AddBuff(StatModifier mod) {
-        if (activeMods.Exists(b => b.def == mod.def))
-            return false;
-        mod.Add(this);
-        activeMods.Add(mod);
-        return true;
+    protected virtual void LateUpdate() {
+        weaponManager.Update();
+        statBroker.Tick(Time.deltaTime);
+    }
+
+    void OnDestroy() {
+        //if (statBroker != null)
+        //    statBroker.UpdateStats -= OnStatUpdated;
+    }
+
+    StatSet InitializeStat() {
+        StatSet sSet = eData.baseStats.Clone();
+
+        // Ensure MaxHealth exists before accessing its value
+        float maxHealth = sSet.GetValueOrAdd(StatType.MaxHealth, 100f);
+
+        // Then initialize CurrentHealth if missing
+        if (!sSet.HasStat(StatType.CurrentHealth)) {
+            sSet.AddStat(StatType.CurrentHealth, maxHealth);
+        }
+        // Set LocalScale
+        sSet.GetValueOrAdd(StatType.LocalScale, 1f);
+        sSet.GetValueOrAdd(StatType.Speed, 2f);
+
+        return sSet;
+    }
+
+    public virtual void TakeDamage(IoperationStrategy operation) {
+        if (isInvincible)
+            return;
+        float duration = CurrentStats.GetValueOrDefault(StatType.InvincibilityDuration, 0f);
+
+        if (duration > 0) {
+            isInvincible = true;
+            flasher?.Trigger(StatEffectType.Damage, duration, () => isInvincible = false);
+        } else {
+            flasher?.Trigger(StatEffectType.Damage, 0.1f);
+        }
+        Debug.Log(operation.Value);
+        statBroker.UpdateBaseStat(operation);
+        OnTakeDamage?.Invoke();
+    }
+
+    protected virtual void OnStatUpdated() {
+        var newValue = CurrentStats[StatType.LocalScale].value;
+        transform.localScale = new Vector3(newValue, newValue);
+
+        if (CurrentStats[StatType.CurrentHealth].value <= 0) Die();
+    }
+
+    public bool AddStatModifier(StatModifier modifier) {
+        if (modifier is IWeaponModifier weapMod) {
+            weapMod.Activate(WeaponManager);
+        }
+        OnAddStatModifier?.Invoke(modifier);
+        return statBroker.Add(modifier);
     }
 
     protected virtual void Die() {
-        Debug.Log(gameObject.name + " Died");
+        OnDie?.Invoke(this);
+        //Debug.Log(gameObject.name + " Died");
         //TODO: GAME OVER SCREEN TRIGGER
+
         Destroy(gameObject);
     }
 }

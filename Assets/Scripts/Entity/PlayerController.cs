@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : BaseEntity {
@@ -12,9 +10,11 @@ public class PlayerController : BaseEntity {
 
     // Start is called before the first frame update
 
-    private void Awake() {
+    protected override void Awake() {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        
+        base.Awake();
     }
 
     protected override void Start() {
@@ -24,16 +24,14 @@ public class PlayerController : BaseEntity {
     }
 
     // Update is called once per frame
-    protected override void Update() {
-        base.Update();
-
+    void Update() {
         // 1) Movement with WASD
         Vector2 move = Vector2.zero;
         if (Input.GetKey(KeyCode.W)) move.y += 1;
         if (Input.GetKey(KeyCode.S)) move.y -= 1;
         if (Input.GetKey(KeyCode.D)) move.x += 1;
         if (Input.GetKey(KeyCode.A)) move.x -= 1;
-        move = move.normalized * moveSpeed;
+        move = move.normalized * CurrentStats[StatType.Speed].value;
         rb.velocity = move;
 
         // 2) Facing/Aiming with arrows

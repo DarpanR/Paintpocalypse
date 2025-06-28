@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AreaOfEffect : WeaponModule<AOEDefinition> {
-    public AreaOfEffect(AOEDefinition def, Transform fp, string target):base(def, fp, target) {
-        Fire();
-    }
+    public AreaOfEffect(AOEDefinition def, Transform fp, string targetTag):base(def, fp, targetTag) { }
 
     protected override void Fire() {
         for (int i = 0; i < ProjectileCount;i++) {
             Vector2 offset = Random.insideUnitCircle * spawnRadius;
             Vector3 spawnPos = firePoint.position + (Vector3)offset;
 
-            Vector2 direction = (Vector2)offset.normalized;
+            Vector2 direction = offset.normalized;
             Quaternion rot = Quaternion.LookRotation(Vector3.forward, direction);
-
             Fire(spawnPos, rot);
         }
     }

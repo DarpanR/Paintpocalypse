@@ -1,43 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-public sealed class TagMaskFieldAttribute : PropertyAttribute { }
 
-[CustomPropertyDrawer(typeof(TagMaskFieldAttribute))]
-public class TagMaskFieldAttributeEditor : PropertyDrawer {
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-        property.stringValue = EditorGUI.TagField(position, label, property.stringValue);
-    }
-}
-#endif
+public class WeaponManager {
+    string targetTag;
+    Transform firePoint;
+    Dictionary<WeaponDefinition, IWeaponModule> weapons = new();
 
-public class WeaponManager : MonoBehaviour
-{
-    [Header("Where bullets originate")]
-    public Transform firePoint;
+    public IEnumerable<IWeaponModule> Weapons => weapons.Values;
 
-    [SerializeField, TagMaskField] string target = "Untagged";
-
-    // all the list of SO defintion
-    public List<WeaponDefinition> allWeapons = new List<WeaponDefinition>();
-
-    List<IWeaponModule> weapons = new();
-
-    public void Start() {
-        if (firePoint == null)
-            firePoint = GetComponent<Transform>();
+    public WeaponManager(Transform firePoint, List<WeaponDefinition> allWeapons, string targetTag) {
+        this.firePoint = firePoint;
+        this.targetTag = targetTag;
 
         foreach (var weapon in allWeapons)
             Equip(weapon);
     }
 
-    private void Update() {
+    public void Update() {
         // each weapon shoots at its own fire-rate
-        foreach(var weapon in weapons)
+        foreach (var weapon in weapons.Values)
             weapon.TryFire();
     }
 
@@ -45,13 +30,12 @@ public class WeaponManager : MonoBehaviour
     /// Call this when the player picks up a weapon drop or levels up.
     /// </summary>
     public void Equip(WeaponDefinition def) {
-        // find existing
-        var existing = weapons.FirstOrDefault(m => m.Definition == def);
-        
-        if (existing != null)
+        if(weapons.TryGetValue(def, out var existing))
             existing.Upgrade();
-        else
-            weapons.Add(def.CreateModule(firePoint, target));
+        else {
+            var module = def.CreateModule(firePoint, targetTag);
+            weapons[def]= module;   
+        }
         // TODO: notify HUD with new weapon icon
     }
 }

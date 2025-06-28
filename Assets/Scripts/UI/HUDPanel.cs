@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -18,9 +19,8 @@ public class HUDPanel : MonoBehaviour
 
     private void Start() {
         globalTimer = PhaseManager.Instance.totalDuration;
-        
-        stickman = PlayerController.Instance;
-        
+        stickman = PlayerController.Instance;   
+
         SetMaxHealth();
         SetHealth();
 
@@ -43,10 +43,10 @@ public class HUDPanel : MonoBehaviour
     }
 
     public void SetMaxHealth() {
-        healthSlider.maxValue = stickman.maxHealth;
+        healthSlider.maxValue = stickman.CurrentStats[StatType.MaxHealth].value;
     }
 
     public void SetHealth() {
-        healthSlider.value = stickman.CurrentHealth;
+        healthSlider.value = stickman.CurrentStats[StatType.CurrentHealth].value;
     }
 }

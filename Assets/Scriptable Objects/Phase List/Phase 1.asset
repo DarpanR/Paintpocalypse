@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20285bddea4a34840af54414678c3d71, type: 3}
+  m_Name: Phase 1
+  m_EditorClassIdentifier: 
+  discription: 
+  duration: 15
+  periodicInterval: 5
+  periodicSpawns:
+  - enemy: {fileID: 427226824617519313, guid: 75a58e2db6be7054eacba4e4a8f12739, type: 3}
+    minCount: 3
+    maxCount: 5
+    pattern: 1
+  - enemy: {fileID: 6310707719617671056, guid: acc00c814f12a1f42ba696953182243f, type: 3}
+    minCount: 3
+    maxCount: 3
+    pattern: 2
+  specialWaves:
+  - timeOffSet: 7
+    spawns:
+    - enemy: {fileID: 974057190339115752, guid: ef4d73a027a210f4083838d29e697417, type: 3}
+      minCount: 3
+      maxCount: 3
+      pattern: 0

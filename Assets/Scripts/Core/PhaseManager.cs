@@ -13,7 +13,7 @@ public class PhaseManager : MonoBehaviour {
     [Header("Pattern logic")]
     public int buffer = 1;
     public float spawnRadius = 2f;
-    public float totalDuration {  get; private set; }
+    public float totalDuration;
 
     int currentPhase;
     // Time tracker for current phase
@@ -34,17 +34,6 @@ public class PhaseManager : MonoBehaviour {
 
         //temporary
         if (Phases.Count == 0) Destroy(this);
-    }
-
-    private void Start() {
-        currentPhase = 0;
-        finished = false;
-        initialized = true;
-
-        mainCam = Camera.main;
-
-        // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
-        radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
 
         // Sorts spawn waves based on their spawn timer set
         // and add phase duration to totalDuration
@@ -52,6 +41,19 @@ public class PhaseManager : MonoBehaviour {
             phase.specialWaves.Sort((a, b) => a.timeOffSet.CompareTo(b.timeOffSet));
             totalDuration += phase.duration;
         }
+
+    }
+
+    private void Start() {
+        currentPhase = 0;
+        finished = false;
+        initialized = true;
+        mainCam = Camera.main;
+
+        // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
+        radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
+
+        
         BeginPhase(0);
     }
 

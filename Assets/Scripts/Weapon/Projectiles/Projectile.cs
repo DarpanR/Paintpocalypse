@@ -12,12 +12,11 @@ public abstract class Projectile : MonoBehaviour {
     public Action onDestroyed;
 
     // Runtime State
-    protected Vector2 velocity;
-    protected int damage;
-    protected float lifetime;
+    protected StatSet stats;
+    protected IoperationStrategy operation;
     protected int penetration;
-    protected string target;
-    protected float fireRate;
+    protected string targetTag;
+    protected CountdownTimer lifetime;
 
     // internal Counters
     protected int hits;
@@ -26,15 +25,17 @@ public abstract class Projectile : MonoBehaviour {
     /// <summary>
     /// Initialize all parameters. Call immediately after Instantiate().
     /// </summary>
-    public virtual void Init(Vector2 _velocity, int _damage, float _lifetime, int _penetration, float _fireRate, string _target) {
-        velocity = _velocity;
-        damage = _damage;
-        lifetime = _lifetime;
+    public virtual void Init(StatSet _stats, string _targetTag, IoperationStrategy _operation, int _penetration) {
+        stats = _stats;
+        operation = _operation;
         penetration = _penetration;
-        target = _target;
-        fireRate = _fireRate;
-
+        targetTag = _targetTag;
         hits = 0;
+
+        lifetime = new CountdownTimer(stats[StatType.Lifetime].value);
+        lifetime.Start();
+        lifetime.OnTimerStop += Die;
+
         enemiesHit.Clear();
     }
     protected void Die() {
@@ -44,7 +45,7 @@ public abstract class Projectile : MonoBehaviour {
             onDestroyed = null;
             callBack();
         }
-        /// BUGFIX: At higher speed a race condition makes it so that ondestoryed is 
+        /// BUGFIX: At higher velocity a race condition makes it so that ondestoryed is 
         /// null at the time of another projectile's death so instead of requeing the porjectile
         /// it gets deleted
         //else
@@ -55,10 +56,7 @@ public abstract class Projectile : MonoBehaviour {
     protected abstract void Update();
 
     private void LateUpdate() {
-        lifetime -= Time.deltaTime;
-
-        if (lifetime <= 0)
-            Die();
+        lifetime.Tick(Time.deltaTime);
     }
 
     private void OnDisable() {

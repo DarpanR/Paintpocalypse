@@ -4,12 +4,30 @@ using UnityEngine;
 
 public class ActionBarPanel : MonoBehaviour
 {
-    public ModifierDefinition def1;
-    public ModifierDefinition def2;
+    public GameObject ModPickup;
+    public MagnifyingGlassDefinition magnifyingGlass;
 
-    /// I dont like this part where the new () has to be hard coded
-    /// if someone knows how to make this more generic do it!
-    public void GenerateModifier() {
-        MouseController.Instance.SetModifier(ModifierFactory.CreateModifier(def1));
+    /// returns true if there is an ability already selected
+    bool active;
+
+    private void Start() {
+        active = false;
+    }
+
+    public void MagnifyingGlass() {
+        if (!active) {
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            worldPos.z = 0f;
+
+            var pickup = Instantiate(ModPickup, worldPos, Quaternion.identity).GetComponent<ModifierPickup>();
+            pickup.Init(magnifyingGlass);
+            pickup.Dropped += () => active = false;
+
+            active = true;
+        }
+    }
+
+    public void Eyedropper() {
+
     }
 }

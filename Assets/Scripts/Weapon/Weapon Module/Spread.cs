@@ -4,7 +4,7 @@ using UnityEngine;
 public class Spread : WeaponModule<SpreadDefinition> {
     public Spread(SpreadDefinition def, Transform fp, string t) : base(def, fp, t) {}
 
-    protected override void Fire() {
+    protected override void Fire() { 
         foreach (var rots in UpdateSpawnRotations())
             Fire(rots);
     }

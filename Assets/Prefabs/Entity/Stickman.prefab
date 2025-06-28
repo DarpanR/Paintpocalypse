@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7880695083539795819}
   - component: {fileID: 8912334920358755555}
   - component: {fileID: 8378901875306265320}
-  - component: {fileID: 6567641517151419935}
-  - component: {fileID: -2759839424987225683}
   - component: {fileID: 1061379882880588165}
-  m_Layer: 7
+  - component: {fileID: 6567641517151419935}
+  - component: {fileID: 5022743141654434832}
+  m_Layer: 6
   m_Name: Stickman
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -115,39 +115,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &6567641517151419935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1863355269664786951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf497933134a41040a0e4fbf5fc62495, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  invincibitilityDuration: 0.5
-  rend: {fileID: 0}
-  statFlashSpeed: 0.1
-  dmgColor: {r: 1, g: 0, b: 0, a: 1}
-  moveSpeed: 5
---- !u!114 &-2759839424987225683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1863355269664786951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d039005de9f40ab4aa26f05a676fd82d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firePoint: {fileID: 7880695083539795819}
-  target: Enemy
-  allWeapons: []
 --- !u!58 &1061379882880588165
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -183,3 +150,30 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.44
+--- !u!114 &6567641517151419935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863355269664786951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf497933134a41040a0e4fbf5fc62495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eData: {fileID: 11400000, guid: 6b223a4c61aa6e043bbcdf52e7e1c483, type: 2}
+  flasher: {fileID: 5022743141654434832}
+--- !u!114 &5022743141654434832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863355269664786951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f126db82af2cba1478402335f7e29ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allEffects: {fileID: 0}
