@@ -1,17 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class LinearShot : Projectile
 {
     // 1) Move
     protected override void Update() {
-        transform.position += new Vector3(0f, stats[StatType.Velocity].value* Time.deltaTime, 0f);
+        transform.position += stats[StatType.Speed].value * Time.deltaTime * transform.up;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (!collision.CompareTag(target))
+        if (!collision.CompareTag(targetTag))
             return;
 
         // Prevent double-hitting the same enemy
@@ -21,6 +22,7 @@ public class LinearShot : Projectile
             return;
         enemiesHit[id] = 0f;
         hits++;
+        Debug.Log("hit");
 
         //Apply damage if enemy has a health component
         var enemy = collision.GetComponent<BaseEntity>();

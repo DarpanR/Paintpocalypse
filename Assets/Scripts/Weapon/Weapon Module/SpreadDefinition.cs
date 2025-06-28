@@ -10,7 +10,7 @@ public class SpreadDefinition : WeaponDefinition {
     [Header("Advanced Level Stats")]
     public float luSpreadAngle = 0f;
 
-    public override IWeaponModule CreateModule(Transform firePoint, string target) {
-        return new Spread(this, firePoint, target);
+    public override IWeaponModule CreateModule(Transform firePoint, string targetTag) {
+        return new Spread(this, firePoint, targetTag);
     }
 }

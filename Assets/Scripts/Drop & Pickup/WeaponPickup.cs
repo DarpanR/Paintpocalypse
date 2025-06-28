@@ -12,16 +12,25 @@ public class WeaponPickup : PickupHandler {
     [SerializeField]
     WeaponDefinition definition;
 
-    protected override IPickupDefinition Definition => definition; 
+    protected override IPickupDefinition Definition => definition as IPickupDefinition;
 
-    protected override void Awake()
-    {
-       PickupType = PickupType.Weapon;
+    protected override void Awake() {
+        if (definition != null && definition is not IPickupDefinition)
+            Debug.LogWarning($"{name}'s ModifierDefinition is not IpickupDefinition!");
+        PickupType = PickupType.Weapon;
+        base.Awake();
     }
+
+    public override void Init(IPickupDefinition definition, bool dropIt = false) {
+        this.definition = this.definition ?? definition as WeaponDefinition;
+        base.Init(definition, dropIt);
+    }
+
     protected override void PickUp(BaseEntity entity) {
-        if (entity.CompareTag(definition.pickupTag)) {
-            entity.WeaponManager.Equip(definition);
-            Destroy(gameObject);
-        }
+        if (entity == null) return;
+        remainingUsage--;
+        entity.WeaponManager.Equip(definition);
+
+        base.PickUp(entity);
     }
 }

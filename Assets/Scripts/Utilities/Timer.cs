@@ -6,7 +6,7 @@ public abstract class Timer {
     public float Time { get; protected set; }
     public bool IsRunning { get; protected set; }
     
-    public float Progress => Time / initialTime;
+    public virtual float Progress => Time / initialTime;
 
     public Action OnTimerStart = delegate { };
     public Action OnTimerStop = delegate { };
@@ -40,7 +40,11 @@ public abstract class Timer {
 }
 
 public class CountdownTimer : Timer {
-    public CountdownTimer(float value) : base(value) { }
+    public override float Progress => 1 - base.Progress;
+
+    public CountdownTimer(float value) : base(value) {
+        OnTimerStop += Reset;
+    }
 
     public override void Tick(float deltaTime) {
         if (IsRunning) {
@@ -56,11 +60,29 @@ public class CountdownTimer : Timer {
         Start();
     }
     
-    public void Reset(float newTime) {
+    public virtual void Reset(float newTime) {
         initialTime = newTime;
         Reset();
     }
 }
+
+public class FireRateTimer : CountdownTimer {
+    public float FireRate { get; private set; }
+    public float FireInterval  => GetFireInterval(FireRate);
+
+    public FireRateTimer(float fireRate) : base(GetFireInterval(fireRate)) {
+        FireRate = fireRate;
+    }
+
+    public override void Reset(float newFireRate) {
+        FireRate = newFireRate;
+        base.Reset(FireInterval);
+    }
+
+    static float GetFireInterval(float Rate) => 1f / Rate;
+}
+
+    
 
 public class StopwatchTimer : Timer {
     public StopwatchTimer() : base(0) { }

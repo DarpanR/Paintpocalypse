@@ -22,8 +22,7 @@ MonoBehaviour:
       value: 5
     - type: 4
       value: 3
-  loadOutWeapons:
-  - {fileID: 11400000, guid: 26e587144cb26c54f9481510675e3cde, type: 2}
+  loadOutWeapons: []
   VisualStatusEffects:
   - type: 1
     color: {r: 1, g: 0, b: 0, a: 1}

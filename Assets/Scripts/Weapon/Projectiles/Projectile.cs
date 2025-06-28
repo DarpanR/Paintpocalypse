@@ -10,9 +10,9 @@ public abstract class Projectile : MonoBehaviour {
     // Runtime State
     protected StatSet stats;
     protected IoperationStrategy operation;
-    protected float lifetime;
     protected int penetration;
-    protected string target;
+    protected string targetTag;
+    protected CountdownTimer lifetime;
 
     // internal Counters
     protected int hits;
@@ -21,14 +21,17 @@ public abstract class Projectile : MonoBehaviour {
     /// <summary>
     /// Initialize all parameters. Call immediately after Instantiate().
     /// </summary>
-    public virtual void Init(StatSet _stats, string _target, IoperationStrategy _operation, float _lifetime, int _penetration) {
+    public virtual void Init(StatSet _stats, string _targetTag, IoperationStrategy _operation, int _penetration) {
         stats = _stats;
         operation = _operation;
-        lifetime = _lifetime;
         penetration = _penetration;
-        target = _target;
-
+        targetTag = _targetTag;
         hits = 0;
+
+        lifetime = new CountdownTimer(stats[StatType.Lifetime].value);
+        lifetime.Start();
+        lifetime.OnTimerStop += Die;
+
         enemiesHit.Clear();
     }
 
@@ -41,7 +44,7 @@ public abstract class Projectile : MonoBehaviour {
             onDestroyed = null;
             callBack();
         }
-        /// BUGFIX: At higher speed a race condition makes it so that ondestoryed is 
+        /// BUGFIX: At higher velocity a race condition makes it so that ondestoryed is 
         /// null at the time of another projectile's death so instead of requeing the porjectile
         /// it gets deleted
         //else
@@ -50,10 +53,7 @@ public abstract class Projectile : MonoBehaviour {
     }
 
     private void LateUpdate() {
-        lifetime -= Time.deltaTime;
-
-        if (lifetime <= 0)
-            Die();
+        lifetime.Tick(Time.deltaTime);
     }
 
 

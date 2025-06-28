@@ -13,17 +13,15 @@ MonoBehaviour:
   m_Name: Phase 2
   m_EditorClassIdentifier: 
   discription: Phase 2 Stronger
-  duration: 30
-  periodicInterval: 5
+  duration: 180
+  periodicInterval: 7
   periodicSpawns:
-  - enemy: {fileID: 974057190339115752, guid: ef4d73a027a210f4083838d29e697417, type: 3}
+  - enemy: {fileID: 427226824617519313, guid: 75a58e2db6be7054eacba4e4a8f12739, type: 3}
+    minCount: 5
+    maxCount: 10
+    pattern: 1
+  - enemy: {fileID: 6310707719617671056, guid: acc00c814f12a1f42ba696953182243f, type: 3}
     minCount: 3
     maxCount: 5
     pattern: 1
-  specialWaves:
-  - timeOffSet: 13
-    spawns:
-    - enemy: {fileID: 7381920325478921495, guid: d09515db89e52d74f9ab2fd9f242afc1, type: 3}
-      minCount: 5
-      maxCount: 10
-      pattern: 2
+  specialWaves: []

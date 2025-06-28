@@ -39,7 +39,7 @@ public class DropManager : MonoBehaviour
 
             if (def != null) {
                 GameObject pf = Instantiate(pickupPrefab, position, Quaternion.identity);
-                pf.GetComponent<WeaponPickup>().Init(def);
+                pf.GetComponent<WeaponPickup>().Init(def, true);
             }
         }
     }

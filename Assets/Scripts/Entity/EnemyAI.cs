@@ -20,7 +20,7 @@ public class EnemyAI : BaseEntity {
     void Update() {
         if (player != null) {
             Vector2 direction = (player.position - transform.position).normalized;
-            transform.position += (Vector3)direction * CurrentStats[StatType.Velocity].value * Time.deltaTime;
+            transform.position += (Vector3)direction * CurrentStats[StatType.Speed].value * Time.deltaTime;
 
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
 
@@ -33,20 +33,6 @@ public class EnemyAI : BaseEntity {
         // Reset the visual child to stay upright
         spriteTransform.rotation = quaternion.identity;
     }
-
-    //protected virtual void DoDamage(int amount) {
-    //    throw new System.NotImplementedException();
-    //}
-
-    //protected void OnTriggerStay2D(Collider2D collision) {
-    //    if (collision.CompareTag("Player")) {
-    //        PlayerController player = collision.GetComponent<PlayerController>();
-
-    //        if (player != null) {
-    //            player.TakeDamage(Stats[StatType.Damage]);
-    //        }
-    //    }
-    //}
 
     protected override void Die() {
         DropManager.Instance.TryDrop(transform.position);

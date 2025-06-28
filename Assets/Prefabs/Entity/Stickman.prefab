@@ -162,7 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf497933134a41040a0e4fbf5fc62495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rend: {fileID: 8912334920358755555}
   eData: {fileID: 11400000, guid: 6b223a4c61aa6e043bbcdf52e7e1c483, type: 2}
   flasher: {fileID: 5022743141654434832}
 --- !u!114 &5022743141654434832

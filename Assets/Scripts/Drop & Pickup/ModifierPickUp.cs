@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ModifierPickup : PickupHandler
 {
@@ -23,16 +24,17 @@ public class ModifierPickup : PickupHandler
     }
 
     protected override void PickUp(BaseEntity entity) { 
-        if(definition == null) {
-            Debug.LogError($"{name} tried to pick up, but has no definition!");
-            return;
-        }
-        if (!entity.CompareTag(Definition.PickupTag)) return;
+        //if(definition == null) {
+        //    Debug.LogError($"{name} tried to pick up, but has no definition!");
+        //    return;
+        //}
+        //if (!entity.CompareTag(Definition.PickupTag)) return;
         var modifier = definition.CreateModule(definition);
 
-        if (entity.AddStatModifier(modifier) && --remainingUsage <= 0) { 
+        if (entity.AddStatModifier(modifier)) {
+            remainingUsage--;
             Debug.Log(entity.name + " Picked up " + definition.modName);
-            Destroy(gameObject);
         }
+        base.PickUp(entity);
     }
 }

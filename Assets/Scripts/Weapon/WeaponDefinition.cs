@@ -27,7 +27,8 @@ public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
     public StatSet baseStats = new StatSet(
         new Stat(StatType.Damage, 10f),
         new Stat(StatType.FireRate, 1f),
-        new Stat(StatType.Velocity, 5f)
+        new Stat(StatType.Speed, 5f),
+        new Stat(StatType.Lifetime, 2f)
     );
     public float baseLifetime = 2f;
     public int basePenetration = 1;
@@ -63,6 +64,6 @@ public abstract class WeaponDefinition : ScriptableObject, IPickupDefinition {
     public DropType DropType => dropType;
     public int DropCount => dropCount;
     public float PickupCount => pickupCount;
-    public abstract IWeaponModule CreateModule(Transform firePoint, string target);
+    public abstract IWeaponModule CreateModule(Transform firePoint, string targetTag);
 
 }

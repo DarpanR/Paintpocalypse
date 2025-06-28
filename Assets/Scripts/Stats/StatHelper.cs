@@ -6,11 +6,12 @@ using UnityEngine;
 public enum StatType {
     MaxHealth,
     CurrentHealth,
-    Velocity,
+    Speed,
     LocalScale,
     InvincibilityDuration,
     Damage,
     FireRate,
+    Lifetime
 }
 
 [Serializable]
@@ -33,6 +34,8 @@ public class StatSet : ISerializationCallbackReceiver {
     [SerializeField]
     List<Stat> statList = new List<Stat>();
     Dictionary<StatType, Stat> stats = new Dictionary<StatType, Stat>();
+
+    public List<Stat> StatList => statList;
 
     public StatSet() {
         RebuildDictionary();

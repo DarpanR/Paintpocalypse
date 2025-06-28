@@ -9,13 +9,12 @@ using UnityEngine.UIElements;
 using UnityEditor;
 #endif
 
-public abstract class PickupHandler : MonoBehaviour, IVisitable {
+public abstract class PickupHandler : MonoBehaviour {
     [Tooltip("Degrees per second")]
     public float rotationSpeed = 45f;
 
     protected SpriteRenderer rend;
     protected int remainingUsage;
-
     protected bool dropped;
 
     public PickupType PickupType { get; protected set; }
@@ -26,9 +25,13 @@ public abstract class PickupHandler : MonoBehaviour, IVisitable {
 
     protected virtual void Awake() {
         rend = GetComponent<SpriteRenderer>();
+       
+    }
+
+    private void Start() {
         /// for any prebuilt pickup object. it will be existed as a dropped objcet instead.
         /// allows for placing pickup object scene! ^-^
-        if (Definition != null) 
+        if (Definition != null)
             Init(Definition, true);
         else
             Debug.LogWarning($"{name} has no pickup definition in Start(). Visuals will not be set until Init() is called.");
@@ -55,25 +58,20 @@ public abstract class PickupHandler : MonoBehaviour, IVisitable {
             throw new Exception("Mismatched Drop Item and Dropper");
         remainingUsage = definition.DropCount;
         dropped = dropIt;
-        SetVisual();
-    }
 
-    protected void SetVisual() {
-        rend.sprite = Definition.PickupIcon;
+        rend.sprite = definition.PickupIcon;
         rend.sortingLayerName = "Pickups";
         rend.sortingOrder = 0;
     }
 
-    protected abstract void PickUp(BaseEntity entity);
-    
-    public void Accept<T>(T visitor) where T : Component, IVisitor {
-        if (visitor is BaseEntity entity)
-            PickUp(entity);
+    protected virtual void PickUp(BaseEntity entity) {
+        if (remainingUsage <= 0) Destroy(gameObject);
     }
 
     public void OnTriggerEnter2D(Collider2D other) {
         if (!dropped) return;
-        other.GetComponent<IVisitor>()?.Visit(this);
+        if (other != null && other.CompareTag(Definition.PickupTag)) 
+            PickUp(other.GetComponent<BaseEntity>());
     }
 
     // (Optional) Draw a little gizmo in the editor so you can see

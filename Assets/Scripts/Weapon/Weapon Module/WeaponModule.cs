@@ -6,29 +6,27 @@ using UnityEngine;
 public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     where Tdef : WeaponDefinition
 {
+    //Current Stats
+    [SerializeField]
+    int level = 1;
+
+    protected string targetTag;
+    protected Transform firePoint;
+    protected FireRateTimer fireTimer;
+    protected StatBroker statBroker;
+    protected Queue<GameObject> pool;
+
+    public int Level { get; private set; }
     public Tdef Definition { get; }
+    public StatSet CurrentStats => statBroker.CurrentStats;
     // explicit interface impl so consumer sees only the base type
     WeaponDefinition IWeaponModule.Definition => Definition;
 
-    protected StatBroker statBroker;
-    public StatSet CurrentStats => statBroker.CurrentStats;
-
-    //Current Stats
-    [HideInInspector]
-    public int Level { get; private set; }
-
-    protected StatBroker damageBroker;
-    protected Transform firePoint;
-    protected CountdownTimer fireTimer;
-    protected Queue<GameObject> pool;
-    // Tag reference for projectile targeting
-    protected string target;
-
-    public WeaponModule(Tdef def, Transform fp, string target) {
-        Definition = def;
-        this.target = target;
-        firePoint = fp;
-        Level = 1;
+    public WeaponModule(Tdef defefinition, Transform firePoint, string targetTag) {
+        Level = level;
+        Definition = defefinition;
+        this.firePoint = firePoint;
+        this.targetTag = targetTag;
 
         statBroker = new StatBroker(Definition.baseStats);
 
@@ -40,25 +38,23 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
             go.SetActive(false);
             pool.Enqueue(go);
         }
-        fireTimer = new CountdownTimer(CurrentStats[StatType.FireRate].value);
+        fireTimer = new FireRateTimer(CurrentStats[StatType.FireRate].value);
         fireTimer.Start();
+        fireTimer.OnTimerStop += Fire;
     }
 
     public void TryFire() {
         fireTimer.Tick(Time.deltaTime);
-
-        if (fireTimer.IsFinished) { 
-            fireTimer.Reset();
-            Fire ();
-        }
         statBroker.Tick(Time.deltaTime);
     }
 
+    ///
     /// <summary>Spawn bullets with velocity and direction.</summary>
     /// 
     protected virtual void Fire() {
         Fire(firePoint.position, firePoint.rotation);
     }
+
     protected void Fire(Quaternion rotation) {
         Fire(firePoint.position, rotation);
     }
@@ -68,20 +64,18 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
             pool.Dequeue() :
             GameObject.Instantiate(Definition.projectile);
         go.transform.SetPositionAndRotation(spawnPoint, rotation);
-        go.transform.localScale = Vector3.one * CurrentStats.GetValueOrDefault(StatType.LocalScale, 1f);
         go.SetActive(true);
 
         var proj = go.GetComponent<Projectile>();
 
         proj.Init(
                 CurrentStats.Clone(),
-                target,
+                targetTag,
                 OperationFactory.GetOperation(
                     Definition.operationType,
                     Definition.affectedType,
                     -CurrentStats[StatType.Damage].value
                     ),
-                LifeTime,
                 Penetration
             );
         proj.onDestroyed = () => {
@@ -105,12 +99,10 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     }
 
     float GetComputedProperties (StatType type) {
-        return CurrentStats[type].value + Definition.LevelStats.GetValueOrDefault(type, 1f);
+        return CurrentStats[type].value + Definition.LevelStats.GetValueOrDefault(type, 0f);
     }
 
     // -- Computed Properties (base + level up stat) --
-    public float LifeTime =>
-        Definition.baseLifetime + Definition.luLifetime * (Level - 1);
     public int Penetration =>
         Definition.basePenetration + Definition.luPenetration * (Level - 1);
     public int ProjectileCount =>

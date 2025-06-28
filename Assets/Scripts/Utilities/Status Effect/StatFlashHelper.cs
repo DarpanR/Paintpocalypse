@@ -18,4 +18,10 @@ public class StatFlashEffect {
     public StatEffectType type;
     public Color color;
     public float flashSpeed;
+
+    public StatFlashEffect(StatEffectType type, Color color, float flashSpeed) {
+        this.type = type;
+        this.color = color;
+        this.flashSpeed = flashSpeed;
+    }
 }

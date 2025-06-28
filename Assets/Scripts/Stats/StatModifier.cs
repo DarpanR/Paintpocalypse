@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 
 public abstract class StatModifier : IDisposable {
-
     public bool Remove { get; private set; }
     public ModifierDefinition Definition { get; private set; }
     public event Action<StatModifier> OnDispose = delegate { };

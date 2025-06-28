@@ -1,15 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class StatFlasher : MonoBehaviour {
     [SerializeField]
     StatFlashDefinition allEffects;
-
+    [SerializeField]
     SpriteRenderer rend;
 
     Dictionary<StatEffectType, Coroutine> activeEffects = new();
@@ -34,10 +31,11 @@ public class StatFlasher : MonoBehaviour {
         if (activeEffects.ContainsKey(type) ||
             !effectMap.TryGetValue(type, out StatFlashEffect effect))
             return;
-        Coroutine routine = StartCoroutine(FlashRoutine(effect, duration, onEnd));
-        activeEffects[type] = routine;
+        if (rend != null) {
+            Coroutine routine = StartCoroutine(FlashRoutine(effect, duration, onEnd));
+            activeEffects[type] = routine;
+        }
     }
-
 
     IEnumerator FlashRoutine(StatFlashEffect effect, float duration, Action onEnd = null) {
         Color original = rend.color;
@@ -46,8 +44,10 @@ public class StatFlasher : MonoBehaviour {
 
         while (!timer.IsFinished) {
             rend.color = effect.color;
+
             yield return new WaitForSeconds(effect.flashSpeed);
             rend.color = original;
+
             yield return new WaitForSeconds(effect.flashSpeed);
             timer.Tick(effect.flashSpeed * 2);
         }
@@ -55,5 +55,9 @@ public class StatFlasher : MonoBehaviour {
         rend.color = original;
 
         onEnd?.Invoke();
+    }
+
+    public void OnDestroy() {
+        StopAllCoroutines();
     }
 }

@@ -10,23 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34a533c3b656896428cf83e4a08d1e50, type: 3}
-  m_Name: Enemy Ranged
+  m_Name: Enemy Normal
   m_EditorClassIdentifier: 
-  entityName: Enemy Ranged
+  entityName: Enemy Normal
   targetTag: Player
   baseStats:
     statList:
     - type: 0
-      value: 25
+      value: 50
     - type: 2
       value: 2
-    - type: 4
-      value: 0
-    - type: 5
-      value: 20
-  loadOutWeapons:
-  - {fileID: 11400000, guid: 2e38a6c10dfd96e42ae2fa839f361cb7, type: 2}
+    - type: 3
+      value: 1
+  loadOutWeapons: []
   VisualStatusEffects:
   - type: 1
-    color: {r: 0, g: 1, b: 0, a: 1}
-    flashSpeed: 0.2
+    color: {r: 1, g: 0, b: 0, a: 1}
+    flashSpeed: 0.1

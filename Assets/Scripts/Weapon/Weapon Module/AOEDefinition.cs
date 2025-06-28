@@ -9,9 +9,9 @@ public class AOEDefinition : WeaponDefinition {
     public float spawnRadius = 1.5f;
 
     [Header("Advanced Level Stats")]
-    public int luSpawnRadius = 0;
+    public float luSpawnRadius = 0;
 
-    public override IWeaponModule CreateModule(Transform firePoint, string target) {
-        return new AreaOfEffect(this, firePoint, target);
+    public override IWeaponModule CreateModule(Transform firePoint, string targetTag) {
+        return new AreaOfEffect(this, firePoint, targetTag);
     }
 }

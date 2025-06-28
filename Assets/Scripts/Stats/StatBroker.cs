@@ -19,10 +19,11 @@ public class StatBroker {
     }
 
     public bool Add(StatModifier modifier) {
-        string guid = modifier.Definition.GUID;
+        StatModifier cloneMod = modifier.Definition.CreateModule(modifier.Definition);
+        string guid = cloneMod.Definition.GUID;
 
         if (activeMods.TryGetValue(guid, out StatModifier existing)) {
-            switch (modifier.Definition.settable) {
+            switch (cloneMod.Definition.settable) {
                 case settableType.Timer:
                     if (existing != null) {
                         existing.ResetTimer();
@@ -38,8 +39,8 @@ public class StatBroker {
                     break;
             }
         }
-        activeMods[guid] = modifier;
-        modifier.OnDispose += _ => activeMods.Remove(guid);
+        activeMods[guid] = cloneMod;
+        cloneMod.OnDispose += _ => activeMods.Remove(guid);
         CalculateStat();
         return true;
     }
@@ -107,6 +108,7 @@ public class StatBroker {
     }
 
     public void UpdateBaseStat(StatType type, float value) {
+        Debug.Log(type + ", " + value);
         stats.AddStat(type, value);
         CalculateStat();
     }
