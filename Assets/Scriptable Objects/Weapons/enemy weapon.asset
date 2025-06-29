@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a1d9353da946a449545f53bb30aa52, type: 3}
+  m_Name: enemy weapon
+  m_EditorClassIdentifier: 
+  pickupIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
+  pickupCount: 1
+  pickupTag: Enemy
+  dropType: 0
+  dropCount: 1
+  projectile: {fileID: 1441220537783115536, guid: 7c552f0350f9ad544a21769098d1081d, type: 3}
+  poolSize: 5
+  weaponName: Cum Slinger
+  maxLevel: 5
+  operationType: 1
+  affectedType: 1
+  baseStats:
+    statList:
+    - type: 5
+      value: 5
+    - type: 6
+      value: 0.5
+    - type: 2
+      value: 10
+    - type: 7
+      value: 2
+  basePenetration: 1
+  baseProjectileCount: 1
+  LevelStats:
+    statList:
+    - type: 5
+      value: 10
+  luPenetration: 1
+  luProjectileCount: 1
+  guid: 680344f5-5718-4a17-8d26-b2b5d6101551
+  baseSpreadAngle: 30
+  luSpreadAngle: 0

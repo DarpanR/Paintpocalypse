@@ -3,18 +3,21 @@ using System.Collections.Generic;
 
 public abstract class StatModifier : IDisposable {
     public bool Remove { get; private set; }
-    public ModifierDefinition Definition { get; private set; }
+
+    public string GUID { get; private set; }
+
+    //public StatModData data { get; private set; }
     public event Action<StatModifier> OnDispose = delegate { };
 
     CountdownTimer timer;
-    public void ResetTimer() => timer.Reset();
+    public void Reset() => timer.Start();
     public void Tick(float deltaTime) => timer?.Tick(deltaTime);
 
-    public StatModifier(ModifierDefinition definition) {
-        Definition = definition;
+    public StatModifier(string guid, float duration) {
+        GUID = guid;
         Remove = false;
-
-        timer = new CountdownTimer(definition.duration);
+ 
+        timer = new CountdownTimer(duration);
         timer.OnTimerStop += () => Remove = true;
         timer.Start();
     }

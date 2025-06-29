@@ -5,7 +5,7 @@ using UnityEngine;
 
 [Serializable]
 public class DropEntry {
-    public WeaponDefinition weapon;
+    public WeaponData weapon;
     public int weight;
 }
 

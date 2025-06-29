@@ -1,33 +1,72 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionBarPanel : MonoBehaviour
+public class MouseAbilityPanel : MonoBehaviour
 {
     public GameObject ModPickup;
-    public MagnifyingGlassDefinition magnifyingGlass;
+    public MagGlassModData magnifyingGlass;
+
+    public GameObject WeapPickup;
+    public WeaponData pencil;
+
+    public GameObject Eyedropper;
+
+    public GameObject textBomb;
+
+    ActiveAbillity active = ActiveAbillity.None;
+    GameObject activeObject;
+
+    Action OnDropHandler;
 
     /// returns true if there is an ability already selected
-    bool active;
+    enum ActiveAbillity {
+        None,
+        MagGlass,
+        Pencil,
+    };
 
     private void Start() {
-        active = false;
+        active = ActiveAbillity.None;
+        OnDropHandler += () => active = ActiveAbillity.None;
+        OnDropHandler?.Invoke();
     }
 
-    public void MagnifyingGlass() {
-        if (!active) {
+    void OnAbilityButtonClick (ActiveAbillity clickedAbility, IPickupData def, GameObject obj) {
+        if (active == clickedAbility) {
+            if (activeObject != null) {
+                if (activeObject.TryGetComponent<PickupHandler>(out PickupHandler pickup)) 
+                    pickup.Dropped -= OnDropHandler;
+                Destroy(activeObject);
+                activeObject = null;
+            }
+            OnDropHandler?.Invoke();
+        } else {
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPos.z = 0f;
 
-            var pickup = Instantiate(ModPickup, worldPos, Quaternion.identity).GetComponent<ModifierPickup>();
-            pickup.Init(magnifyingGlass);
-            pickup.Dropped += () => active = false;
+            activeObject = Instantiate(obj, worldPos, Quaternion.identity);
 
-            active = true;
+            if (activeObject.TryGetComponent<PickupHandler>(out var pickup)) {
+                pickup.Init(def);
+                pickup.Dropped += OnDropHandler;
+                active = clickedAbility;
+            } else {
+                Debug.LogWarning("Missing pickup handler in current active ability. Review ability!");
+            }
         }
     }
 
-    public void Eyedropper() {
+    public void OnMagnifyingGlass() {
+        OnAbilityButtonClick(ActiveAbillity.MagGlass, magnifyingGlass, ModPickup);
+    }
+
+    public void OnPencil() {
+        OnAbilityButtonClick(ActiveAbillity.Pencil, pencil, WeapPickup);
+    }
+
+    public void EyeDropper() {
 
     }
 }

@@ -13,7 +13,7 @@ public class EntityData : ScriptableObject
         new Stat(StatType.Speed, 2f),
         new Stat(StatType.LocalScale, 1f)
     );
-    public List<WeaponDefinition> loadOutWeapons;
+    public List<WeaponData> loadOutWeapons;
     public List<StatFlashEffect> VisualStatusEffects = new List<StatFlashEffect> {
         new StatFlashEffect(StatEffectType.Damage, Color.red, 0.1f)
     };

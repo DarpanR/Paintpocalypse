@@ -16,7 +16,7 @@ public class DropManager : MonoBehaviour
         if (dropTable == null) Destroy(this);
     }
 
-    WeaponDefinition GetRandomDrop(DropTable table) {
+    WeaponData GetRandomDrop(DropTable table) {
         int totalWeight = table.drops.Sum(e => e.weight);
         int roll = Random.Range(0, totalWeight);
 
@@ -37,7 +37,7 @@ public class DropManager : MonoBehaviour
 
     public void TryDrop(Vector3 position, DropTable table, float chance) {
         if (Random.value * 100 <= chance) {
-            WeaponDefinition def = GetRandomDrop(table);
+            WeaponData def = GetRandomDrop(table);
 
             if (def != null) {
                 GameObject pf = Instantiate(pickupPrefab, position, Quaternion.identity);

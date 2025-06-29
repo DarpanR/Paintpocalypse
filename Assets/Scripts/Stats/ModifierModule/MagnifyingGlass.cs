@@ -4,23 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class MagnifyingGlass : StatModifier, IWeaponModifier
+public class MagnifyingGlass : StatModifier
 {
-    public MagnifyingGlass(ModifierDefinition definition) : base(definition) {}
+    float sizeMultiplier;
+    float speedMultplier;
+    float damageMultiplier;
 
-    public void Activate(WeaponManager weaponManager) {
-        foreach (var weapon in weaponManager.Weapons)
-            if (weapon is IstatSetTarget statTarget)
-                statTarget.AddStatModifier(this);
+
+    public MagnifyingGlass(string GUID, float duration, float size, float speed, float damage)
+        : base(GUID, duration) {
+        sizeMultiplier = size;
+        speedMultplier = speed;
+        damageMultiplier = damage;
     }
 
     public override List<IoperationStrategy> Activate() {
-        MagnifyingGlassDefinition def = Definition as MagnifyingGlassDefinition;
-
         return new() {
-            new MultiplyOperation(StatType.LocalScale, def.sizeMultiplier),
-            new MultiplyOperation(StatType.Speed,  def.speedMultplier),
-            new MultiplyOperation( StatType.Damage, def.damageMultiplier)
+            new MultiplyOperation(StatType.LocalScale, sizeMultiplier),
+            new MultiplyOperation(StatType.Speed,  speedMultplier),
+            new MultiplyOperation( StatType.Damage, damageMultiplier)
         };
     }
 }

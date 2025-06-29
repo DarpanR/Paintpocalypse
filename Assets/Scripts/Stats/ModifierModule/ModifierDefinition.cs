@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public abstract class ModifierDefinition : ScriptableObject {
+public abstract class StatModData : ScriptableObject {
     [Header("Modifier Setting")]
     public string modName;
     public float duration;
+    public ModifierCapabilities Capabilities => GetCapabilities();
     public settableType settable = settableType.Single;
 
     [SerializeField, HideInInspector]
@@ -24,5 +25,7 @@ public abstract class ModifierDefinition : ScriptableObject {
         }
     }
 
-    public abstract StatModifier CreateModule(ModifierDefinition definition);
+    protected abstract ModifierCapabilities GetCapabilities();
+
+    public abstract StatModifier CreateModule(StatModData data);
 }

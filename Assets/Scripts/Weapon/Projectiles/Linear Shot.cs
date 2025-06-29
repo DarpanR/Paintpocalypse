@@ -22,7 +22,6 @@ public class LinearShot : Projectile
             return;
         enemiesHit[id] = 0f;
         hits++;
-        Debug.Log("hit");
 
         //Apply damage if enemy has a health component
         var enemy = collision.GetComponent<BaseEntity>();

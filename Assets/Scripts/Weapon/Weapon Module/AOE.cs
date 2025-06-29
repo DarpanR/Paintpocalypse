@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AreaOfEffect : WeaponModule<AOEDefinition> {
-    public AreaOfEffect(AOEDefinition def, Transform fp, string targetTag):base(def, fp, targetTag) { }
+public class AreaOfEffect : WeaponModule<AOEData> {
+    public AreaOfEffect(AOEData def, Transform fp, MonoBehaviour r, string targetTag):base(def, fp, r, targetTag) { }
 
     protected override void Fire() {
         for (int i = 0; i < ProjectileCount;i++) {
@@ -17,5 +17,5 @@ public class AreaOfEffect : WeaponModule<AOEDefinition> {
     }
 
     public float spawnRadius =>
-        Definition.spawnRadius + Definition.luSpawnRadius * (Level - 1);
+        data.spawnRadius + data.luSpawnRadius * (Level - 1);
 }

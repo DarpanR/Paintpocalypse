@@ -8,7 +8,7 @@ public interface IWeaponModule
     /// The static data this module was built from.
     /// (always non?null)
     /// </summary>
-    WeaponDefinition Definition { get; }
+    WeaponData data { get; }
 
     /// <summary>
     /// Called every frame by WeaponManager to handle cooldown & firing.

@@ -6,35 +6,20 @@ using UnityEngine.UIElements;
 public class ModifierPickup : PickupHandler
 {
     [SerializeField]
-    ModifierDefinition definition;
+    StatModData data;
 
-    protected override IPickupDefinition Definition => definition as IPickupDefinition;
+    public override IPickupData Data => data as IPickupData;
 
     protected override void Awake()
     {
-        if (definition != null && definition is not IPickupDefinition)
-            Debug.LogWarning($"{name}'s ModifierDefinition is not IpickupDefinition!");
+        if (data != null && data is not IPickupData)
+            Debug.LogWarning($"{name}'s StatModData is not Ipickupdata!");
         PickupType = PickupType.StatModifier;
         base.Awake();
     }
 
-    public override void Init(IPickupDefinition definition, bool dropIt = false) {
-        this.definition = this.definition ?? definition as ModifierDefinition;
-        base.Init(definition, dropIt);
-    }
-
-    protected override void PickUp(BaseEntity entity) { 
-        //if(definition == null) {
-        //    Debug.LogError($"{name} tried to pick up, but has no definition!");
-        //    return;
-        //}
-        //if (!entity.CompareTag(Definition.PickupTag)) return;
-        var modifier = definition.CreateModule(definition);
-
-        if (entity.AddStatModifier(modifier)) {
-            remainingUsage--;
-            Debug.Log(entity.name + " Picked up " + definition.modName);
-        }
-        base.PickUp(entity);
+    public override void Init(IPickupData data, bool dropIt = false) {
+        this.data = this.data ?? data as StatModData;
+        base.Init(data, dropIt);
     }
 }

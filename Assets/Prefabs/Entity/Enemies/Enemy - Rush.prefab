@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1e80cfbb01b8b4eb58f15d78656a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eData: {fileID: 11400000, guid: fd5bf36c2a1b45d44b3f3e8610b95db1, type: 2}
+  eData: {fileID: 11400000, guid: 889abcccf8943fa44b8b2c960d6afdee, type: 2}
   flasher: {fileID: 4561620535583874631}
   spriteTransform: {fileID: 6024365961300216958}
 --- !u!114 &4561620535583874631

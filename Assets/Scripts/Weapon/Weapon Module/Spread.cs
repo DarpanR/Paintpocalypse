@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spread : WeaponModule<SpreadDefinition> {
-    public Spread(SpreadDefinition def, Transform fp, string t) : base(def, fp, t) {}
+public class Shotgun : WeaponModule<ShotgunData> {
+    public Shotgun(ShotgunData def, Transform fp, MonoBehaviour r, string t) : base(def, fp, r, t) {}
 
     protected override void Fire() { 
         foreach (var rots in UpdateSpawnRotations())
@@ -28,6 +28,6 @@ public class Spread : WeaponModule<SpreadDefinition> {
     }
 
     public float SpreadAngle =>
-        Definition.baseSpreadAngle + Definition.luSpreadAngle * (Level - 1);
+        data.baseSpreadAngle + data.luSpreadAngle * (Level - 1);
         
 }

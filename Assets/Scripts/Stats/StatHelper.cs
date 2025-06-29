@@ -14,6 +14,12 @@ public enum StatType {
     Lifetime
 }
 
+public enum ModifierCapabilities {
+    None = 0,
+    Weapon = 1,
+    Stat = 2,
+}
+
 [Serializable]
 public class Stat {
     public StatType type;
@@ -101,7 +107,7 @@ public interface IStatSetModifier {
 
 public interface IstatSetTarget {
     StatSet CurrentStats { get; }
-    bool AddStatModifier(StatModifier modifier);
+    bool AddStatModifier(StatModData modifier);
 }
 
 public interface IWeaponManagerTarget {

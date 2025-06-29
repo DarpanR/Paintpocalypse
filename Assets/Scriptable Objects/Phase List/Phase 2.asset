@@ -12,16 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20285bddea4a34840af54414678c3d71, type: 3}
   m_Name: Phase 2
   m_EditorClassIdentifier: 
-  discription: Phase 2 Stronger
-  duration: 180
-  periodicInterval: 7
+  discription: 
+  duration: 90
+  periodicInterval: 10
   periodicSpawns:
-  - enemy: {fileID: 427226824617519313, guid: 75a58e2db6be7054eacba4e4a8f12739, type: 3}
-    minCount: 5
-    maxCount: 10
+  - enemy: {fileID: 427226824617519313, guid: b5f7b6529a7ef0a4f8bd349d6e7c2d8c, type: 3}
+    minCount: 10
+    maxCount: 16
     pattern: 1
-  - enemy: {fileID: 6310707719617671056, guid: acc00c814f12a1f42ba696953182243f, type: 3}
+  - enemy: {fileID: 974057190339115752, guid: ef4d73a027a210f4083838d29e697417, type: 3}
     minCount: 3
-    maxCount: 5
-    pattern: 1
-  specialWaves: []
+    maxCount: 6
+    pattern: 0
+  specialWaves:
+  - timeOffSet: 7
+    spawns:
+    - enemy: {fileID: 6310707719617671056, guid: fb55b41bf5bb64545af11160b2a6086e, type: 3}
+      minCount: 6
+      maxCount: 8
+      pattern: 0

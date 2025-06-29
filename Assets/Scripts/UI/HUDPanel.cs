@@ -18,7 +18,7 @@ public class HUDPanel : MonoBehaviour
     PlayerController stickman;
 
     private void Start() {
-        globalTimer = PhaseManager.Instance.totalDuration;
+        globalTimer = PhaseManager.Instance.TotalDuration;
         stickman = PlayerController.Instance;   
 
         SetMaxHealth();

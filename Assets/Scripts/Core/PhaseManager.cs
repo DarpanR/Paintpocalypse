@@ -1,5 +1,7 @@
+//using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum SpawnPatternType { Random, Burst, Radial, Linear /*, ZigZag */}
 
@@ -7,21 +9,17 @@ public class PhaseManager : MonoBehaviour {
     public static PhaseManager Instance { get; private set; }
 
     [Header("Enemy Phases")]
-    [SerializeField] List<PhaseDefinition> phases;
-    public List<PhaseDefinition> Phases { get { return phases; } }
+    [SerializeField] List<Phasedata> phases;
+    public List<Phasedata> Phases { get { return phases; } }
 
     [Header("Pattern logic")]
     public int buffer = 1;
     public float spawnRadius = 2f;
-    public float totalDuration;
+    public float TotalDuration { get; private set; }
 
     int currentPhase;
     // Time tracker for current phase
-    float timer;
-    // Time tracker for periodic wave in each phase
-    float nextWave = 0f;
-    // Index tracker for rush waves
-    int nextRush = 0;
+    ClockTimer phaseTimer;
     bool finished;
     bool initialized = false;
 
@@ -36,12 +34,11 @@ public class PhaseManager : MonoBehaviour {
         if (Phases.Count == 0) Destroy(this);
 
         // Sorts spawn waves based on their spawn timer set
-        // and add phase duration to totalDuration
+        // and add phase duration to TotalDuration
         foreach (var phase in phases) {
             phase.specialWaves.Sort((a, b) => a.timeOffSet.CompareTo(b.timeOffSet));
-            totalDuration += phase.duration;
+            TotalDuration += phase.duration;
         }
-
     }
 
     private void Start() {
@@ -52,52 +49,57 @@ public class PhaseManager : MonoBehaviour {
 
         // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
         radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
-
         
         BeginPhase(0);
     }
 
     void Update() {
         if (!initialized || finished) return;
-        timer += Time.deltaTime;
-        var phase = phases[currentPhase];
-
-        // Periodic Spawns
-        if (timer >= nextWave) {
-            FireInstruction(phase.periodicSpawns[Random.Range(0, phase.periodicSpawns.Count)]);
-            nextWave += phase.periodicInterval;
-        }
-
-        // Special Spawns
-        while (nextRush < phase.specialWaves.Count && timer >= phase.specialWaves[nextRush].timeOffSet) {
-            foreach (var ins in phase.specialWaves[nextRush].spawns) FireInstruction(ins);
-            nextRush++;
-        }
-
-        // End of phase?
-        if (timer >= phase.duration) {
-            int next = currentPhase + 1;
-
-            if (next < phases.Count)
-                BeginPhase(next);
-            else
-                finished = true;                
-        }
+        phaseTimer.Tick(Time.deltaTime);
     }
 
     void BeginPhase(int phaseIndex) {
-        currentPhase = phaseIndex;
-        timer = 0f;
-        nextWave = phases[phaseIndex].periodicInterval;
-        nextRush = 0;
+        var phase = phases[currentPhase];
+        var alarms = new List<float>();
+
+        var periodicTimes = new HashSet<float>();
+        int count = Mathf.CeilToInt(phase.duration / phase.periodicInterval);
+
+        for (int i = 0; i < count; i++) {
+            float t = phase.periodicInterval * i;
+
+            alarms.Add(t);
+            periodicTimes.Add(t);
+        }
+
+        foreach (var waves in phase.specialWaves)
+            if (waves.spawns.Count > 0)
+                alarms.Add(waves.timeOffSet);
+
+        phaseTimer = new ClockTimer(0, alarms);
+        phaseTimer.onAlarm += (time) => {
+            if (periodicTimes.Contains(time)) {
+                // Spawn a periodic wave
+                var ins = phase.periodicSpawns[Random.Range(0, phase.periodicSpawns.Count)];
+                FireInstruction(ins);
+            } else {
+                foreach (var wave in phase.specialWaves)
+                    if (Mathf.Approximately(wave.timeOffSet, time))
+                        foreach (var ins in wave.spawns)
+                            FireInstruction(ins);
+            }
+        };
+        phaseTimer.OnTimerStop += () => BeginPhase(currentPhase++);
+        phaseTimer.Start();
     }
 
     void FireInstruction(SpawnInstruction ins) {
         int count = Random.Range(ins.minCount, ins.maxCount + 1);
         List<Vector2> positions = GeneratePattern(ins.pattern, count);
 
-        for (int i = 0; i < positions.Count; i++)
+        for (int i = 0; i < positions.Count; i++) {
             Instantiate(ins.enemy, positions[i], Quaternion.identity);
+        }
     }
 
     Vector2 GetOffscreenPosition() {
@@ -157,6 +159,9 @@ public class PhaseManager : MonoBehaviour {
                     break;
                 }
             case SpawnPatternType.Random:
+                var values = System.Enum.GetValues(typeof(SpawnPatternType));
+                var randPattern = (SpawnPatternType)values.GetValue(Random.Range(0, values.Length));
+                positions = GeneratePattern(randPattern, count);
                 //System.Random rand = new Syste.Random();
                 break;
                 // More patterns here!

@@ -10,27 +10,19 @@ using UnityEngine;
 public class WeaponPickup : PickupHandler {
 
     [SerializeField]
-    WeaponDefinition definition;
+    WeaponData data;
 
-    protected override IPickupDefinition Definition => definition as IPickupDefinition;
+    public override IPickupData Data => data as IPickupData;
 
     protected override void Awake() {
-        if (definition != null && definition is not IPickupDefinition)
-            Debug.LogWarning($"{name}'s ModifierDefinition is not IpickupDefinition!");
+        if (data != null && data is not IPickupData)
+            Debug.LogWarning($"{name}'s StatModData is not Ipickupdata!");
         PickupType = PickupType.Weapon;
         base.Awake();
     }
 
-    public override void Init(IPickupDefinition definition, bool dropIt = false) {
-        this.definition = this.definition ?? definition as WeaponDefinition;
-        base.Init(definition, dropIt);
-    }
-
-    protected override void PickUp(BaseEntity entity) {
-        if (entity == null) return;
-        remainingUsage--;
-        entity.WeaponManager.Equip(definition);
-
-        base.PickUp(entity);
+    public override void Init(IPickupData data, bool dropIt = false) {
+        this.data = this.data ?? data as WeaponData;
+        base.Init(data, dropIt);
     }
 }

@@ -2,18 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class WeaponManager {
     string targetTag;
     Transform firePoint;
-    Dictionary<WeaponDefinition, IWeaponModule> weapons = new();
+    MonoBehaviour runner;
+    Dictionary<WeaponData, IWeaponModule> weapons = new();
 
     public IEnumerable<IWeaponModule> Weapons => weapons.Values;
 
-    public WeaponManager(Transform firePoint, List<WeaponDefinition> allWeapons, string targetTag) {
+    public WeaponManager(Transform firePoint, List<WeaponData> allWeapons, string targetTag, MonoBehaviour runner) {
         this.firePoint = firePoint;
+        this.runner = runner;
         this.targetTag = targetTag;
 
         foreach (var weapon in allWeapons)
@@ -29,11 +32,11 @@ public class WeaponManager {
     /// <summary>
     /// Call this when the player picks up a weapon drop or levels up.
     /// </summary>
-    public void Equip(WeaponDefinition def) {
+    public void Equip(WeaponData def) {
         if(weapons.TryGetValue(def, out var existing))
             existing.Upgrade();
         else {
-            var module = def.CreateModule(firePoint, targetTag);
+            var module = def.CreateModule(firePoint, runner, targetTag);
             weapons[def]= module;   
         }
         // TODO: notify HUD with new weapon icon

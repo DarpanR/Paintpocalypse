@@ -4,7 +4,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
-    where Tdef : WeaponDefinition
+    where Tdef : WeaponData
 {
     //Current Stats
     [SerializeField]
@@ -12,32 +12,36 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
 
     protected string targetTag;
     protected Transform firePoint;
+    protected MonoBehaviour runner;
     protected FireRateTimer fireTimer;
     protected StatBroker statBroker;
     protected Queue<GameObject> pool;
 
+    ProjectileManager projManager => ProjectileManager.Instance;
+
     public int Level { get; private set; }
-    public Tdef Definition { get; }
+    public Tdef data { get; }
     public StatSet CurrentStats => statBroker.CurrentStats;
     // explicit interface impl so consumer sees only the base type
-    WeaponDefinition IWeaponModule.Definition => Definition;
+    WeaponData IWeaponModule.data => data;
     
-    public WeaponModule(Tdef definition, Transform firePoint, string targetTag) {
+    public WeaponModule(Tdef data, Transform firePoint, MonoBehaviour runner, string targetTag) {
         Level = level;
-        Definition = definition;
+        data = data;
         this.firePoint = firePoint;
+        this.runner = runner;
         this.targetTag = targetTag;
 
-        statBroker = new StatBroker(Definition.baseStats);
+        statBroker = new StatBroker(data.baseStats);
 
-        // **Per-weapon projectile pool**:
-        pool = new Queue<GameObject>();
+        //// **Per-weapon projectile pool**:
+        //pool = new Queue<GameObject>();
 
-        for (int i = 0; i < Definition.poolSize; i++) {
-            var go = GameObject.Instantiate(definition.projectile);
-            go.SetActive(false);
-            pool.Enqueue(go);
-        }
+        //for (int i = 0; i < data.poolSize; i++) {
+        //    var go = GameObject.Instantiate(data.projectile);
+        //    go.SetActive(false);
+        //    pool.Enqueue(go);
+        //}
         fireTimer = new FireRateTimer(CurrentStats[StatType.FireRate].value);
         fireTimer.Start();
         fireTimer.OnTimerStop += Fire;
@@ -59,19 +63,17 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         Fire(firePoint.position, rotation);
     }
     protected void Fire(Vector3 spawnPoint, Quaternion rotation) {
-        GameObject go = pool.Count > 0 ?
-            pool.Dequeue() :
-            GameObject.Instantiate(Definition.projectile);
-        go.transform.SetPositionAndRotation(spawnPoint, rotation);
 
+        GameObject go = projManager.Request(data.projectile, data.poolSize);
+        go.transform.SetPositionAndRotation(spawnPoint, rotation);
         Projectile proj = go.GetComponent<Projectile>();
 
         proj.Init(
             CurrentStats.Clone(),
             targetTag,
             OperationFactory.GetOperation(
-                Definition.operationType,
-                Definition.affectedType,
+                data.operationType,
+                data.affectedType,
                 -CurrentStats[StatType.Damage].value
                 ),
             Penetration
@@ -82,7 +84,7 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     }
 
     public virtual void Upgrade() {
-        if (Level < Definition.maxLevel)
+        if (Level < data.maxLevel)
             Level++;
         statBroker.UpdateBaseStat(StatType.Damage, GetComputedProperties(StatType.Damage));
         statBroker.UpdateBaseStat(StatType.FireRate, GetComputedProperties(StatType.FireRate));
@@ -91,17 +93,17 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         // Recalculate with new base stats while preserving modifiers
     }
 
-    public bool AddStatModifier(StatModifier modifier) {
-        return statBroker.Add(modifier);
+    public bool AddStatModifier(StatModData data) {
+        return statBroker.Add(data);
     }
 
     float GetComputedProperties (StatType type) {
-        return CurrentStats[type].value + Definition.LevelStats.GetValueOrDefault(type, 0f);
+        return CurrentStats[type].value + data.LevelStats.GetValueOrDefault(type, 0f);
     }
 
     // -- Computed Properties (base + level up stat) --
     public int Penetration =>
-        Definition.basePenetration + Definition.luPenetration * (Level - 1);
+        data.basePenetration + data.luPenetration * (Level - 1);
     public int ProjectileCount =>
-        Definition.baseProjectileCount + Definition.luProjectileCount * (Level - 1);
+        data.baseProjectileCount + data.luProjectileCount * (Level - 1);
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StatFlasher : MonoBehaviour {
     [SerializeField]
-    StatFlashDefinition allEffects;
+    StatFlashdata allEffects;
     [SerializeField]
     SpriteRenderer rend;
 

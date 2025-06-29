@@ -12,7 +12,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     bool isInvincible = false;
 
     public event Action OnTakeDamage;
-    public event Func<StatModifier, bool> OnAddStatModifier;
+    public event Func<StatModData, bool> OnAddStatModifier;
     public event Action<BaseEntity> OnDie;
 
     public StatSet CurrentStats => statBroker.CurrentStats;
@@ -24,7 +24,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
         if (flasher == null)
             throw new NullReferenceException("flasher missing homeslice");
         statBroker = new StatBroker(InitializeStat());
-        weaponManager = new WeaponManager(transform, eData.loadOutWeapons, eData.targetTag);
+        weaponManager = new WeaponManager(transform, eData.loadOutWeapons, eData.targetTag, this);
     }
 
     protected virtual void Start() {
@@ -51,9 +51,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
         float maxHealth = sSet.GetValueOrAdd(StatType.MaxHealth, 100f);
 
         // Then initialize CurrentHealth if missing
-        if (!sSet.HasStat(StatType.CurrentHealth)) {
-            sSet.AddStat(StatType.CurrentHealth, maxHealth);
-        }
+        sSet.GetValueOrAdd(StatType.CurrentHealth, maxHealth);
         // Set LocalScale
         sSet.GetValueOrAdd(StatType.LocalScale, 1f);
         sSet.GetValueOrAdd(StatType.Speed, 2f);
@@ -72,7 +70,6 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
         } else {
             flasher?.Trigger(StatEffectType.Damage, 0.1f);
         }
-        Debug.Log(operation.Value);
         statBroker.UpdateBaseStat(operation);
         OnTakeDamage?.Invoke();
     }
@@ -84,12 +81,16 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
         if (CurrentStats[StatType.CurrentHealth].value <= 0) Die();
     }
 
-    public bool AddStatModifier(StatModifier modifier) {
-        if (modifier is IWeaponModifier weapMod) {
-            weapMod.Activate(WeaponManager);
+    public bool AddStatModifier(StatModData def) {
+        bool weaponCapable = (def.Capabilities & ModifierCapabilities.Weapon) != 0;
+
+        if (weaponCapable) {
+            foreach (var weapon in weaponManager.Weapons)
+                if (weapon is IstatSetTarget statTarget)
+                    statTarget.AddStatModifier(def);
         }
-        OnAddStatModifier?.Invoke(modifier);
-        return statBroker.Add(modifier);
+        OnAddStatModifier?.Invoke(def);
+        return statBroker.Add(def);
     }
 
     protected virtual void Die() {
