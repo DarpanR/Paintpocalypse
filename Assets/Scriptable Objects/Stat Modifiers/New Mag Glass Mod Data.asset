@@ -16,12 +16,13 @@ MonoBehaviour:
   duration: 5
   settable: 0
   guid: 21b1c282-e169-4643-a31d-6a58d21972cc
-  pickupIcon: {fileID: 21300000, guid: 4c8e088dd00271e4da08630dda137360, type: 3}
-  dropIcon: {fileID: 21300000, guid: 999f07b54f6fe4149b5f5ca28b4571f7, type: 3}
-  pickupTag: Enemy
-  pickupCount: 1
-  dropType: 0
-  dropCount: 1
-  sizeMultiplier: 2
+  sizeMultiplier: 1.5
   damageMultiplier: 2
   speedMultplier: 0.75
+  pickupIcon: {fileID: 21300000, guid: 597b2d6c503b1304a824cccbbce2391f, type: 3}
+  dropIcon: {fileID: 0}
+  pickupTag: Enemy
+  totalUsage: 1
+  lifetime: 5
+  dropOperationType: 1
+  dropRadius: 1

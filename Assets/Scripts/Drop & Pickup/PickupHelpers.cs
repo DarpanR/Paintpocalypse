@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum PickupType { 
@@ -10,59 +10,43 @@ public enum PickupType {
     EXP,
 }
 
-public enum DropType {
-    OverMouse,
-    ClosestToDrop,
-    Area,
-    Attraction,
-    AttachToTarget,
-    QueueAtTarget,
-    Directional
+[Serializable]
+public struct PickupData {
+    public Sprite pickupIcon;
+    public Sprite dropIcon;
+    [TagMaskField]
+    public string pickupTag;
+    public PickupType pickupType;
+    [Min(-1)]
+    public float lifeTime;
+    [Min(-1)]
+    public int totalUsage;
+    public TargetingType dropOperationType;
+    public float dropRadius;
 }
 
 public interface IPickupData {
-    string DisplayName { get; }
+    string PickupName { get; }
     Sprite PickupIcon { get; }
     Sprite DropIcon { get; }
     string PickupTag { get; }
     PickupType PickupType { get; }
     float LifeTime { get; }
     int TotalUsage { get; }
-    float PickupCount { get; }
-    DropType DropType { get; }
-    float DropRadius{ get; }
-    float DropForce { get; }
+    TargetingType TargetingType { get; }
+    float TargetRadius { get; }
 }
 
-public static class DropOperationFactory {
-    public static DropOperation GetOperation(PickupHandler handler, IPickupData pickup) {
-        switch (pickup.DropType) {
-            case DropType.AttachToTarget:
-                return new AttachToTargetOperation(handler);
-            case DropType.ClosestToDrop:
-                return new ClosestToMouseOperation(handler, pickup.DropRadius);
-            case DropType.Area:
-                return new AreaOperation(handler, pickup.DropRadius);
-            case DropType.Attraction:
-                return new AttractionOperation(handler, pickup.DropRadius, pickup.DropForce);
-            case DropType.OverMouse:
-            default:
-                return new OverMouseOperation(handler);
-        }
-    }
-}
-
-public static class PickupOperationFactory {
+public static class PickupDropFactory {
     public static bool Execute(BaseEntity entity, IPickupData pickup) {
-        if (entity == null || pickup.PickupTag != entity.tag)
+        if (entity == null || !entity.CompareTag(pickup.PickupTag))
             return false;
 
         switch (pickup.PickupType) {
             case PickupType.Weapon:
                 if (pickup is not WeaponData) 
                     throw new InvalidCastException($"Pickup {pickup} is not a WeaponData!");
-                entity.WeaponManager.Equip(pickup as WeaponData);
-                return true;
+                return entity.WeaponManager.Equip(pickup as WeaponData);
             case PickupType.StatModifier:
                 if (pickup is not StatModData)
                     throw new InvalidCastException($"Pickup {pickup} is not a StatModData!");
@@ -74,76 +58,64 @@ public static class PickupOperationFactory {
     }
 }
 
-public abstract class DropOperation {
-    protected PickupHandler pickupHandler;
-    public float rotationSpeed = 45f;
-    public virtual bool ShouldDestroyAfterExecute => false;
+public abstract class DropOperation : TargetingOperation {
+    public event Action<BaseEntity> OnPickUp;
 
-    public DropOperation(PickupHandler pickupHandler) {
-        this.pickupHandler = pickupHandler;
+    public DropOperation(Targeting targeting) :base(targeting) {}
+
+    public void InvokeOnPickUp(BaseEntity entity) => OnPickUp?.Invoke(entity);
+
+    public override void Preview() {
+        targeting.Transform.position = GameInputManager.Instance.MouseWorldPosition;
     }
 
-    public virtual void Preview() {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-        pickupHandler.transform.position = mousePos;
-    }
-
-    public virtual void Execute() {
-        pickupHandler.transform.Rotate(0, rotationSpeed * Time.deltaTime, 0f);
-    }
+    public override TargetResult Execute() => new TargetResult {
+        Position = GameInputManager.Instance.MouseWorldPosition,
+        success = true,
+    };
 }
 
-public class OverMouseOperation : DropOperation {
-    public OverMouseOperation(PickupHandler pickupHandler) : base(pickupHandler) { }
-
-    public override void Execute() { }
+public class OverMouseDrop : DropOperation {
+    public OverMouseDrop(Targeting targeting) : base(targeting) { }
 }
 
-public class AttachToTargetOperation : DropOperation {
-    public override bool ShouldDestroyAfterExecute => true;
+public class AttachToTargetDrop : DropOperation {
 
-    public AttachToTargetOperation(PickupHandler pickupHandler) : base(pickupHandler) { }
+    public AttachToTargetDrop(Targeting targeting) : base(targeting) { }
 
     public override void Preview() {
         //GUI to draw here
         base.Preview();
     }
-    public override void Execute() {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D col = Physics2D.OverlapPoint(mousePos);
+    public override TargetResult Execute() {
+        //Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //Collider2D col = Physics2D.OverlapPoint(mousePos);
 
-        if (col != null) {
-            pickupHandler.transform.SetParent(col.transform);
-            pickupHandler.transform.localPosition = Vector3.zero;
-        }
+        //if (col != null) {
+        //    targeting.Transform.SetParent(col.transform);
+        //    targeting.Transform.localPosition = Vector3.zero;
+        //}
+        return new TargetResult();
     }
 }
 
-public class ClosestToMouseOperation : DropOperation {
-    float searchRadius = 3f;
-    public override bool ShouldDestroyAfterExecute => true;
+public class ClosestToMouseDrop : DropOperation {
+    Collider2D prevClosest;
+    Material defaultMaterial;
 
-    public ClosestToMouseOperation(PickupHandler pickupHandler, float searchRadius = 3f) : base(pickupHandler) {
-        this.searchRadius = searchRadius;
+    public ClosestToMouseDrop(Targeting targeting) : base(targeting) {
     }
 
     public override void Preview() {
-        /// GUI to draw here
         base.Preview();
-    }
 
-    public override void Execute() {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(mousePos, searchRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(GameInputManager.Instance.MouseWorldPosition, targeting.TargetRadius);
         Collider2D closest = null;
         float closestDist = float.MaxValue;
 
         foreach (var hit in hits) {
-            if (hit.CompareTag(pickupHandler.PickupTag)) {
-                float dist = Vector2.Distance(mousePos, hit.transform.position);
+            if (hit.CompareTag(targeting.PickupTag)) {
+                float dist = Vector2.Distance(GameInputManager.Instance.MouseWorldPosition, hit.transform.position);
 
                 if (dist < closestDist) {
                     closest = hit;
@@ -152,69 +124,99 @@ public class ClosestToMouseOperation : DropOperation {
             }
         }
 
-        if (closest != null)
-            pickupHandler.transform.position = closest.transform.position;
-        else
-            pickupHandler.transform.position = mousePos;
+        if (prevClosest != closest)
+            SetHighlight(closest);
+    }
+
+    public override TargetResult Execute() {
+        if (prevClosest == null) return new TargetResult {
+            Position = GameInputManager.Instance.MouseWorldPosition,
+            success =false
+        };
+        //targeting.Transform.position = prevClosest.transform.position;                    
+        BaseEntity entity = prevClosest.GetComponent<BaseEntity>();
+        
+        InvokeOnPickUp(entity);
+        SetHighlight(null);
+
+        return new TargetResult {
+            Position = entity.transform.position,
+            TargetEntity = entity,
+            success = true
+        };
+    }
+
+    void SetHighlight(Collider2D col) {
+        if (prevClosest != null) {
+            var sr = prevClosest.GetComponent<BaseEntity>().rend;
+            sr.material = defaultMaterial;
+        }
+
+        if(col != null) {
+            var sr = col.GetComponent<BaseEntity>().rend;
+            defaultMaterial = sr.material;
+            sr.material = targeting.OutlineMaterial;
+        }
+        prevClosest = col;
     }
 }
 
-public class AreaOperation : DropOperation {
-    float areaRadius = 3f;
-    public override bool ShouldDestroyAfterExecute => false;
-
-    public AreaOperation(PickupHandler pickupHandler, float areaRadius = 3f) : base(pickupHandler) {
-        this.areaRadius = areaRadius;
-    }
+public class AreaAroundMouseDrop : DropOperation {
+    public AreaAroundMouseDrop(Targeting targeting) : base(targeting) {}
 
     public override void Preview() {
         /// GUI to draw here
         base.Preview();
     }
 
-    public override void Execute() {
-        Vector3 pos = pickupHandler.transform.position;
-        Collider2D[] hits = Physics2D.OverlapCircleAll(pos, areaRadius);
+    public override TargetResult Execute() {
+        //Vector3 pos = targeting.Transform.position;
+        //Collider2D[] hits = Physics2D.OverlapCircleAll(pos, areaRadius);
 
-        foreach (var hit in hits) {
-            if (hit.CompareTag(pickupHandler.PickupTag)) {
-                BaseEntity entity = hit.GetComponent<BaseEntity>();
+        //foreach (var hit in hits) {
+        //    if (hit.CompareTag(targeting.PickupTag)) {
+        //        BaseEntity entity = hit.GetComponent<BaseEntity>();
 
-                if (entity != null)
-                    PickupOperationFactory.Execute(entity, pickupHandler.Data);
-            }
-        }
+        //        if (entity != null)
+        //            PickupDropFactory.Execute(entity, areaRadius);
+        //    }
+        //}
+        return new TargetResult();
     }
 }
 
-public class AttractionOperation : DropOperation {
-    float AttractionRadius = 4f;
-    float pullForce = 5f;
-    public override bool ShouldDestroyAfterExecute => false;
+public class AttractionDrop : DropOperation {
+    HashSet<BaseEntity> entities = new HashSet<BaseEntity>();
 
-    public AttractionOperation(PickupHandler pickupHandler, float radius = 4f, float force = 5f) : base(pickupHandler) {
-        AttractionRadius = radius;
-        pullForce = force;
-    }
+    public AttractionDrop(Targeting targeting) : base(targeting) { }
 
     public override void Preview() {
         // GUI to draw here
         base.Preview();
     }
 
-    public override void Execute() {
-        Vector3 pos = pickupHandler.transform.position;
-        Collider2D[] hits = Physics2D.OverlapCircleAll(pos, AttractionRadius);
+    public override TargetResult Execute() {
+        Vector3 pos = targeting.Transform.position;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(pos, targeting.TargetRadius);
 
         foreach (var hit in hits) {
-            if (hit.CompareTag(pickupHandler.PickupTag)) {
-                Rigidbody2D rb = hit.attachedRigidbody;
+            //skips if not entity, no tag match, and already picked up
+            if (!hit.TryGetComponent<BaseEntity>(out var entity) ||
+                !entity.CompareTag(targeting.PickupTag) ||
+                entities.Contains(entity))
+                continue;
 
-                if (rb != null) {
-                    Vector2 dir = (pos - rb.transform.position).normalized;
-                    rb.AddForce(dir * pullForce, ForceMode2D.Impulse);
-                }
+            if (entity is IAttractable attractee) {
+                attractee.SetOverrideTarget(targeting.Transform);
+                OnPickUp += e => {
+                    if (e == null || e.GUID == entity.GUID)
+                        attractee.OnAttractionEnd();
+                };
             }
+            entities.Add(entity);
         }
+        return new TargetResult { 
+            Position = GameInputManager.Instance.MouseWorldPosition,
+            success = true };
     }
 }

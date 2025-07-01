@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1026553923074026375}
   - component: {fileID: 320765039667596287}
   - component: {fileID: 128960939950200183}
-  - component: {fileID: 4485207722956791087}
   m_Layer: 7
   m_Name: Enemy - Ranged
   m_TagString: Enemy
@@ -71,7 +70,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.45
+  m_Radius: 0.24
 --- !u!50 &320765039667596287
 Rigidbody2D:
   serializedVersion: 4
@@ -112,22 +111,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eData: {fileID: 11400000, guid: e56696012da47194d8e837041d61b836, type: 2}
-  flasher: {fileID: 4485207722956791087}
-  spriteTransform: {fileID: 1134003136420443235}
---- !u!114 &4485207722956791087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 974057190339115752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f126db82af2cba1478402335f7e29ebe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allEffects: {fileID: 0}
   rend: {fileID: 7283722905499594032}
+  flasher: {fileID: 8466691314174964975}
+  guid: 5d331af4-c484-471d-9615-7ea18e5a1cb7
+  spriteTransform: {fileID: 1134003136420443235}
 --- !u!1 &6008883547877101176
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,6 +126,7 @@ GameObject:
   - component: {fileID: 1134003136420443235}
   - component: {fileID: 7283722905499594032}
   - component: {fileID: 8466691314174964975}
+  - component: {fileID: 5963780481356319347}
   m_Layer: 7
   m_Name: Sprite
   m_TagString: Enemy
@@ -227,6 +215,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allEffects: {fileID: 0}
   rend: {fileID: 0}
+--- !u!114 &5963780481356319347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6008883547877101176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f126db82af2cba1478402335f7e29ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allEffects: {fileID: 0}
+  rend: {fileID: 7283722905499594032}
 --- !u!1 &8017187971425460739
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,15 +30,14 @@ public class WeaponManager {
     }
 
     /// <summary>
-    /// Call this when the player picks up a weapon drop or levels up.
+    /// Call this when the target picks up a weapon drop or levels up.
     /// </summary>
-    public void Equip(WeaponData def) {
+    public bool Equip(WeaponData def) {
         if(weapons.TryGetValue(def, out var existing))
-            existing.Upgrade();
-        else {
-            var module = def.CreateModule(firePoint, runner, targetTag);
-            weapons[def]= module;   
-        }
+            return existing.Upgrade();
+        var module = def.CreateModule(firePoint, runner, targetTag);
+        weapons[def]= module;   
+        return true;
         // TODO: notify HUD with new weapon icon
     }
 }

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public enum settableType { Single, Timer, Multi }
-
 public class StatBroker {
-    Dictionary<String, StatModifier> activeMods = new();
+    Dictionary<String, StatModifier> activeAbilityMods = new();
     StatSet stats;
 
     public StatSet CurrentStats { get; private set; }
@@ -21,35 +19,35 @@ public class StatBroker {
     public bool Add(StatModData data) {
         string guid = data.GUID;
 
-        if (activeMods.TryGetValue(guid, out StatModifier existing)) {
+        if (activeAbilityMods.TryGetValue(guid, out StatModifier existing)) {
             switch (data.settable) {
-                case settableType.Timer:
+                case SettableType.Timer:
                     if (existing != null) {
                         existing.Reset();
                         return true;
                     }
                     break;
-                case settableType.Multi:
+                case SettableType.Multi:
                     // allow for stat stacking
                     break;
-                case settableType.Single:
+                case SettableType.Single:
                     // ignore
                     if (existing != null) return false;
                     break;
             }
         }
-        activeMods[guid] = data.CreateModule(data);
-        activeMods[guid].OnDispose += _ => activeMods.Remove(guid);
+        activeAbilityMods[guid] = data.CreateModule(data);
+        activeAbilityMods[guid].OnDispose += _ => activeAbilityMods.Remove(guid);
         CalculateStat();
         return true;
     }
 
     public void Tick(float deltaTime) {
-        if (activeMods.Count == 0) return;
+        if (activeAbilityMods.Count == 0) return;
         bool shouldRecalculate = false;
         List<string> toRemove = new();
 
-        foreach (var kvp in activeMods) {
+        foreach (var kvp in activeAbilityMods) {
             var key = kvp.Key;
             var mod = kvp.Value;
 
@@ -62,9 +60,9 @@ public class StatBroker {
         }
 
         foreach (var key in toRemove) {
-            if (activeMods.TryGetValue(key, out var mod))
+            if (activeAbilityMods.TryGetValue(key, out var mod))
                 mod.Dispose();
-            activeMods.Remove(key);
+            activeAbilityMods.Remove(key);
         }    
         if (shouldRecalculate) CalculateStat();
     }
@@ -77,7 +75,7 @@ public class StatBroker {
         _addOpsBuffer.Clear();
         _mulOpsBuffer.Clear();
 
-        foreach (var mod in activeMods.Values) {
+        foreach (var mod in activeAbilityMods.Values) {
             foreach (var op in mod.Activate()) {
                 if (modifiedStats.HasStat(op.Type)) {
                     if (op is AddOperation) _addOpsBuffer.Add(op);

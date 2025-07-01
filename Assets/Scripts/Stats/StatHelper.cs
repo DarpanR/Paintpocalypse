@@ -13,6 +13,11 @@ public enum StatType {
     FireRate,
     Lifetime
 }
+public enum SettableType { 
+    Single, 
+    Timer, 
+    Multi
+}
 
 public enum ModifierCapabilities {
     None = 0,

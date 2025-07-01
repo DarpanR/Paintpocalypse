@@ -9,11 +9,11 @@ public class StatFlasher : MonoBehaviour {
     [SerializeField]
     SpriteRenderer rend;
 
-    Dictionary<StatEffectType, Coroutine> activeEffects = new();
+    Dictionary<StatEffectType, Coroutine> activeAbilityEffects = new();
     Dictionary<StatEffectType, StatFlashEffect> effectMap = new();
 
     private void Awake() {
-        rend = GetComponent<SpriteRenderer>();
+        rend = rend != null ? rend : GetComponent<SpriteRenderer>();
         if (allEffects != null) Init();
     }
 
@@ -28,18 +28,19 @@ public class StatFlasher : MonoBehaviour {
     }
 
     public void Trigger(StatEffectType type, float duration, Action onEnd = null) {
-        if (activeEffects.ContainsKey(type) ||
+        if (activeAbilityEffects.ContainsKey(type) ||
             !effectMap.TryGetValue(type, out StatFlashEffect effect))
             return;
+
         if (rend != null) {
             Coroutine routine = StartCoroutine(FlashRoutine(effect, duration, onEnd));
-            activeEffects[type] = routine;
+            activeAbilityEffects[type] = routine;
         }
     }
 
     IEnumerator FlashRoutine(StatFlashEffect effect, float duration, Action onEnd = null) {
         Color original = rend.color;
-        CountdownTimer timer = new CountdownTimer(duration);
+        CountdownTimer timer = new(duration);
         timer.Start();
 
         while (!timer.IsFinished) {
@@ -51,7 +52,7 @@ public class StatFlasher : MonoBehaviour {
             yield return new WaitForSeconds(effect.flashSpeed);
             timer.Tick(effect.flashSpeed * 2);
         }
-        activeEffects.Remove(effect.type);
+        activeAbilityEffects.Remove(effect.type);
         rend.color = original;
 
         onEnd?.Invoke();

@@ -4,30 +4,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 public abstract class WeaponData : ScriptableObject, IPickupData {
-    [Header("Pickup Setting")]
-    public Sprite pickupIcon;
-    [TagMaskField]
-    public string pickupTag;
-    [Min(1)]
-    public int pickupCount = 1;
-    [Min(-1)]
-    public int totalUsage = 1;
-    [Min(-1)]
-    public float lifetime = 5f;
-    public DropType dropOperationType = DropType.OverMouse;
-
-    public float dropRadius = 3f;
-    public float dropForce = 5f;
-
-    [Header("Magnifying Glass Setting")]
-    public float sizeMultiplier = 2f;
-    public float damageMultiplier = 2f;
-    public float speedMultplier = 2f;
-
-    [Header("Projectile Settings")]
-    public GameObject projectile;
-    public int poolSize = 20;
-
     [Header("Base Stats")]
     public string weaponName;
     public int maxLevel = 5;
@@ -48,7 +24,22 @@ public abstract class WeaponData : ScriptableObject, IPickupData {
     );
     public int luPenetration = 1;
     public int luProjectileCount = 1;
-    
+
+    [Header("Projectile Settings")]
+    public GameObject projectile;
+    public int poolSize = 20;
+
+    [Header("Pickup Setting")]
+    public Sprite pickupIcon;
+    [TagMaskField]
+    public string pickupTag;
+    [Min(-1)]
+    public int totalUsage = 1;
+    [Min(-1)]
+    public float lifetime = 5f;
+    public TargetingType dropOperationType = TargetingType.OverMouse;
+    public float dropRadius = 3f;
+
     [SerializeField, HideInInspector]
     string guid = Guid.NewGuid().ToString();
 
@@ -65,16 +56,13 @@ public abstract class WeaponData : ScriptableObject, IPickupData {
 
     public abstract IWeaponModule CreateModule(Transform firePoint, MonoBehaviour runner, string targetTag);
 
-    public String DisplayName => weaponName;
+    public String PickupName => weaponName;
     public Sprite PickupIcon => pickupIcon;
     public Sprite DropIcon => pickupIcon;
     public string PickupTag => pickupTag;
     public PickupType PickupType => PickupType.Weapon;
     public float LifeTime => lifetime;
-    public int RemainingUsage => totalUsage;
-    public DropType DropType => dropOperationType;
-    public float PickupCount => pickupCount;
-    public int TotalUsage => TotalUsage;
-    public float DropRadius => dropRadius;
-    public float DropForce => dropForce;
+    public TargetingType TargetingType => dropOperationType;
+    public int TotalUsage => totalUsage;
+    public float TargetRadius => dropRadius;
 }

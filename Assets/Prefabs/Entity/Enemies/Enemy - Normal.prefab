@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 456647007761070526}
   - component: {fileID: 872235190176176582}
   - component: {fileID: 694524218127828814}
-  - component: {fileID: 1241547315362906763}
   m_Layer: 7
   m_Name: Enemy - Normal
   m_TagString: Enemy
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 427226824617519313}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.24, y: 3.82, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -71,7 +70,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.38
+  m_Radius: 0.26
 --- !u!50 &872235190176176582
 Rigidbody2D:
   serializedVersion: 4
@@ -112,22 +111,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eData: {fileID: 11400000, guid: 598d0472740af2d4883b14e2e66d41c4, type: 2}
-  flasher: {fileID: 1241547315362906763}
-  spriteTransform: {fileID: 564518450552071770}
---- !u!114 &1241547315362906763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 427226824617519313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f126db82af2cba1478402335f7e29ebe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allEffects: {fileID: 0}
   rend: {fileID: 7889638277394104073}
+  flasher: {fileID: 8496250930109991626}
+  guid: d92c78d6-32f5-4ada-916c-05cc9a44c9c3
+  spriteTransform: {fileID: 564518450552071770}
 --- !u!1 &1895733982302793954
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownerEntity: {fileID: 694524218127828814}
   damage: 10
-  targetTag: Untagged
+  targetTag: Player
   operationType: 1
   affectedType: 1
 --- !u!1 &6560210366132706369
@@ -223,6 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 564518450552071770}
   - component: {fileID: 7889638277394104073}
+  - component: {fileID: 8496250930109991626}
   m_Layer: 7
   m_Name: Sprite
   m_TagString: Enemy
@@ -297,3 +285,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8496250930109991626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560210366132706369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f126db82af2cba1478402335f7e29ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allEffects: {fileID: 0}
+  rend: {fileID: 7889638277394104073}

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class EnemyAI : BaseEntity {
+public class EnemyAI : BaseEntity, IAttractable {
     public Transform spriteTransform;
 
     Transform player;
+    Transform overrideTarget = null;
     // Start is called before the first frame update
     protected override void Start() {
         base.Start();
@@ -17,8 +18,10 @@ public class EnemyAI : BaseEntity {
 
     // Update is called once per frame
     void Update() {
-        if (player != null) {
-            Vector2 direction = (player.position - transform.position).normalized;
+        var target = overrideTarget != null ? overrideTarget : player;
+
+        if (target != null) {
+            Vector2 direction = (target.position - transform.position).normalized;
             transform.position += (Vector3)direction * CurrentStats[StatType.Speed].value * Time.deltaTime;
 
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
@@ -31,6 +34,14 @@ public class EnemyAI : BaseEntity {
         base.LateUpdate();
         // Reset the visual child to stay upright
         spriteTransform.rotation = quaternion.identity;
+    }
+
+    public void SetOverrideTarget(Transform overrideTarget) {
+        this.overrideTarget = overrideTarget;
+    }
+
+    public void OnAttractionEnd() {
+            overrideTarget = null;
     }
 
     protected override void Die() {

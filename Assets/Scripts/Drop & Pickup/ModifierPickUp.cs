@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class ModifierPickup : PickupHandler
 {
@@ -18,8 +16,8 @@ public class ModifierPickup : PickupHandler
         base.Awake();
     }
 
-    public override void Init(IPickupData data, bool dropIt = false) {
-        this.data = this.data ?? data as StatModData;
-        base.Init(data, dropIt);
+    public override void Init(IPickupData pickupData, bool dropIt = false) {
+        data = data != null ? data : pickupData as StatModData;
+        base.Init(pickupData, dropIt);
     }
 }

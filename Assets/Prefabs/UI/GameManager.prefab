@@ -254,7 +254,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3335460756839901321}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8336227359845435124}
+        m_TargetAssemblyTypeName: MouseAbilityPanel, Assembly-CSharp
+        m_MethodName: OnAbilityClicked
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &572345786634302000
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,7 +523,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 171844553755185636}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8336227359845435124}
+        m_TargetAssemblyTypeName: MouseAbilityPanel, Assembly-CSharp
+        m_MethodName: OnAbilityClicked
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &890167041203979648
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,7 +550,7 @@ GameObject:
   - component: {fileID: 4171581605545892614}
   - component: {fileID: 8336227359845435124}
   m_Layer: 5
-  m_Name: ActionBarPanel
+  m_Name: ActionBarCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -539,22 +563,22 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890167041203979648}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8445349792250386416}
+  - {fileID: 4991477005555266256}
   - {fileID: 9119837824179393690}
   - {fileID: 7481109862107530581}
-  - {fileID: 4991477005555266256}
+  - {fileID: 8445349792250386416}
   m_Father: {fileID: 7590518153065847889}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 960, y: 540}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6421700031680130497
 Canvas:
   m_ObjectHideFlags: 0
@@ -564,7 +588,7 @@ Canvas:
   m_GameObject: {fileID: 890167041203979648}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -600,7 +624,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &4171581605545892614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,8 +654,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e3421541692c14ca5edb39352b63ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModPickup: {fileID: 6724489019657003851, guid: f191feda2489432459ddbc29e5ecae43, type: 3}
-  magnifyingGlass: {fileID: 11400000, guid: f88a08fae75847a4ca9f4946112f94d1, type: 2}
+  abilities:
+  - abilityName: mag glass
+    icon: {fileID: 0}
+    prefab: {fileID: 6724489019657003851, guid: f191feda2489432459ddbc29e5ecae43, type: 3}
+    pickupData: {fileID: 11400000, guid: 76c94a6800adede4d9081d1953fdb04e, type: 2}
+  - abilityName: eye dropper
+    icon: {fileID: 2800000, guid: 14da6827194047b419d8d66083a9de73, type: 3}
+    prefab: {fileID: 4123473134497949749, guid: 382fa15d57c5a9d4bac9f7d44af5051b, type: 3}
+    pickupData: {fileID: 0}
+  - abilityName: pencil
+    icon: {fileID: 0}
+    prefab: {fileID: 1824443047001969138, guid: 82fe775eb263dcb4a94f5503a7a3e816, type: 3}
+    pickupData: {fileID: 11400000, guid: 20cac7f5d66941a4f96ef31e975022b6, type: 2}
 --- !u!1 &959934843734737265
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,7 +787,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3681782601815623455}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8336227359845435124}
+        m_TargetAssemblyTypeName: MouseAbilityPanel, Assembly-CSharp
+        m_MethodName: OnAbilityClicked
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1054178316945688748
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,7 +2103,9 @@ GameObject:
   - component: {fileID: 3303825830060734257}
   - component: {fileID: 6201413268231278662}
   - component: {fileID: 3425353267876616281}
-  m_Layer: 0
+  - component: {fileID: -2143955937591783727}
+  - component: {fileID: 7448911431063784501}
+  m_Layer: 5
   m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2127,8 +2176,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupPrefab: {fileID: 1824443047001969138, guid: 82fe775eb263dcb4a94f5503a7a3e816, type: 3}
-  dropTable: {fileID: 11400000, guid: 4660b2b4cd3180f498a4fcf2025879e9, type: 2}
+  dropTable: {fileID: 0}
   dropChance: 10
+--- !u!114 &-2143955937591783727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3217796827752766921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a90a2e901ced114bbac614291a7e5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileFolder: {fileID: 0}
+  trimInterval: 30
+  maxIdleLifetime: 60
+--- !u!114 &7448911431063784501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3217796827752766921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb17c7955fb4aca4ebae21b242ecf083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3423765833711013801
 GameObject:
   m_ObjectHideFlags: 0

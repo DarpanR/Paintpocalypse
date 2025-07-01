@@ -7,10 +7,10 @@ using UnityEngine;
 
 public abstract class Timer {
     protected float initialTime;
-    public float CurrentTime { get; protected set; }
+    public float Time { get; protected set; }
     public bool IsRunning { get; protected set; }
     
-    public virtual float Progress => CurrentTime / initialTime;
+    public virtual float Progress => Time / initialTime;
 
     public Action OnTimerStart = delegate { };
     public Action OnTimerStop = delegate { };
@@ -22,7 +22,7 @@ public abstract class Timer {
 
     // Start is called before the first frame update
     public void Start() {
-        CurrentTime = initialTime;
+        Time = initialTime;
 
         if (!IsRunning) {
             IsRunning = true;
@@ -38,13 +38,16 @@ public abstract class Timer {
     }
 
     public abstract void Tick(float deltaTime);
+    
+    public virtual void Reset() => Start();
+
     public virtual void Reset(float newTime) {
         initialTime = newTime;
         Start();
     }
 
-    public void ResumeTimer() => IsRunning = true;
-    public void PauseTimer() => IsRunning = false;
+    public void Resume() => IsRunning = true;
+    public void Pause() => IsRunning = false;
 }
 
 public class CountdownTimer : Timer {
@@ -54,11 +57,11 @@ public class CountdownTimer : Timer {
 
     public override void Tick(float deltaTime) {
         if (!IsRunning) return;
-        if (!IsFinished) CurrentTime -= deltaTime;
+        if (!IsFinished) Time -= deltaTime;
         else Stop();
     }
 
-    public bool IsFinished => CurrentTime <= 0;
+    public bool IsFinished => Time <= 0;
 }
 
 public class FireRateTimer : CountdownTimer {
@@ -77,14 +80,13 @@ public class FireRateTimer : CountdownTimer {
 }    
 
 public class StopWatchTimer : Timer {
-    public StopWatchTimer(float value) : base(0) {
-    }
+    public StopWatchTimer(float value) : base(0) {}
 
     public override void Tick(float deltaTime) {
-        CurrentTime += deltaTime;
+        Time += deltaTime;
     }
 
-    public float GetTime() => CurrentTime;
+    public float GetTime() => Time;
 }
 
 public class ClockTimer : StopWatchTimer {
@@ -116,7 +118,7 @@ public class ClockTimer : StopWatchTimer {
 
         if(alarms == null || alarms.Count == 0) return;
         
-        while (ticker < alarms.Count && CurrentTime >= alarms[ticker]) {
+        while (ticker < alarms.Count && Time >= alarms[ticker]) {
             onAlarm?.Invoke(alarms[ticker]);
             ticker++;
         }
@@ -125,9 +127,9 @@ public class ClockTimer : StopWatchTimer {
         
     }
 
-    public void Reset() {
+    public override void Reset() {
         ticker = 0;
-        Start();
+        base.Reset();
     }
 
     public override void Reset(float newTime) {

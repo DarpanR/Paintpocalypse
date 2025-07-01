@@ -20,14 +20,13 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     ProjectileManager projManager => ProjectileManager.Instance;
 
     public int Level { get; private set; }
-    public Tdef data { get; }
+    public Tdef Data { get; private set; }
     public StatSet CurrentStats => statBroker.CurrentStats;
     // explicit interface impl so consumer sees only the base type
-    WeaponData IWeaponModule.data => data;
     
     public WeaponModule(Tdef data, Transform firePoint, MonoBehaviour runner, string targetTag) {
         Level = level;
-        data = data;
+        Data = data;
         this.firePoint = firePoint;
         this.runner = runner;
         this.targetTag = targetTag;
@@ -63,8 +62,7 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         Fire(firePoint.position, rotation);
     }
     protected void Fire(Vector3 spawnPoint, Quaternion rotation) {
-
-        GameObject go = projManager.Request(data.projectile, data.poolSize);
+        GameObject go = projManager.Request(Data.projectile, Data.poolSize);
         go.transform.SetPositionAndRotation(spawnPoint, rotation);
         Projectile proj = go.GetComponent<Projectile>();
 
@@ -72,8 +70,8 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
             CurrentStats.Clone(),
             targetTag,
             OperationFactory.GetOperation(
-                data.operationType,
-                data.affectedType,
+                Data.operationType,
+                Data.affectedType,
                 -CurrentStats[StatType.Damage].value
                 ),
             Penetration
@@ -83,14 +81,16 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         };
     }
 
-    public virtual void Upgrade() {
-        if (Level < data.maxLevel)
-            Level++;
+    public virtual bool Upgrade() {
+        if (Level >= Data.maxLevel) return false;
+        Level++;
+        
         statBroker.UpdateBaseStat(StatType.Damage, GetComputedProperties(StatType.Damage));
         statBroker.UpdateBaseStat(StatType.FireRate, GetComputedProperties(StatType.FireRate));
 
         fireTimer.Reset(CurrentStats[StatType.FireRate].value);
         // Recalculate with new base stats while preserving modifiers
+        return true;
     }
 
     public bool AddStatModifier(StatModData data) {
@@ -98,12 +98,12 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
     }
 
     float GetComputedProperties (StatType type) {
-        return CurrentStats[type].value + data.LevelStats.GetValueOrDefault(type, 0f);
+        return CurrentStats[type].value + Data.LevelStats.GetValueOrDefault(type, 0f);
     }
 
     // -- Computed Properties (base + level up stat) --
     public int Penetration =>
-        data.basePenetration + data.luPenetration * (Level - 1);
+        Data.basePenetration + Data.luPenetration * (Level - 1);
     public int ProjectileCount =>
-        data.baseProjectileCount + data.luProjectileCount * (Level - 1);
+        Data.baseProjectileCount + Data.luProjectileCount * (Level - 1);
 }

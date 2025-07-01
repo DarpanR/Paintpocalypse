@@ -9,7 +9,7 @@ public abstract class StatModData : ScriptableObject {
     public string modName;
     public float duration;
     public ModifierCapabilities Capabilities => GetCapabilities();
-    public settableType settable = settableType.Single;
+    public SettableType settable = SettableType.Single;
 
     [SerializeField, HideInInspector]
     string guid = Guid.NewGuid().ToString();

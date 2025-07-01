@@ -17,5 +17,5 @@ public class AreaOfEffect : WeaponModule<AOEData> {
     }
 
     public float spawnRadius =>
-        data.spawnRadius + data.luSpawnRadius * (Level - 1);
+        Data.spawnRadius + Data.luSpawnRadius * (Level - 1);
 }

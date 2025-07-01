@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class HUDPanel : MonoBehaviour
 {
     [Header("UI Elements")]
-    // playerhealth bar
+    // targethealth bar
     public Slider healthSlider;
     // Global Game Duration
     public TextMeshProUGUI timerText;

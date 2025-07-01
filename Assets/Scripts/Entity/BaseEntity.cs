@@ -1,8 +1,13 @@
 using System;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManagerTarget {
     public EntityData eData;
+    public SpriteRenderer rend;
+
     [SerializeField]
     StatFlasher flasher;
 
@@ -18,8 +23,21 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     public StatSet CurrentStats => statBroker.CurrentStats;
     public WeaponManager WeaponManager => weaponManager;
 
+    [SerializeField, HideInInspector]
+    string guid = Guid.NewGuid().ToString();
+    public string GUID {
+        get {
+            if (string.IsNullOrEmpty(guid))
+                guid = Guid.NewGuid().ToString();
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            return guid;
+        }
+    }
+
     protected virtual void Awake() {
-        flasher = flasher ?? GetComponent<StatFlasher>();
+        flasher = flasher != null ? flasher : GetComponent<StatFlasher>();
 
         if (flasher == null)
             throw new NullReferenceException("flasher missing homeslice");
@@ -37,11 +55,6 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     protected virtual void LateUpdate() {
         weaponManager.Update();
         statBroker.Tick(Time.deltaTime);
-    }
-
-    void OnDestroy() {
-        //if (statBroker != null)
-        //    statBroker.UpdateStats -= OnStatUpdated;
     }
 
     StatSet InitializeStat() {
@@ -68,7 +81,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
             isInvincible = true;
             flasher?.Trigger(StatEffectType.Damage, duration, () => isInvincible = false);
         } else {
-            flasher?.Trigger(StatEffectType.Damage, 0.1f);
+            flasher?.Trigger(StatEffectType.Damage, 0.2f);
         }
         statBroker.UpdateBaseStat(operation);
         OnTakeDamage?.Invoke();

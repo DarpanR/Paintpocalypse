@@ -8,7 +8,7 @@ public class Automatic : WeaponModule<AutomaticData> {
     public Automatic(AutomaticData def, Transform fp, MonoBehaviour r, string t) : base(def, fp, r, t) {}
 
     protected override void Fire() {
-        float fireInt = fireTimer.FireRate / ProjectileCount * data.offset;
+        float fireInt = fireTimer.FireRate / ProjectileCount * Data.offset;
         //Debug.Log($"FireRate: {fireTimer.FireRate}, ProjectileCount: {ProjectileCount}, semiOffset: {semiOffset}");
         runner.StartCoroutine(BurstFire(fireInt));
     }
@@ -26,6 +26,6 @@ public class Automatic : WeaponModule<AutomaticData> {
     }
 
     public float SpreadAngle =>
-        data.baseSpreadAngle + data.luSpreadAngle * (Level - 1);
+        Data.baseSpreadAngle + Data.luSpreadAngle * (Level - 1);
         
 }

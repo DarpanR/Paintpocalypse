@@ -120,7 +120,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.25
 --- !u!114 &6524498625154743434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +133,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de1e95583fa06046805c989473c02d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 45
-  pickupType: 1
-  definition: {fileID: 0}
+  outlineMaterial: {fileID: 2100000, guid: 082bd2a72b0910b4ba480851121ec5e8, type: 2}
+  data: {fileID: 0}

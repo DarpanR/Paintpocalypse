@@ -27,19 +27,19 @@ public class PlayerController : BaseEntity {
     void Update() {
         // 1) Movement with WASD
         Vector2 move = Vector2.zero;
-        if (Input.GetKey(KeyCode.W)) move.y += 1;
-        if (Input.GetKey(KeyCode.S)) move.y -= 1;
-        if (Input.GetKey(KeyCode.D)) move.x += 1;
-        if (Input.GetKey(KeyCode.A)) move.x -= 1;
+        if (GameInputManager.Instance.IsKeyPressed(KeyCode.W)) move.y += 1;
+        if (GameInputManager.Instance.IsKeyPressed(KeyCode.S)) move.y -= 1;
+        if (GameInputManager.Instance.IsKeyPressed(KeyCode.D)) move.x += 1;
+        if (GameInputManager.Instance.IsKeyPressed(KeyCode.A)) move.x -= 1;
         move = move.normalized * CurrentStats[StatType.Speed].value;
         rb.velocity = move;
 
         // 2) Facing/Aiming with arrows
         Vector2 aim = Vector2.zero;
-        if (Input.GetKey(KeyCode.UpArrow)) aim.y += 1;
-        if (Input.GetKey(KeyCode.DownArrow)) aim.y -= 1;
-        if (Input.GetKey(KeyCode.RightArrow)) aim.x += 1;
-        if (Input.GetKey(KeyCode.LeftArrow)) aim.x -= 1;
+        if (GameInputManager.Instance.IsKeyPressed(KeyCode.UpArrow)) aim.y += 1;
+        if (GameInputManager.Instance.IsKeyPressed(KeyCode.DownArrow)) aim.y -= 1;
+        if (GameInputManager.Instance.IsKeyPressed(KeyCode.RightArrow)) aim.x += 1;
+        if (GameInputManager.Instance.IsKeyPressed(KeyCode.LeftArrow)) aim.x -= 1;
 
         if (aim.sqrMagnitude > 0.01f) {
             lastAim = aim.normalized;

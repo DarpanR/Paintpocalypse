@@ -28,6 +28,6 @@ public class Shotgun : WeaponModule<ShotgunData> {
     }
 
     public float SpreadAngle =>
-        data.baseSpreadAngle + data.luSpreadAngle * (Level - 1);
+        Data.baseSpreadAngle + Data.luSpreadAngle * (Level - 1);
         
 }

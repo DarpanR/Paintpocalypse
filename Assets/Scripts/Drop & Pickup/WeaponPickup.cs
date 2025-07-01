@@ -1,12 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
-[RequireComponent(typeof(SpriteRenderer))]
 public class WeaponPickup : PickupHandler {
 
     [SerializeField]
@@ -21,8 +15,8 @@ public class WeaponPickup : PickupHandler {
         base.Awake();
     }
 
-    public override void Init(IPickupData data, bool dropIt = false) {
-        this.data = this.data ?? data as WeaponData;
-        base.Init(data, dropIt);
+    public override void Init(IPickupData pickupData, bool dropIt = false) {
+        data = data != null ? data : pickupData as WeaponData;
+        base.Init(pickupData, dropIt);
     }
 }
