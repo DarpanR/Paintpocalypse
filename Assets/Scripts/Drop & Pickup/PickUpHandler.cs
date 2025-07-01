@@ -9,7 +9,7 @@ using UnityEditor;
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 
-public abstract class PickupHandler : MonoBehaviour, IAbililtyHandler {
+public abstract class PickupHandler : MonoBehaviour, IAbilityHandler {
     public Material outlineMaterial;
     public float rotationalSpeed = 45f;
     
@@ -22,6 +22,9 @@ public abstract class PickupHandler : MonoBehaviour, IAbililtyHandler {
 
     public abstract IPickupData Data { get; }
     public PickupType PickupType { get; protected set; }
+
+    public float RemainingUsage => remainingUsage;
+    public float TotalUsage => Data.TotalUsage;
 
     // Event here
     public event Action OnDropped = delegate { };

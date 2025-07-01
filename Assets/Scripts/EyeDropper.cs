@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EyeDropper : MonoBehaviour, IAbililtyHandler {
+public class EyeDropper : MonoBehaviour, IAbilityHandler {
     [System.Serializable]
     public class EyeDroppables {
         public GameObject prefab;
@@ -21,9 +21,11 @@ public class EyeDropper : MonoBehaviour, IAbililtyHandler {
     DropOperation SelectOp;
     bool hasSelection;
 
-    Dictionary<string, GameObject> storedEntities = new();
-    Dictionary<string, int> maxUsages = new();
-    GameObject currentSelection;
+    Dictionary<string, EyeDroppables> storedEntities = new();
+    EyeDroppables currentSelection;
+
+    public float RemainingUsage => remainingUsage;
+    public float TotalUsage => currentSelection.maxUsage;
 
     public event Action<BaseEntity> OnPickUp;
     public event Action OnAbilityEnd;
@@ -41,8 +43,7 @@ public class EyeDropper : MonoBehaviour, IAbililtyHandler {
 
         foreach (var entry in availableEntities) {
             if (entry.prefab.TryGetComponent<BaseEntity>(out var entity)) {
-                storedEntities[entity.GUID] = entry.prefab;
-                maxUsages[entity.GUID] = entry.maxUsage;
+                storedEntities[entity.GUID] = entry;
             }
         }
     }
@@ -64,19 +65,20 @@ public class EyeDropper : MonoBehaviour, IAbililtyHandler {
     bool Copy(BaseEntity copyTarget) {
         if (copyTarget != null && storedEntities.TryGetValue(copyTarget.GUID, out var copy)) {
             currentSelection = copy;
-            remainingUsage = maxUsages[copyTarget.GUID];
+            remainingUsage = currentSelection.maxUsage;
             return true;
         }
         return false;
     }
 
     void Paste() {
-        var obj = Instantiate(currentSelection, GameInputManager.Instance.MouseWorldPosition, Quaternion.identity);
+        var obj = Instantiate(currentSelection.prefab, GameInputManager.Instance.MouseWorldPosition, Quaternion.identity);
 
         OnPickUp?.Invoke(obj.GetComponent<BaseEntity>());
 
         if (--remainingUsage <= 0) {
             OnAbilityEnd?.Invoke();
+            currentSelection = null;
             Destroy(gameObject);
         }
     }
