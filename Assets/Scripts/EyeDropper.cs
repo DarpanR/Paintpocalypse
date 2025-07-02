@@ -17,20 +17,20 @@ public class EyeDropper : MonoBehaviour, IAbilityHandler {
     public float radius;
     public List<EyeDroppables> availableEntities = new();
 
-    int remainingUsage = 5;
+    int remainingUsage = 1;
     DropOperation SelectOp;
     bool hasSelection;
 
     Dictionary<string, EyeDroppables> storedEntities = new();
     EyeDroppables currentSelection;
 
+    public const string None = "None";
+
     public float RemainingUsage => remainingUsage;
     public float TotalUsage => currentSelection.maxUsage;
 
     public event Action<BaseEntity> OnPickUp;
     public event Action OnAbilityEnd;
-
-    Targeting targeting;
 
     private void Start() {
         SelectOp = TargetOperationFactory.GetOperation(new Targeting {
@@ -41,11 +41,14 @@ public class EyeDropper : MonoBehaviour, IAbilityHandler {
             TargetRadius = radius,
         });
 
-        foreach (var entry in availableEntities) {
-            if (entry.prefab.TryGetComponent<BaseEntity>(out var entity)) {
+        /// empty selection
+        currentSelection = storedEntities[None] = new EyeDroppables {
+            maxUsage = 1
+        };
+
+        foreach (var entry in availableEntities) 
+            if (entry.prefab.TryGetComponent<BaseEntity>(out var entity)) 
                 storedEntities[entity.GUID] = entry;
-            }
-        }
     }
 
     private void Update() {
@@ -68,6 +71,8 @@ public class EyeDropper : MonoBehaviour, IAbilityHandler {
             remainingUsage = currentSelection.maxUsage;
             return true;
         }
+        currentSelection = storedEntities[None];
+        remainingUsage = 1;
         return false;
     }
 
@@ -78,7 +83,7 @@ public class EyeDropper : MonoBehaviour, IAbilityHandler {
 
         if (--remainingUsage <= 0) {
             OnAbilityEnd?.Invoke();
-            currentSelection = null;
+            currentSelection = storedEntities[None];
             Destroy(gameObject);
         }
     }

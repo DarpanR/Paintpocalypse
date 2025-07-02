@@ -1,7 +1,5 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +7,7 @@ public class MouseAbilityPanel : MonoBehaviour {
     [SerializeField]
     float globalCD = 1f;
     [SerializeField]
-    float cdOffset = .1f;
+    float cdOffset = 0.2f;
     [SerializeField]
     List<AbilityConfig> abilities;
     [SerializeField]
@@ -25,8 +23,7 @@ public class MouseAbilityPanel : MonoBehaviour {
     GameObject activeObject;
 
     List<CooldownData> Cooldowns = new();
-
-    //public GameObject textBomb;
+    List<Button> actionButtons = new();
 
     Action OnAbilityUsed;
 
@@ -72,12 +69,10 @@ public class MouseAbilityPanel : MonoBehaviour {
                 if (ability.PickupData is IPickupData PickupData) {
                     if (!string.IsNullOrWhiteSpace(PickupData.PickupName)) {
                         ability.AbilityName = PickupData.PickupName;
-                    } else {
+                    } else
                         throw new Exception("PickupData has no PickupName!");
-                    }
-                } else {
+                } else
                     throw new Exception("Ability has no name and no valid IPickupData to derive a name from!");
-                }
             }
             // set all names to lowercase
             ability.AbilityName = ability.AbilityName?.ToLowerInvariant();
@@ -89,12 +84,13 @@ public class MouseAbilityPanel : MonoBehaviour {
 
             /// create visuals 
             /// create ability button and assign listener
-            var buttonGO = Instantiate(buttonPrefab, buttonContainer);
-            buttonGO.name = ability.AbilityName;
-
+            var aButton = Instantiate(buttonPrefab, buttonContainer).GetComponent<Button>();
+            actionButtons.Add(aButton);
+            aButton.gameObject.name = ability.AbilityName;
+            
             /// Ability Icon/Image
-            var Icon = buttonGO.GetComponent<Image>();
-            Debug.Log(Icon.ToString());
+            var Icon = aButton.transform.Find("Icon").GetComponent<Image>();
+
             if (ability.Icon != null) {
                 Icon.sprite = Sprite.Create(
                     ability.Icon,
@@ -104,16 +100,16 @@ public class MouseAbilityPanel : MonoBehaviour {
             }
 
             /// Coolddown Timer visual
-            var cdBG = buttonGO.transform.Find("Fill Background").GetComponent<Image>();
+            var cdBG = aButton.transform.Find("Background").GetComponent<Image>();
             var timer = new CountdownTimer(globalCD);
-            var aButton = buttonGO.GetComponent<Button>();
 
             Cooldowns.Add(new CooldownData { Timer = timer, backgroundImage = cdBG });
 
-            /// add actions
-            timer.OnTimerStart += () => aButton.interactable = false;
+            /// interactable again when timer runs out
             timer.OnTimerStop += () => aButton.interactable = true;
-            aButton.onClick.AddListener(() => ActivateAbility(i));
+
+            var index = i;
+            aButton.onClick.AddListener(() => ActivateAbility(index));
         }
         // activates defualt None
         OnAbilityUsed += () => ActivateAbility(0);
@@ -121,7 +117,9 @@ public class MouseAbilityPanel : MonoBehaviour {
     }
 
     private void Update() {
-        foreach (var cd in Cooldowns) {
+        for (int i = 0; i < Cooldowns.Count; i++) {
+            var cd = Cooldowns[i];
+            //foreach (var cd in Cooldowns) {
             /// ticks if Timer started
             cd.Timer.Tick(Time.deltaTime);
             cd.backgroundImage.fillAmount = cd.Timer.Progress;
@@ -129,61 +127,70 @@ public class MouseAbilityPanel : MonoBehaviour {
     }
 
     void ActivateAbility(int newIndex) {
-        var activeAbility = abilities[activeIndex];
-        var config = abilities[newIndex];
-
+        var oldAbility = abilities[activeIndex];
+        var newAbility = abilities[newIndex];
+        //Debug.Log("before active:" + oldAbility.AbilityName + ", new: " + newAbility.AbilityName);
 
         //Deactivates old ability if clicked on the same ability, or if ability has ended (by passing in none(index = 0))
-        if (config.AbilityName == activeAbility.AbilityName || config.AbilityName == None) {
-            DeactivateAbility(config.AbilityName);
+        if (newAbility.AbilityName == oldAbility.AbilityName || newAbility.AbilityName == None) {
+            DeactivateAbility();
             // else activate new ability and deactivate all old unsed ability
         } else {
-            DeactivateAbility(config.AbilityName);
-            activeObject = Instantiate(config.Prefab, GameInputManager.Instance.MouseWorldPosition, Quaternion.identity);
+            DeactivateAbility();
+            activeObject = Instantiate(newAbility.Prefab, GameInputManager.Instance.MouseWorldPosition, Quaternion.identity);
 
             if (activeObject.TryGetComponent<IAbilityHandler>(out var ability)) {
-                if (config.PickupData is IPickupData pData)
+                if (newAbility.PickupData is IPickupData pData)
                     ability.Init(pData);
-                ability.OnAbilityEnd += OnAbilityUsed;
+                ability.OnAbilityEnd += () => actionButtons[newIndex - 1].interactable = false;
                 activeIndex = newIndex;
+                Cooldowns[activeIndex - 1].Timer.Reset(newAbility.Cooldown);
 
-                Cursor.SetCursor(config.Icon, Vector2.zero, CursorMode.Auto);
+                //Cursor.SetCursor(newAbility.Icon, Vector2.zero, CursorMode.Auto);
             } else {
                 Debug.LogWarning("Missing Abililtyability component!");
                 activeIndex = 0;
             }
 
             /// start a global cooldown for all abilities except the currently active.
-            for (int i = 0; i < abilities.Count; i++) {
+            for (int i = 1; i < abilities.Count || i == activeIndex; i++) {
                 var cd = Cooldowns[i - 1];
-                if (i != activeIndex)
+
+                if (!cd.Timer.IsRunning) {
+                    //Debug.Log("cd reseted for : " + i);
+                    /// if ability isn't currently in cooldown, if cooldown = active.cooldown else global cd
                     cd.Timer.Reset(globalCD);
-                cd.Timer.Start();
+                }
             }
+            //Debug.Log("after active:" + abilities[activeIndex].AbilityName + ", new: " + newAbility.AbilityName);
         }
 
-        void DeactivateAbility(string configName) {
+        void DeactivateAbility() {
             /// check for when the ability ended
-            if (activeObject != null) {
-                OnAbilityEnd();
-                if (activeObject.TryGetComponent<IAbilityHandler>(out var ability))
-                    ability.OnAbilityEnd -= OnAbilityUsed;
-                if (configName != None)
+            if (activeObject == null) return;
+            if (activeObject.TryGetComponent<IAbilityHandler>(out var ability)) {
+                if (newAbility.AbilityName != None) {
+                    AbilityEnded(ability); 
                     Destroy(activeObject);
-                activeObject = null;
-                activeIndex = 0;
-
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                }
+                ability.OnAbilityEnd -= OnAbilityUsed;
             }
+            activeObject = null;
+            activeIndex = 0;
+
+            //Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
 
-        void OnAbilityEnd() {
-            if (activeObject == null || activeIndex == 0)
-                return;
-            var ability = activeObject.GetComponent<IAbilityHandler>();
-            var updatedCD = ((ability.TotalUsage - ability.RemainingUsage) / ability.TotalUsage) * cdOffset * abilities[activeIndex].Cooldown;
+        void AbilityEnded(IAbilityHandler ability) {
+            var cd = Cooldowns[activeIndex - 1].Timer;
+            var usage = ((ability.TotalUsage - ability.RemainingUsage) / ability.TotalUsage);
+            var remainingTime = abilities[activeIndex].Cooldown - cd.Progress;
+            var reduction = (1 - usage) * cdOffset;
+            var finalValue = Mathf.Max(globalCD, remainingTime * reduction);
 
-            Cooldowns[activeIndex - 1].Timer.Reset(updatedCD);
+            Debug.Log($"Usage: {usage}, RemainingTime: {remainingTime}, Reduction: {reduction}, FinalValue: {finalValue}");
+
+            cd.Reset(finalValue);
         }
     }
 }
