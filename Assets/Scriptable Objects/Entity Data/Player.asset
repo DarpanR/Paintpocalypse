@@ -24,7 +24,8 @@ MonoBehaviour:
       value: 100
     - type: 4
       value: 1
-  loadOutWeapons: []
+  loadOutWeapons:
+  - {fileID: 11400000, guid: 057a760fe6dfe324d99b3f8c8b7f684b, type: 2}
   VisualStatusEffects:
   - type: 1
     color: {r: 1, g: 0, b: 0, a: 1}

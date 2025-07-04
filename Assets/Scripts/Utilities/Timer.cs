@@ -16,14 +16,12 @@ public abstract class Timer {
     public Action OnTimerStop = delegate { };
 
     public Timer(float value) {
-        initialTime = value;
+        Time = initialTime = value;
         IsRunning = false;
     }
 
     // Start is called before the first frame update
     public void Start() {
-        Time = initialTime;
-
         if (!IsRunning) {
             IsRunning = true;
             OnTimerStart?.Invoke();
@@ -37,12 +35,20 @@ public abstract class Timer {
         }
     }
 
+    protected virtual void ClearAllListeners() {
+        OnTimerStart = null;
+        OnTimerStop = null;
+    }
+
     public abstract void Tick(float deltaTime);
     
-    public virtual void Reset() => Start();
+    public virtual void Reset() {
+        Time = initialTime;
+        Start();
+    }
 
     public virtual void Reset(float newTime) {
-        initialTime = newTime;
+        Time = initialTime = newTime;
         Start();
     }
 
@@ -68,8 +74,8 @@ public class FireRateTimer : CountdownTimer {
     public float FireRate => GetFireInterval(initialTime);
 
     public FireRateTimer(float fireRate) : base(GetFireInterval(fireRate)) {
-        OnTimerStop -= Start;
-        OnTimerStop += Start;
+        OnTimerStop -= Reset;
+        OnTimerStop += Reset;
     }
 
     public override void Reset(float newFireRate) {
@@ -123,8 +129,12 @@ public class ClockTimer : StopWatchTimer {
             ticker++;
         }
 
-        if (ticker == alarms.Count - 1) Stop();
-        
+        if (ticker == alarms.Count) Stop();
+    }
+
+    protected override void ClearAllListeners() {
+        base.ClearAllListeners();
+        onAlarm = null;
     }
 
     public override void Reset() {
@@ -135,5 +145,14 @@ public class ClockTimer : StopWatchTimer {
     public override void Reset(float newTime) {
         ticker = 0;
         base.Reset(newTime);
+    }
+
+    public void Reset(List<float> newAlarms) {
+        Reset(initialTime, newAlarms);
+    }
+
+    public void Reset(float newTime, List<float> newAlarms) {
+        alarms = newAlarms ?? alarms;
+        Reset(newTime);
     }
 }

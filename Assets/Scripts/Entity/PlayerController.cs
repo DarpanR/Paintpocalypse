@@ -21,6 +21,10 @@ public class PlayerController : BaseEntity {
         base.Start();
 
         rb = GetComponent<Rigidbody2D>();
+
+        GameEvents.RaiseHealthBarUpdate(
+            (int)CurrentStats[StatType.CurrentHealth].value,
+            (int)CurrentStats[StatType.MaxHealth].value);
     }
 
     // Update is called once per frame
@@ -49,9 +53,21 @@ public class PlayerController : BaseEntity {
         }
     }
 
+    public override void TakeDamage(IoperationStrategy operation) {
+        base.TakeDamage(operation);
+
+        GameEvents.RaiseHealthBarUpdate(
+            (int)CurrentStats[StatType.CurrentHealth].value,
+            (int)CurrentStats[StatType.MaxHealth].value
+        );
+    }
+
     protected override void Die() {
         Debug.Log(gameObject.name + " Died");
-        GameController.Instance.ChangeState(GameController.GameState.End);
+        GameEvents.RaiseVictory(new VictoryData {
+            Type = VictoryType.Mouse,
+            Message = "Mouse Wins!",
+        });
         //int score = 0;                      //   PLACEHOLDER, IF WE WANT SCORE NEED CHANGE
     }
 }

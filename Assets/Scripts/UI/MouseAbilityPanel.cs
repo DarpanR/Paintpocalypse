@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MouseAbilityPanel : MonoBehaviour {
     [SerializeField]
     float globalCD = 1f;
-    [SerializeField]
+    [SerializeField, Range(0,1)]
     float cdOffset = 0.2f;
     [SerializeField]
     List<AbilityConfig> abilities;
@@ -40,6 +40,11 @@ public class MouseAbilityPanel : MonoBehaviour {
         public CountdownTimer Timer;
         public Image backgroundImage;
     }
+    public class AbilityButton {
+        public Button Button;
+        public CountdownTimer Timer;
+        public Image CooldownImage;
+    }
 
     private void Awake() {
         buttonContainer = buttonContainer != null ? buttonContainer : transform.Find("Action Button Container");
@@ -61,56 +66,8 @@ public class MouseAbilityPanel : MonoBehaviour {
         // loop through to find any mistakes and create button
         // Important: Cooldowns[0] corresponds to abilities[1], etc.
         // Cooldowns[i - 1] = cooldown for abilities[i]
-        for (int i = 1; i < abilities.Count; i++) {
-            var ability = abilities[i];
-
-            // If ability name is empty, try to pull from PickupData
-            if (string.IsNullOrWhiteSpace(ability.AbilityName)) {
-                if (ability.PickupData is IPickupData PickupData) {
-                    if (!string.IsNullOrWhiteSpace(PickupData.PickupName)) {
-                        ability.AbilityName = PickupData.PickupName;
-                    } else
-                        throw new Exception("PickupData has no PickupName!");
-                } else
-                    throw new Exception("Ability has no name and no valid IPickupData to derive a name from!");
-            }
-            // set all names to lowercase
-            ability.AbilityName = ability.AbilityName?.ToLowerInvariant();
-
-            if (ability.Prefab == null)
-                throw new Exception($"{ability.AbilityName} is missing a Prefab.");
-            if (ability.PickupData != null && ability.PickupData is not IPickupData)
-                throw new Exception($"Bruh this ScriptableObject in ability '{ability.AbilityName}' ain't an IPickupData!");
-
-            /// create visuals 
-            /// create ability button and assign listener
-            var aButton = Instantiate(buttonPrefab, buttonContainer).GetComponent<Button>();
-            actionButtons.Add(aButton);
-            aButton.gameObject.name = ability.AbilityName;
-            
-            /// Ability Icon/Image
-            var Icon = aButton.transform.Find("Icon").GetComponent<Image>();
-
-            if (ability.Icon != null) {
-                Icon.sprite = Sprite.Create(
-                    ability.Icon,
-                    new Rect(0, 0, ability.Icon.width, ability.Icon.height),
-                    new Vector2(0.5f, 0.5f)
-                );
-            }
-
-            /// Coolddown Timer visual
-            var cdBG = aButton.transform.Find("Background").GetComponent<Image>();
-            var timer = new CountdownTimer(globalCD);
-
-            Cooldowns.Add(new CooldownData { Timer = timer, backgroundImage = cdBG });
-
-            /// interactable again when timer runs out
-            timer.OnTimerStop += () => aButton.interactable = true;
-
-            var index = i;
-            aButton.onClick.AddListener(() => ActivateAbility(index));
-        }
+        for (int i = 1; i < abilities.Count; i++)
+            InitializeAbility(abilities[i], i);
         // activates defualt None
         OnAbilityUsed += () => ActivateAbility(0);
         //OnAbilityUsed?.Invoke();
@@ -122,75 +79,138 @@ public class MouseAbilityPanel : MonoBehaviour {
             //foreach (var cd in Cooldowns) {
             /// ticks if Timer started
             cd.Timer.Tick(Time.deltaTime);
-            cd.backgroundImage.fillAmount = cd.Timer.Progress;
+
+            if (cd.Timer.IsRunning) 
+                cd.backgroundImage.fillAmount = cd.Timer.Progress;
         }
     }
 
+    private void InitializeAbility(AbilityConfig ability, int index) {
+        // validate
+        if (string.IsNullOrWhiteSpace(ability.AbilityName))
+            ResolveAbilityName(ref ability);
+
+        ability.AbilityName = ability.AbilityName.ToLowerInvariant();
+        if (ability.Prefab == null)
+            throw new Exception($"{ability.AbilityName} is missing a Prefab.");
+        if (ability.PickupData != null && ability.PickupData is not IPickupData)
+            throw new Exception($"Ability '{ability.AbilityName}' has invalid PickupData.");
+
+        // create UI
+        var buttonGO = Instantiate(buttonPrefab, buttonContainer);
+        buttonGO.name = ability.AbilityName;
+
+        var aButton = buttonGO.GetComponent<Button>();
+        actionButtons.Add(aButton);
+
+        SetupButtonVisuals(aButton, ability);
+
+        // cooldown
+        var timer = new CountdownTimer(globalCD);
+        Cooldowns.Add(new CooldownData { Timer = timer, backgroundImage = GetBackgroundImage(aButton) });
+        timer.OnTimerStop += () => aButton.interactable = true;
+
+        // click
+        aButton.onClick.AddListener(() => ActivateAbility(index));
+    }
+
+    private void SetupButtonVisuals(Button button, AbilityConfig ability) {
+        var iconImage = button.transform.Find("Icon").GetComponent<Image>();
+        if (ability.Icon != null) {
+            iconImage.sprite = Sprite.Create(
+                ability.Icon,
+                new Rect(0, 0, ability.Icon.width, ability.Icon.height),
+                new Vector2(0.5f, 0.5f)
+            );
+        }
+    }
+
+    private Image GetBackgroundImage(Button button) {
+        var background = button.transform.Find("Background");
+        if (background == null)
+            throw new Exception($"Button '{button.gameObject.name}' is missing a 'Background' child.");
+
+        var image = background.GetComponent<Image>();
+        if (image == null)
+            throw new Exception($"'Background' under button '{button.gameObject.name}' has no Image component.");
+
+        return image;
+    }
+
+    private void ResolveAbilityName(ref AbilityConfig ability) {
+        if (ability.PickupData is IPickupData pickupData) {
+            if (!string.IsNullOrWhiteSpace(pickupData.PickupName)) {
+                ability.AbilityName = pickupData.PickupName;
+                return;
+            }
+            throw new Exception("PickupData has no PickupName!");
+        }
+
+        throw new Exception("AbilityConfig is missing AbilityName and has no valid PickupData to derive it from.");
+    }
+
     void ActivateAbility(int newIndex) {
-        var oldAbility = abilities[activeIndex];
-        var newAbility = abilities[newIndex];
-        //Debug.Log("before active:" + oldAbility.AbilityName + ", new: " + newAbility.AbilityName);
+        if (newIndex == activeIndex) {
+            // Switching to a new ability
+            DeactivateCurrentAbility(true);
+        } else if (newIndex == 0) {
+            // Clicking "None": just dereference, let it live
+            DeactivateCurrentAbility(false);
+            return;
+        }
+        ActivateNewAbility(newIndex);
+    }
 
-        //Deactivates old ability if clicked on the same ability, or if ability has ended (by passing in none(index = 0))
-        if (newAbility.AbilityName == oldAbility.AbilityName || newAbility.AbilityName == None) {
-            DeactivateAbility();
-            // else activate new ability and deactivate all old unsed ability
+    void DeactivateCurrentAbility(bool keepObject) {
+        if (activeObject.TryGetComponent<IAbilityHandler>(out var ability)) {
+            HandleAbilityEnd(ability);
+            ability.OnAbilityEnd -= OnAbilityUsed;
+        }
+
+        if (!keepObject) Destroy(activeObject);
+        activeObject = null;
+        activeIndex = 0;
+    }
+
+    void ActivateNewAbility(int index) {
+        var abilityData = abilities[index];
+        activeObject = Instantiate(abilityData.Prefab, GameInputManager.Instance.MouseWorldPosition, Quaternion.identity);
+
+        if (activeObject.TryGetComponent<IAbilityHandler>(out var handler)) {
+            if (abilityData.PickupData is IPickupData pData)
+                handler.Init(pData);
+
+            handler.OnAbilityEnd += () => actionButtons[index - 1].interactable = false;
+            activeIndex = index;
+            Cooldowns[index - 1].Timer.Reset(abilityData.Cooldown);
+
+            StartGlobalCooldowns(index);
         } else {
-            DeactivateAbility();
-            activeObject = Instantiate(newAbility.Prefab, GameInputManager.Instance.MouseWorldPosition, Quaternion.identity);
-
-            if (activeObject.TryGetComponent<IAbilityHandler>(out var ability)) {
-                if (newAbility.PickupData is IPickupData pData)
-                    ability.Init(pData);
-                ability.OnAbilityEnd += () => actionButtons[newIndex - 1].interactable = false;
-                activeIndex = newIndex;
-                Cooldowns[activeIndex - 1].Timer.Reset(newAbility.Cooldown);
-
-                //Cursor.SetCursor(newAbility.Icon, Vector2.zero, CursorMode.Auto);
-            } else {
-                Debug.LogWarning("Missing Abililtyability component!");
-                activeIndex = 0;
-            }
-
-            /// start a global cooldown for all abilities except the currently active.
-            for (int i = 1; i < abilities.Count || i == activeIndex; i++) {
-                var cd = Cooldowns[i - 1];
-
-                if (!cd.Timer.IsRunning) {
-                    //Debug.Log("cd reseted for : " + i);
-                    /// if ability isn't currently in cooldown, if cooldown = active.cooldown else global cd
-                    cd.Timer.Reset(globalCD);
-                }
-            }
-            //Debug.Log("after active:" + abilities[activeIndex].AbilityName + ", new: " + newAbility.AbilityName);
-        }
-
-        void DeactivateAbility() {
-            /// check for when the ability ended
-            if (activeObject == null) return;
-            if (activeObject.TryGetComponent<IAbilityHandler>(out var ability)) {
-                if (newAbility.AbilityName != None) {
-                    AbilityEnded(ability); 
-                    Destroy(activeObject);
-                }
-                ability.OnAbilityEnd -= OnAbilityUsed;
-            }
-            activeObject = null;
+            Debug.LogWarning("Missing IAbilityHandler!");
             activeIndex = 0;
-
-            //Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
+    }
 
-        void AbilityEnded(IAbilityHandler ability) {
-            var cd = Cooldowns[activeIndex - 1].Timer;
-            var usage = ((ability.TotalUsage - ability.RemainingUsage) / ability.TotalUsage);
-            var remainingTime = abilities[activeIndex].Cooldown - cd.Progress;
-            var reduction = (1 - usage) * cdOffset;
-            var finalValue = Mathf.Max(globalCD, remainingTime * reduction);
+    void StartGlobalCooldowns(int activeAbilityIndex) {
+        for (int i = 1; i < abilities.Count; i++) {
+            if (i == activeAbilityIndex) continue;
 
-            Debug.Log($"Usage: {usage}, RemainingTime: {remainingTime}, Reduction: {reduction}, FinalValue: {finalValue}");
-
-            cd.Reset(finalValue);
+            var cd = Cooldowns[i - 1];
+            if (!cd.Timer.IsRunning) {
+                cd.Timer.Reset(globalCD);
+            }
         }
+    }
+
+    void HandleAbilityEnd(IAbilityHandler ability) {
+        var cooldownTimer = Cooldowns[activeIndex - 1].Timer;
+        var usage = (ability.TotalUsage - ability.RemainingUsage) / ability.TotalUsage;
+        var remainingTime = abilities[activeIndex].Cooldown * (cooldownTimer.Progress);
+        var reduction = usage * cdOffset;
+        var finalValue = Mathf.Max(globalCD, remainingTime * reduction);
+
+        Debug.Log($"Usage: {usage}, RemainingTime: {remainingTime}, Reduction: {reduction}, FinalValue: {finalValue}");
+
+        cooldownTimer.Reset(finalValue);
     }
 }

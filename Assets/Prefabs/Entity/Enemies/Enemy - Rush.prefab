@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 1903769245770132536}
   - component: {fileID: 8712441226548829375}
   - component: {fileID: 6063139446988042084}
+  - component: {fileID: -6362474575505019287}
   m_Layer: 7
   m_Name: Enemy - Rush
   m_TagString: Enemy
@@ -213,7 +214,21 @@ MonoBehaviour:
   rend: {fileID: 5575100379989256217}
   flasher: {fileID: 5216881357901296992}
   guid: 2cf3cca9-5714-4e0d-bbea-6b7f5130a4a5
-  spriteTransform: {fileID: 6024365961300216958}
+--- !u!114 &-6362474575505019287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6310707719617671056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5243dc6fd2bca41b4762d7d7982334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockPosition: 0
+  lockRotation: 1
+  lockScale: 0
 --- !u!1 &7872098916009087844
 GameObject:
   m_ObjectHideFlags: 0

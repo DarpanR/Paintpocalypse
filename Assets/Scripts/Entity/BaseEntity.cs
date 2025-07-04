@@ -16,9 +16,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
 
     bool isInvincible = false;
 
-    public event Action OnTakeDamage;
     public event Func<StatModData, bool> OnAddStatModifier;
-    public event Action<BaseEntity> OnDie;
 
     public StatSet CurrentStats => statBroker.CurrentStats;
     public WeaponManager WeaponManager => weaponManager;
@@ -47,7 +45,6 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
 
     protected virtual void Start() {
         flasher.Init(eData.VisualStatusEffects);
-        OnDie += _ => flasher.OnDestroy();
         statBroker.UpdateStats += OnStatUpdated;
         isInvincible = false;
     }
@@ -84,7 +81,6 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
             flasher?.Trigger(StatEffectType.Damage, 0.2f);
         }
         statBroker.UpdateBaseStat(operation);
-        OnTakeDamage?.Invoke();
     }
 
     protected virtual void OnStatUpdated() {
@@ -107,7 +103,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     }
 
     protected virtual void Die() {
-        OnDie?.Invoke(this);
+        flasher.OnDestroy();
         //Debug.Log(gameObject.name + " Died");
         //TODO: GAME OVER SCREEN TRIGGER
 

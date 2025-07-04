@@ -1,5 +1,12 @@
+using System;
 using System.Linq;
 using UnityEngine;
+
+[Serializable]
+public class DropEntry {
+    public WeaponData weapon;
+    public int weight;
+}
 
 public class DropManager : MonoBehaviour
 {
@@ -27,7 +34,7 @@ public class DropManager : MonoBehaviour
         if (table == null) {
             Debug.LogWarning("DropManager has no DropTable assigned. Drops will be disabled.");
             return;
-        } else if (Random.value * 100 <= chance) {
+        } else if (UnityEngine.Random.value * 100 <= chance) {
             WeaponData def = GetRandomDrop(table);
 
             if (def != null) {
@@ -39,7 +46,7 @@ public class DropManager : MonoBehaviour
 
     WeaponData GetRandomDrop(DropTable table) {
         int totalWeight = table.drops.Sum(e => e.weight);
-        int roll = Random.Range(0, totalWeight);
+        int roll = UnityEngine.Random.Range(0, totalWeight);
 
         int cumulative = 0;
 

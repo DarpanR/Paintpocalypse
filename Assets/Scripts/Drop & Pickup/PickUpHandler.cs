@@ -122,28 +122,28 @@ public abstract class PickupHandler : MonoBehaviour, IAbilityHandler {
 
     void TriggerPickUp(BaseEntity entity) {
         if (entity == null || AlreadyTriggered.Contains(entity)) return;
-        Debug.Log($"[TriggerPickUp] TargetEntity: {(entity != null ? entity.name : "null")}, Tag match: {entity.CompareTag(Data.PickupTag)}");
+        //Debug.Log($"[TriggerPickUp] TargetEntity: {(entity != null ? entity.name : "null")}, Tag match: {entity.CompareTag(Data.PickupTag)}");
         AlreadyTriggered.Add(entity);
         dropOp.InvokeOnPickUp(entity);
 
         bool executed = PickupDropFactory.Execute(entity, Data);
-        Debug.Log($"[TriggerPickUp] PickupDropFactory.Execute returned: {executed}");
+        //Debug.Log($"[TriggerPickUp] PickupDropFactory.Execute returned: {executed}");
 
         if (remainingUsage >= 0 && executed) {
-            Debug.Log($"[TriggerPickUp] RemainingUsage before decrement: {remainingUsage}");
+            //Debug.Log($"[TriggerPickUp] RemainingUsage before decrement: {remainingUsage}");
             if (--remainingUsage <= 0)
                 Destroy(gameObject);
-            Debug.Log($"[TriggerPickUp] RemainingUsage after decrement: {remainingUsage}");
+            //Debug.Log($"[TriggerPickUp] RemainingUsage after decrement: {remainingUsage}");
         }
     }
 
     void FinalizeDrop() {
         if (!dropped) return;
-        Debug.Log($"[FinalizeDrop] RemainingUsage before decrement: {remainingUsage}");
+        //Debug.Log($"[FinalizeDrop] RemainingUsage before decrement: {remainingUsage}");
         if (remainingUsage > 0) {
             remainingUsage--;
         }
-        Debug.Log($"[FinalizeDrop] RemainingUsage after decrement: {remainingUsage}");
+        //Debug.Log($"[FinalizeDrop] RemainingUsage after decrement: {remainingUsage}");
         OnDropped?.Invoke();
         OnAbilityEnd?.Invoke();
     }

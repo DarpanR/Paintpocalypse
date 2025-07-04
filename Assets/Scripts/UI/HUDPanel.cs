@@ -8,23 +8,12 @@ using UnityEngine.UI;
 public class HUDPanel : MonoBehaviour
 {
     [Header("UI Elements")]
-    // targethealth bar
-    public Slider healthSlider;
     // Global Game Duration
     public TextMeshProUGUI timerText;
     float globalTimer;
 
-    // Stick Reference
-    PlayerController stickman;
-
     private void Start() {
         globalTimer = PhaseManager.Instance.TotalDuration;
-        stickman = PlayerController.Instance;   
-
-        SetMaxHealth();
-        SetHealth();
-
-        stickman.OnTakeDamage += SetHealth;
     }
 
     void Update() {
@@ -41,12 +30,5 @@ public class HUDPanel : MonoBehaviour
 
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
-
-    public void SetMaxHealth() {
-        healthSlider.maxValue = stickman.CurrentStats[StatType.MaxHealth].value;
-    }
-
-    public void SetHealth() {
-        healthSlider.value = stickman.CurrentStats[StatType.CurrentHealth].value;
-    }
+    
 }

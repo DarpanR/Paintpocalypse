@@ -4,20 +4,23 @@ using Unity.Mathematics;
 using UnityEngine;
 
 public class EnemyAI : BaseEntity, IAttractable {
-    public Transform spriteTransform;
 
     Transform player;
     Transform overrideTarget = null;
+    CountdownTimer hitTimer;
     // Start is called before the first frame update
     protected override void Start() {
         base.Start();
         player = GameObject.FindWithTag("Player").transform;
-
-        if (spriteTransform == null) spriteTransform = GetComponent<Transform>();
+        hitTimer = new CountdownTimer(CurrentStats.GetValueOrDefault(StatType.InvincibilityDuration, 0.05f));
     }
 
     // Update is called once per frame
     void Update() {
+        if (hitTimer.IsRunning) {
+            hitTimer.Tick(Time.deltaTime);
+            return;
+        }
         var target = overrideTarget != null ? overrideTarget : player;
 
         if (target != null) {
@@ -31,9 +34,13 @@ public class EnemyAI : BaseEntity, IAttractable {
     }
 
     protected override void LateUpdate() {
+        if (hitTimer.IsRunning) return;
         base.LateUpdate();
-        // Reset the visual child to stay upright
-        spriteTransform.rotation = quaternion.identity;
+    }
+
+    public override void TakeDamage(IoperationStrategy operation) {
+        base.TakeDamage(operation);
+        hitTimer.Reset();
     }
 
     public void SetOverrideTarget(Transform overrideTarget) {
@@ -41,11 +48,12 @@ public class EnemyAI : BaseEntity, IAttractable {
     }
 
     public void OnAttractionEnd() {
-            overrideTarget = null;
+        overrideTarget = null;
     }
 
     protected override void Die() {
-        DropManager.Instance.TryDrop(transform.position);
+        GameEvents.RaiseEntityDeath(GUID);
+        //DropManager.Instance.TryDrop(transform.position);
         base.Die();
     }
 }

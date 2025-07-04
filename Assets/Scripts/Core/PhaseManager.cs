@@ -1,27 +1,31 @@
 //using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 public enum SpawnPatternType { Random, Burst, Radial, Linear /*, ZigZag */}
 
 public class PhaseManager : MonoBehaviour {
     public static PhaseManager Instance { get; private set; }
 
+    public bool RunManager = true;
+
     [Header("Enemy Phases")]
     [SerializeField] List<Phasedata> phases;
-    public List<Phasedata> Phases { get { return phases; } }
 
     [Header("Pattern logic")]
     public int buffer = 1;
     public float spawnRadius = 2f;
-    public float TotalDuration { get; private set; }
 
-    int currentPhase;
+    public List<Phasedata> Phases { get { return phases; } }
+    public float TotalDuration { get; private set; }
+    public int CurrentPhase { get; private set; }
+    public bool IsDone { get; private set; }
+
     // Time tracker for current phase
     ClockTimer phaseTimer;
-    bool finished;
-    bool initialized = false;
 
     Camera mainCam;
     float radius;
@@ -42,28 +46,30 @@ public class PhaseManager : MonoBehaviour {
     }
 
     private void Start() {
-        currentPhase = 0;
-        finished = false;
-        initialized = true;
+        CurrentPhase = 0;
+        IsDone = false;
         mainCam = Camera.main;
 
         // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
         radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
-        
+        phaseTimer = new(0, new());
+        phaseTimer.onAlarm += HandlePhaseAlarms;
+        phaseTimer.OnTimerStop += OnPhaseTimerStop;
+
         BeginPhase(0);
     }
 
     void Update() {
-        if (!initialized || finished) return;
+        if (!RunManager || IsDone) return;
         phaseTimer.Tick(Time.deltaTime);
     }
 
     void BeginPhase(int phaseIndex) {
-        var phase = phases[currentPhase];
+        var phase = phases[CurrentPhase];
         var alarms = new List<float>();
-
-        var periodicTimes = new HashSet<float>();
         int count = Mathf.CeilToInt(phase.duration / phase.periodicInterval);
+
+        periodicTimes = new HashSet<float>();
 
         for (int i = 0; i < count; i++) {
             float t = phase.periodicInterval * i;
@@ -75,22 +81,36 @@ public class PhaseManager : MonoBehaviour {
         foreach (var waves in phase.specialWaves)
             if (waves.spawns.Count > 0)
                 alarms.Add(waves.timeOffSet);
+        phaseTimer.Reset(alarms);
+    }
 
-        phaseTimer = new ClockTimer(0, alarms);
-        phaseTimer.onAlarm += (time) => {
-            if (periodicTimes.Contains(time)) {
-                // Spawn a periodic wave
-                var ins = phase.periodicSpawns[Random.Range(0, phase.periodicSpawns.Count)];
-                FireInstruction(ins);
-            } else {
-                foreach (var wave in phase.specialWaves)
-                    if (Mathf.Approximately(wave.timeOffSet, time))
-                        foreach (var ins in wave.spawns)
-                            FireInstruction(ins);
-            }
-        };
-        phaseTimer.OnTimerStop += () => BeginPhase(currentPhase++);
-        phaseTimer.Start();
+    private HashSet<float> periodicTimes;
+
+    void HandlePhaseAlarms(float time) {
+        var phase = phases[CurrentPhase];
+
+        if (periodicTimes.Contains(time)) {
+            // Spawn a periodic wave
+            var ins = phase.periodicSpawns[Random.Range(0, phase.periodicSpawns.Count)];
+            FireInstruction(ins);
+        } else {
+            foreach (var wave in phase.specialWaves)
+                if (Mathf.Approximately(wave.timeOffSet, time))
+                    foreach (var ins in wave.spawns)
+                        FireInstruction(ins);
+        }
+    }
+
+    void OnPhaseTimerStop() {
+        if (CurrentPhase == phases.Count - 1) {
+            IsDone = true;
+            GameEvents.RaiseVictory(new VictoryData {
+                Type = VictoryType.StickMan,
+                Message = "Stickman Wins!"
+            });
+            return;
+        }
+        BeginPhase(CurrentPhase++);
     }
 
     void FireInstruction(SpawnInstruction ins) {
@@ -159,16 +179,18 @@ public class PhaseManager : MonoBehaviour {
                     break;
                 }
             case SpawnPatternType.Random:
-                var values = System.Enum.GetValues(typeof(SpawnPatternType));
-                var randPattern = (SpawnPatternType)values.GetValue(Random.Range(0, values.Length));
+                var values = Enum.GetValues(typeof(SpawnPatternType));
+                var validPatterns = new List<SpawnPatternType>();
+                
+                foreach (SpawnPatternType p in values)
+                    if (p != SpawnPatternType.Random)
+                        validPatterns.Add(p);
+
+                var randPattern = validPatterns[Random.Range(0, validPatterns.Count)];
                 positions = GeneratePattern(randPattern, count);
-                //System.Random rand = new Syste.Random();
                 break;
                 // More patterns here!
         }
         return positions;
     }
-
-    public int CurrentPhase => currentPhase;
-    public bool IsDone => finished;
 }

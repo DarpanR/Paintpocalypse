@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class GameInputManager : MonoBehaviour {
     public static GameInputManager Instance { get; private set; }
-
     public bool InputLocked { get; set; }
 
     void Awake() {
@@ -12,7 +12,10 @@ public class GameInputManager : MonoBehaviour {
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update() {
+        if (IsKeyDown(KeyCode.Escape)) GameEvents.RaisePausePressed();
     }
 
     /// Returns true if pointer over any UI

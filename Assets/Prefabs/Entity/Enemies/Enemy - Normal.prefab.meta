@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Prefabs/Entity/Enemies/Enemy - Rush.prefab.meta
 guid: b5f7b6529a7ef0a4f8bd349d6e7c2d8c
-========
-guid: 75a58e2db6be7054eacba4e4a8f12739
->>>>>>>> feature/mouse-character:Assets/Prefabs/Entity/Enemies/Enemy - Normal Variant (3).prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

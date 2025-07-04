@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Custom/Phase Defintion")]
+[CreateAssetMenu(menuName = "Custom/Phase Data")]
 public class Phasedata : ScriptableObject {
     [TextArea,Tooltip("Only for organization tracking")]
     public string discription;

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 427226824617519313}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6.76, y: 0.44, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -114,7 +114,6 @@ MonoBehaviour:
   rend: {fileID: 7889638277394104073}
   flasher: {fileID: 8496250930109991626}
   guid: d92c78d6-32f5-4ada-916c-05cc9a44c9c3
-  spriteTransform: {fileID: 564518450552071770}
 --- !u!1 &1895733982302793954
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,6 +210,7 @@ GameObject:
   - component: {fileID: 564518450552071770}
   - component: {fileID: 7889638277394104073}
   - component: {fileID: 8496250930109991626}
+  - component: {fileID: 8661205491247875033}
   m_Layer: 7
   m_Name: Sprite
   m_TagString: Enemy
@@ -275,7 +275,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.033430338, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -299,3 +299,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allEffects: {fileID: 0}
   rend: {fileID: 7889638277394104073}
+--- !u!114 &8661205491247875033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560210366132706369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5243dc6fd2bca41b4762d7d7982334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockPosition: 0
+  lockRotation: 1
+  lockScale: 0
