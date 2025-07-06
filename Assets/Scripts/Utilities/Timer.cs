@@ -1,8 +1,6 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Timer {
@@ -48,6 +46,7 @@ public abstract class Timer {
     }
 
     public virtual void Reset(float newTime) {
+        //UnityEngine.Debug.Log(newTime);
         Time = initialTime = newTime;
         Start();
     }
@@ -82,11 +81,16 @@ public class FireRateTimer : CountdownTimer {
         base.Reset(GetFireInterval(newFireRate));  
     }
 
+    public void ChangeProgress(float newProgress) {
+        Time = initialTime * newProgress;
+    }
+
     static float GetFireInterval(float rate) => 1f / rate;
 }    
 
 public class StopWatchTimer : Timer {
-    public StopWatchTimer(float value) : base(0) {}
+    public StopWatchTimer() : base(0) { }
+    public StopWatchTimer(float value) : base(value) {}
 
     public override void Tick(float deltaTime) {
         Time += deltaTime;

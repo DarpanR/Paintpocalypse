@@ -37,7 +37,7 @@ MonoBehaviour:
   projectile: {fileID: 4913505686419141161, guid: 80c1142d336dbf44faea1ed71077b43a, type: 3}
   poolSize: 20
   pickupIcon: {fileID: 0}
-  pickupTag: 
+  pickupTag: Player
   totalUsage: 1
   lifetime: 5
   dropOperationType: 0

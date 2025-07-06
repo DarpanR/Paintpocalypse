@@ -76,15 +76,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 14da6827194047b419d8d66083a9de73, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.51166666, y: 0.64166665}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &1891797903887463420
@@ -96,7 +96,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4123473134497949749}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -166,7 +166,7 @@ MonoBehaviour:
   pickupTag: Enemy
   radius: 1
   availableEntities:
-  - prefab: {fileID: 427226824617519313, guid: b5f7b6529a7ef0a4f8bd349d6e7c2d8c, type: 3}
+  - EntityData: {fileID: 11400000, guid: 598d0472740af2d4883b14e2e66d41c4, type: 2}
     maxUsage: 5
-  - prefab: {fileID: 6310707719617671056, guid: fb55b41bf5bb64545af11160b2a6086e, type: 3}
+  - EntityData: {fileID: 11400000, guid: 889abcccf8943fa44b8b2c960d6afdee, type: 2}
     maxUsage: 3

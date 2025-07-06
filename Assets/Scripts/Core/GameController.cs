@@ -1,23 +1,16 @@
-using System;
-using System.Linq;
 using UnityEngine;
-using static UnityEngine.CullingGroup;
 
 public enum GameState { Start, Play, Pause, End }
 
-
 public class GameController : MonoBehaviour {
-    //[Header("Player")]
-    //[SerializeField] PlayerController stickMan;
-    //public PlayerController mounse;
+    public System.Random RNG { get; private set; }
+    public int TotalScore {  get; private set; }
+    public int CurrentKillStreak { get; private set; }
+    public int TotalKills {  get; private set; }
 
-    //[Header("Controlboards")]
-    //[SerializeField] PhaseManager phaseManager;
-    //[SerializeField] DropManager dropManager;
-
-
-    // Singleton instance
     public static GameController Instance { get; private set; }
+
+    int lastHp;
 
     //Game Paramenter
     public GameState CurrentState { get; private set; }
@@ -30,10 +23,16 @@ public class GameController : MonoBehaviour {
         CurrentState = GameState.Play;
 
         GameEvents.OnPausePressed += TogglePause;
+        GameEvents.OnEntityDeath += UpdateScore;
+        GameEvents.OnHealthBarUpdate += ResetHit;
+        GameEvents.OnGameStart += GenerateSeed;
     }
 
     private void OnDestroy() {
         GameEvents.OnPausePressed -= TogglePause;
+        GameEvents.OnEntityDeath -= UpdateScore;
+        GameEvents.OnHealthBarUpdate -= ResetHit;
+        GameEvents.OnGameStart -= GenerateSeed;
     }
 
     public void ChangeState(GameState newState) {
@@ -61,5 +60,23 @@ public class GameController : MonoBehaviour {
             GameEvents.RaiseResume();
             ChangeState(GameState.Play);
         }
+    }
+
+    void GenerateSeed() {
+        var seed = Random.Range(0, int.MaxValue);
+        Random.InitState(seed);
+        Instance.RNG = new System.Random(seed);
+    }
+
+    void ResetHit(int currentHealth, int maxHealth) {
+        if (lastHp > currentHealth) CurrentKillStreak = 0;
+    }
+
+    void UpdateScore(string guid, Vector3 position) {
+        var baseEntity = EntityManager.Instance.GetEntityData(guid);
+
+        TotalScore += baseEntity.dropEntry.Cost;
+        CurrentKillStreak++;
+        TotalKills++;
     }
 }

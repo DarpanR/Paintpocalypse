@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 
 public class EyeDropper : MonoBehaviour, IAbilityHandler {
     [System.Serializable]
-    public class EyeDroppables {
-        public GameObject prefab;
+    public struct EyeDroppables {
+        public EntityData EntityData;
         public int maxUsage;
     }
 
@@ -46,9 +46,9 @@ public class EyeDropper : MonoBehaviour, IAbilityHandler {
             maxUsage = 1
         };
 
-        foreach (var entry in availableEntities) 
-            if (entry.prefab.TryGetComponent<BaseEntity>(out var entity)) 
-                storedEntities[entity.GUID] = entry;
+        foreach (var entry in availableEntities) {
+            storedEntities[entry.EntityData.GUID] = entry;
+        }
     }
 
     private void Update() {
@@ -59,8 +59,8 @@ public class EyeDropper : MonoBehaviour, IAbilityHandler {
                 hasSelection = Copy(result.TargetEntity);
             } else
                 Paste();
-        } else if (!hasSelection)
-            SelectOp.Preview();
+        } 
+        SelectOp.Preview();
     }
 
     public void Init(IPickupData pickupData, bool dropIt = false) { }
@@ -77,9 +77,9 @@ public class EyeDropper : MonoBehaviour, IAbilityHandler {
     }
 
     void Paste() {
-        var obj = Instantiate(currentSelection.prefab, GameInputManager.Instance.MouseWorldPosition, Quaternion.identity);
+        var go = EntityManager.Instance.Spawn(currentSelection.EntityData.GUID, GameInputManager.Instance.MouseWorldPosition);
 
-        OnPickUp?.Invoke(obj.GetComponent<BaseEntity>());
+        OnPickUp?.Invoke(go.GetComponent<BaseEntity>());
 
         if (--remainingUsage <= 0) {
             OnAbilityEnd?.Invoke();

@@ -16,18 +16,21 @@ MonoBehaviour:
   duration: 90
   periodicInterval: 10
   periodicSpawns:
-  - enemy: {fileID: 427226824617519313, guid: b5f7b6529a7ef0a4f8bd349d6e7c2d8c, type: 3}
+  - entityData: {fileID: 11400000, guid: e56696012da47194d8e837041d61b836, type: 2}
     minCount: 10
     maxCount: 16
+    weight: 30
     pattern: 1
-  - enemy: {fileID: 974057190339115752, guid: ef4d73a027a210f4083838d29e697417, type: 3}
+  - entityData: {fileID: 11400000, guid: 889abcccf8943fa44b8b2c960d6afdee, type: 2}
     minCount: 3
     maxCount: 6
+    weight: 50
     pattern: 0
   specialWaves:
   - timeOffSet: 7
     spawns:
-    - enemy: {fileID: 6310707719617671056, guid: fb55b41bf5bb64545af11160b2a6086e, type: 3}
+    - entityData: {fileID: 11400000, guid: 598d0472740af2d4883b14e2e66d41c4, type: 2}
       minCount: 6
       maxCount: 8
+      weight: 3
       pattern: 0

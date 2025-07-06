@@ -30,3 +30,9 @@ MonoBehaviour:
   - type: 1
     color: {r: 1, g: 0, b: 0, a: 1}
     flashSpeed: 0.1
+  dropEntry:
+    Cost: 10
+    Exp: 10
+    dropTablesAllowed: 00000000
+    weight: 0.422
+  guid: f0ec6657-36a1-463d-a07e-5a7b7988ea90

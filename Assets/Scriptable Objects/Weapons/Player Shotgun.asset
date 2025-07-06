@@ -12,14 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a1d9353da946a449545f53bb30aa52, type: 3}
   m_Name: Player Shotgun
   m_EditorClassIdentifier: 
-  pickupIcon: {fileID: 21300000, guid: ba1567a682e9fd44a9543f30223ebc39, type: 3}
-  pickupCount: 1
-  pickupTag: Player
-  dropType: 0
-  dropCount: 1
-  projectile: {fileID: 1441220537783115536, guid: 7c552f0350f9ad544a21769098d1081d, type: 3}
-  poolSize: 20
-  weaponName: 
+  weaponName: pea shooter
   maxLevel: 5
   operationType: 1
   affectedType: 1
@@ -41,6 +34,14 @@ MonoBehaviour:
       value: 10
   luPenetration: 1
   luProjectileCount: 1
+  projectile: {fileID: 1441220537783115536, guid: 7c552f0350f9ad544a21769098d1081d, type: 3}
+  poolSize: 20
+  pickupIcon: {fileID: 21300000, guid: ba1567a682e9fd44a9543f30223ebc39, type: 3}
+  pickupTag: Player
+  totalUsage: 1
+  lifetime: 5
+  dropOperationType: 0
+  dropRadius: 3
   guid: 999dea0e-72d4-44eb-a1dc-df1a27dea416
   baseSpreadAngle: 360
   luSpreadAngle: 0

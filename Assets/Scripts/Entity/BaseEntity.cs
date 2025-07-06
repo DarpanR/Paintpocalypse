@@ -5,45 +5,35 @@ using UnityEditor;
 #endif
 
 public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManagerTarget {
-    public EntityData eData;
+    public EntityData entityData;
+
+    protected EntityData eData;
     public SpriteRenderer rend;
 
     [SerializeField]
     StatFlasher flasher;
 
-    StatBroker statBroker;
+    protected StatBroker statBroker;
     WeaponManager weaponManager;
 
-    bool isInvincible = false;
+    protected bool isInvincible = false;
 
     public event Func<StatModData, bool> OnAddStatModifier;
 
+    public string TargetTag => eData.targetTag;
+    public string GUID { get; private set; }
     public StatSet CurrentStats => statBroker.CurrentStats;
     public WeaponManager WeaponManager => weaponManager;
-
-    [SerializeField, HideInInspector]
-    string guid = Guid.NewGuid().ToString();
-    public string GUID {
-        get {
-            if (string.IsNullOrEmpty(guid))
-                guid = Guid.NewGuid().ToString();
-#if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
-#endif
-            return guid;
-        }
-    }
 
     protected virtual void Awake() {
         flasher = flasher != null ? flasher : GetComponent<StatFlasher>();
 
         if (flasher == null)
             throw new NullReferenceException("flasher missing homeslice");
-        statBroker = new StatBroker(InitializeStat());
-        weaponManager = new WeaponManager(transform, eData.loadOutWeapons, eData.targetTag, this);
     }
 
     protected virtual void Start() {
+        if (entityData != null) Init(entityData, entityData.GUID);
         flasher.Init(eData.VisualStatusEffects);
         statBroker.UpdateStats += OnStatUpdated;
         isInvincible = false;
@@ -52,6 +42,16 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     protected virtual void LateUpdate() {
         weaponManager.Update();
         statBroker.Tick(Time.deltaTime);
+    }
+
+    public virtual void Init(EntityData entityData, string guid) {
+        eData = entityData;
+        GUID = guid;
+
+        //EntityManager.Instance.RegisterEntity(guid, eData);
+
+        statBroker = new StatBroker(InitializeStat());
+        weaponManager = new WeaponManager(transform, eData.loadOutWeapons, eData.targetTag, this);
     }
 
     StatSet InitializeStat() {
@@ -70,8 +70,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     }
 
     public virtual void TakeDamage(IoperationStrategy operation) {
-        if (isInvincible)
-            return;
+        if (isInvincible) return;
         float duration = CurrentStats.GetValueOrDefault(StatType.InvincibilityDuration, 0f);
 
         if (duration > 0) {
@@ -84,9 +83,6 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     }
 
     protected virtual void OnStatUpdated() {
-        var newValue = CurrentStats[StatType.LocalScale].value;
-        transform.localScale = new Vector3(newValue, newValue);
-
         if (CurrentStats[StatType.CurrentHealth].value <= 0) Die();
     }
 

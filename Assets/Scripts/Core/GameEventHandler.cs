@@ -1,4 +1,5 @@
 using System;
+using Vector3 = UnityEngine.Vector3;
 
 public static class GameEvents {
     public static event Action<GameState> OnGameStateChanged;
@@ -12,9 +13,10 @@ public static class GameEvents {
     public static event Action OnPausePressed;
 
     public static event Action<VictoryData> OnVictory;
-    public static event Action<string> OnEntityDeath;
+    public static event Action<string, Vector3> OnEntityDeath;
     public static event Action<int, int> OnHealthBarUpdate;
     public static event Action<int> OnExpBarUpdate;
+    public static event Action<int> OnCoinCollected;
     public static event Action OnPhaseChange;
 
     public static void RaiseGameStatChanged(GameState state) => OnGameStateChanged?.Invoke(state);
@@ -48,16 +50,19 @@ public static class GameEvents {
         if (!GameEnd) OnPausePressed?.Invoke();
     }
 
-    public static void RaiseEntityDeath(string guid) =>
-      OnEntityDeath?.Invoke(guid);
+    public static void RaiseEntityDeath(string guid, Vector3 position) =>
+      OnEntityDeath?.Invoke(guid, position);
 
     public static void RaiseHealthBarUpdate(int health, int maxHealth) =>
         OnHealthBarUpdate?.Invoke(health, maxHealth);
 
-    public static void RaiseEXPBarUpdate(int exp) =>
+    public static void RaiseExpBarUpdate(int exp) =>
         OnExpBarUpdate?.Invoke(exp);
 
-    public static void RaisePhaseChange() =>
+    public static void RaiseCoinCollected(int amount) =>
+        OnCoinCollected?.Invoke(amount);
+
+	public static void RaisePhaseChange() =>
         OnPhaseChange?.Invoke();
 
     public static void RaiseVictory(VictoryData data) {

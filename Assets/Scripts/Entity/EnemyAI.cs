@@ -12,6 +12,10 @@ public class EnemyAI : BaseEntity, IAttractable {
     protected override void Start() {
         base.Start();
         player = GameObject.FindWithTag("Player").transform;
+    }
+
+    public override void Init(EntityData entityData, string guid) {
+        base.Init(entityData, guid);
         hitTimer = new CountdownTimer(CurrentStats.GetValueOrDefault(StatType.InvincibilityDuration, 0.05f));
     }
 
@@ -43,6 +47,14 @@ public class EnemyAI : BaseEntity, IAttractable {
         hitTimer.Reset();
     }
 
+    protected override void OnStatUpdated() {
+        var newScale = CurrentStats.GetStatOrNull(StatType.LocalScale).value;
+
+        if (!Mathf.Approximately(newScale, transform.localScale.x))
+            transform.localScale = new Vector3(newScale, newScale);
+        base.OnStatUpdated();
+    }
+
     public void SetOverrideTarget(Transform overrideTarget) {
         this.overrideTarget = overrideTarget;
     }
@@ -52,7 +64,7 @@ public class EnemyAI : BaseEntity, IAttractable {
     }
 
     protected override void Die() {
-        GameEvents.RaiseEntityDeath(GUID);
+        GameEvents.RaiseEntityDeath(GUID, transform.position);
         //DropManager.Instance.TryDrop(transform.position);
         base.Die();
     }

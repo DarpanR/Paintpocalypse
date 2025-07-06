@@ -10,7 +10,7 @@ public enum SpawnPatternType { Random, Burst, Radial, Linear /*, ZigZag */}
 public class PhaseManager : MonoBehaviour {
     public static PhaseManager Instance { get; private set; }
 
-    public bool RunManager = true;
+    public int currentPhase = 0;
 
     [Header("Enemy Phases")]
     [SerializeField] List<Phasedata> phases;
@@ -20,12 +20,16 @@ public class PhaseManager : MonoBehaviour {
     public float spawnRadius = 2f;
 
     public List<Phasedata> Phases { get { return phases; } }
+    public float TotalElapsedTime => timeKeeper.Time;
     public float TotalDuration { get; private set; }
+    public float CurrentPhaseTime => phaseTimer != null ? phaseTimer.Time : 0f;
+    public float CurrentPhaseDuration => phases != null && phases.Count > 0 ? phases[CurrentPhase].duration : 0f;
     public int CurrentPhase { get; private set; }
     public bool IsDone { get; private set; }
 
     // Time tracker for current phase
     ClockTimer phaseTimer;
+    readonly StopWatchTimer timeKeeper = new StopWatchTimer();
 
     Camera mainCam;
     float radius;
@@ -33,6 +37,7 @@ public class PhaseManager : MonoBehaviour {
     private void Awake() {
         if (Instance == null) Instance = this;
         else Destroy(this);
+        mainCam = Camera.main;
 
         //temporary
         if (Phases.Count == 0) Destroy(this);
@@ -46,9 +51,8 @@ public class PhaseManager : MonoBehaviour {
     }
 
     private void Start() {
-        CurrentPhase = 0;
+        CurrentPhase = currentPhase;
         IsDone = false;
-        mainCam = Camera.main;
 
         // Use the camera’s orthographic size and aspect ratio to compute the edge for some spawn patterns
         radius = Mathf.Max(mainCam.orthographicSize, mainCam.orthographicSize * mainCam.aspect) + buffer;
@@ -56,15 +60,17 @@ public class PhaseManager : MonoBehaviour {
         phaseTimer.onAlarm += HandlePhaseAlarms;
         phaseTimer.OnTimerStop += OnPhaseTimerStop;
 
-        BeginPhase(0);
+        BeginPhase();
+        timeKeeper.Start();
     }
 
     void Update() {
-        if (!RunManager || IsDone) return;
+        if (IsDone) return;
         phaseTimer.Tick(Time.deltaTime);
+        timeKeeper.Tick(Time.deltaTime);
     }
 
-    void BeginPhase(int phaseIndex) {
+    void BeginPhase() {
         var phase = phases[CurrentPhase];
         var alarms = new List<float>();
         int count = Mathf.CeilToInt(phase.duration / phase.periodicInterval);
@@ -82,6 +88,8 @@ public class PhaseManager : MonoBehaviour {
             if (waves.spawns.Count > 0)
                 alarms.Add(waves.timeOffSet);
         phaseTimer.Reset(alarms);
+
+        GameEvents.RaisePhaseChange();
     }
 
     private HashSet<float> periodicTimes;
@@ -91,14 +99,30 @@ public class PhaseManager : MonoBehaviour {
 
         if (periodicTimes.Contains(time)) {
             // Spawn a periodic wave
-            var ins = phase.periodicSpawns[Random.Range(0, phase.periodicSpawns.Count)];
-            FireInstruction(ins);
+            FireInstruction(GetWieghtedInstruction(phase.periodicSpawns));
         } else {
             foreach (var wave in phase.specialWaves)
                 if (Mathf.Approximately(wave.timeOffSet, time))
                     foreach (var ins in wave.spawns)
                         FireInstruction(ins);
         }
+    }
+
+    SpawnInstruction GetWieghtedInstruction(List<SpawnInstruction> instructions) {
+        float totalWeight = 0f;
+
+        foreach (var ins in instructions)
+            totalWeight += ins.weight;
+        float roll = Random.value * totalWeight;
+        float cumulative = 0f;
+
+        foreach (var ins in instructions) {
+            cumulative += ins.weight;
+            if (roll <= cumulative)
+                return ins;
+        }
+        // fallback in case of round error
+        return instructions[^1];
     }
 
     void OnPhaseTimerStop() {
@@ -110,7 +134,8 @@ public class PhaseManager : MonoBehaviour {
             });
             return;
         }
-        BeginPhase(CurrentPhase++);
+        CurrentPhase++;
+        BeginPhase();
     }
 
     void FireInstruction(SpawnInstruction ins) {
@@ -118,7 +143,7 @@ public class PhaseManager : MonoBehaviour {
         List<Vector2> positions = GeneratePattern(ins.pattern, count);
 
         for (int i = 0; i < positions.Count; i++) {
-            Instantiate(ins.enemy, positions[i], Quaternion.identity);
+            EntityManager.Instance.Spawn(ins.entityData.GUID, positions[i]);
         }
     }
 

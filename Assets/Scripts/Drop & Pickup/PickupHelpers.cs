@@ -7,7 +7,7 @@ public enum PickupType {
     Weapon, 
     StatModifier, 
     Currency, 
-    EXP,
+    Exp,
 }
 
 [Serializable]

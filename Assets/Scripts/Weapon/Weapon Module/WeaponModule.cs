@@ -42,6 +42,7 @@ public abstract class WeaponModule<Tdef> : IWeaponModule, IstatSetTarget
         //    pool.Enqueue(go);
         //}
         fireTimer = new FireRateTimer(CurrentStats[StatType.FireRate].value);
+        fireTimer.ChangeProgress(Random.value);
         fireTimer.Start();
         fireTimer.OnTimerStop += Fire;
     }

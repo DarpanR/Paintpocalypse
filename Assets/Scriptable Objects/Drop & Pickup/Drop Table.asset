@@ -13,9 +13,36 @@ MonoBehaviour:
   m_Name: Drop Table
   m_EditorClassIdentifier: 
   drops:
-  - weapon: {fileID: 11400000, guid: 5789cc27dec74bf45b2ceb07738bdb10, type: 2}
-    weight: 25
-  - weapon: {fileID: 11400000, guid: 057a760fe6dfe324d99b3f8c8b7f684b, type: 2}
-    weight: 25
-  - weapon: {fileID: 11400000, guid: ba60069a60a93a44f8a86ecfab66c512, type: 2}
-    weight: 33
+  - PickupType: 0
+    DropData: {fileID: 11400000, guid: ba60069a60a93a44f8a86ecfab66c512, type: 2}
+    weight: 20
+  - PickupType: 0
+    DropData: {fileID: 11400000, guid: 057a760fe6dfe324d99b3f8c8b7f684b, type: 2}
+    weight: 20
+  - PickupType: 0
+    DropData: {fileID: 11400000, guid: 5789cc27dec74bf45b2ceb07738bdb10, type: 2}
+    weight: 20
+  dropChance:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

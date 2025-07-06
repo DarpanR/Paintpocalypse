@@ -20,7 +20,7 @@ public class CollisionAttack : MonoBehaviour {
     }
 
     private void Start() {
-        targetTag = targetTag == "Untagged" ? ownerEntity.eData.targetTag : targetTag;
+        targetTag = targetTag == "Untagged" ? ownerEntity.TargetTag : targetTag;
         damage = (damage > 0) ? damage : (int)ownerEntity.CurrentStats.GetValueOrDefault(
             StatType.Damage, 0f);
         statBroker = new StatBroker(

@@ -1,26 +1,28 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : BaseEntity {
-    public static PlayerController Instance { get; private set; }
-
+    //public static PlayerController Instance { get; private set; }
+    
     Rigidbody2D rb;
 
     // Remember last non-zero aim so you keep facing when no arrow is pressed
     Vector2 lastAim = Vector2.up;
-
-    // Start is called before the first frame update
+    CountdownTimer timer = new CountdownTimer(10);
+    bool stop = false;
 
     protected override void Awake() {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-        
+        rb = GetComponent<Rigidbody2D>();
+
+        //if (Instance != null && this != Instance) Destroy(gameObject);
+        //Instance = this;
         base.Awake();
     }
 
-    protected override void Start() {
-        base.Start();
-
-        rb = GetComponent<Rigidbody2D>();
+    public override void Init(EntityData entityData, string guid) {
+        eData = entityData;
+        base.Init(entityData, guid);
+        timer.Start();
 
         GameEvents.RaiseHealthBarUpdate(
             (int)CurrentStats[StatType.CurrentHealth].value,
