@@ -1,13 +1,16 @@
 //using System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public enum SpawnPatternType { Random, Burst, Radial, Linear /*, ZigZag */}
+public enum WaveType { Periodic, Rush , End }
 
 public class PhaseManager : MonoBehaviour {
+
     public static PhaseManager Instance { get; private set; }
 
     public int currentPhase = 0;
@@ -31,6 +34,7 @@ public class PhaseManager : MonoBehaviour {
     ClockTimer phaseTimer;
     readonly StopWatchTimer timeKeeper = new StopWatchTimer();
 
+    List<(float, WaveType)> alarms;
     Camera mainCam;
     float radius;
 
@@ -44,7 +48,10 @@ public class PhaseManager : MonoBehaviour {
 
         // Sorts spawn waves based on their spawn timer set
         // and add phase duration to TotalDuration
-        foreach (var phase in phases) {
+
+        for (int i = currentPhase;  i < phases.Count; i++) {
+            var phase = phases[i];
+
             phase.specialWaves.Sort((a, b) => a.timeOffSet.CompareTo(b.timeOffSet));
             TotalDuration += phase.duration;
         }
@@ -70,41 +77,54 @@ public class PhaseManager : MonoBehaviour {
         timeKeeper.Tick(Time.deltaTime);
     }
 
+    /// <summary>
+    /// TODO: FIX WAVE SPAWNING BUILD CONCRETE UNDERSTANDING OF WHAT EACH TYPE OF SPAWN IS TO DO (ESPECIALLY RUSH WAVES)
+    /// </summary>
     void BeginPhase() {
         var phase = phases[CurrentPhase];
-        var alarms = new List<float>();
-        int count = Mathf.CeilToInt(phase.duration / phase.periodicInterval);
+        alarms = new ();
 
-        periodicTimes = new HashSet<float>();
+        if (phase.periodicSpawns.Count > 0) {
+            int count = Mathf.CeilToInt(phase.duration / phase.periodicInterval);
 
-        for (int i = 0; i < count; i++) {
-            float t = phase.periodicInterval * i;
+            for (int i = 0; i < count; i++) {
+                float t = phase.periodicInterval * i;
 
-            alarms.Add(t);
-            periodicTimes.Add(t);
+                alarms.Add((t, WaveType.Periodic));
+            }
         }
 
-        foreach (var waves in phase.specialWaves)
-            if (waves.spawns.Count > 0)
-                alarms.Add(waves.timeOffSet);
-        phaseTimer.Reset(alarms);
+        foreach (var waves in phase.specialWaves) 
+            if (waves.spawns.Count > 0) 
+                alarms.Add((waves.timeOffSet, WaveType.Rush));
+        alarms.Add((CurrentPhaseDuration, WaveType.End));
+        phaseTimer.Reset(alarms.Select(a => a.Item1).ToList());
 
-        GameEvents.RaisePhaseChange();
     }
 
-    private HashSet<float> periodicTimes;
-
     void HandlePhaseAlarms(float time) {
+        //Debug.Log("alarm! " + time);
         var phase = phases[CurrentPhase];
+        var alarm = alarms.FindAll(a => a.Item1 == time);
 
-        if (periodicTimes.Contains(time)) {
-            // Spawn a periodic wave
-            FireInstruction(GetWieghtedInstruction(phase.periodicSpawns));
-        } else {
-            foreach (var wave in phase.specialWaves)
-                if (Mathf.Approximately(wave.timeOffSet, time))
-                    foreach (var ins in wave.spawns)
-                        FireInstruction(ins);
+        foreach (var type in alarm) {
+            //Debug.Log($"alarm time: {type.Item1}, type: {type.Item2}");
+            switch (type.Item2) {
+                case WaveType.Periodic:
+                    FireInstruction(GetWieghtedInstruction(phase.periodicSpawns));
+                    break;
+                case WaveType.Rush:
+                    foreach (var waves in phase.specialWaves)
+                        if (waves.timeOffSet == type.Item1)
+                            foreach (var spawn in waves.spawns)
+                                FireInstruction(spawn);
+                    break;
+                case WaveType.End:
+                    GameEvents.RaisePhaseChange();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

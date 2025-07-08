@@ -6,9 +6,9 @@ using UnityEditor;
 
 public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManagerTarget {
     public EntityData entityData;
+    public SpriteRenderer rend;
 
     protected EntityData eData;
-    public SpriteRenderer rend;
 
     [SerializeField]
     StatFlasher flasher;

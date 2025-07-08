@@ -31,12 +31,12 @@ MonoBehaviour:
   LevelStats:
     statList:
     - type: 5
-      value: 10
+      value: 2
   luPenetration: 1
   luProjectileCount: 1
   projectile: {fileID: 1441220537783115536, guid: 7c552f0350f9ad544a21769098d1081d, type: 3}
   poolSize: 20
-  pickupIcon: {fileID: 21300000, guid: ba1567a682e9fd44a9543f30223ebc39, type: 3}
+  pickupIcon: {fileID: 21300000, guid: 89e7ea71ec121884f831e136b7533155, type: 3}
   pickupTag: Player
   totalUsage: 1
   lifetime: 5

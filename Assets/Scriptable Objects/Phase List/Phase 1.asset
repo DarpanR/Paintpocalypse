@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   discription: 
   duration: 20
-  periodicInterval: 4
+  periodicInterval: 7
   periodicSpawns:
   - entityData: {fileID: 11400000, guid: 598d0472740af2d4883b14e2e66d41c4, type: 2}
     minCount: 5
@@ -26,11 +26,4 @@ MonoBehaviour:
     maxCount: 8
     weight: 5
     pattern: 0
-  specialWaves:
-  - timeOffSet: 13
-    spawns:
-    - entityData: {fileID: 11400000, guid: e56696012da47194d8e837041d61b836, type: 2}
-      minCount: 2
-      maxCount: 3
-      weight: 10
-      pattern: 2
+  specialWaves: []

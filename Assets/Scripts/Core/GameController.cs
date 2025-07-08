@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
     private void Awake() {
         if (Instance == null) Instance = this;
         else Destroy(this);
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         CurrentState = GameState.Play;
 

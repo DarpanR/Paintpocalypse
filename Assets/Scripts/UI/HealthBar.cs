@@ -17,15 +17,14 @@ public class HealthBar : MonoBehaviour {
     private void Awake() {
         healthSlider = GetComponent<Slider>();
         cGroup = GetComponent<CanvasGroup>();
+        fadeTimer = new CountdownTimer(fadeTime);
     }
 
-    private void Start() {
-        fadeTimer = new CountdownTimer(fadeTime);
-
+    private void OnEnable() {
         GameEvents.OnHealthBarUpdate += UpdateHealth;
     }
 
-    private void OnDestroy() {
+    private void OnDisable() {
         GameEvents.OnHealthBarUpdate -= UpdateHealth;
     }
 

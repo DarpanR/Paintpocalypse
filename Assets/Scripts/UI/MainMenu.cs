@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     public void StartGameButton()
     {
         SceneManager.LoadSceneAsync("MainScene");
+        GameEvents.RaiseGameStart();
     }
 
     public void ControlsButton()

@@ -13,24 +13,53 @@ MonoBehaviour:
   m_Name: Phase 2
   m_EditorClassIdentifier: 
   discription: 
-  duration: 90
-  periodicInterval: 10
+  duration: 60
+  periodicInterval: 3
   periodicSpawns:
-  - entityData: {fileID: 11400000, guid: e56696012da47194d8e837041d61b836, type: 2}
-    minCount: 10
-    maxCount: 16
-    weight: 30
-    pattern: 1
+  - entityData: {fileID: 11400000, guid: 598d0472740af2d4883b14e2e66d41c4, type: 2}
+    minCount: 20
+    maxCount: 30
+    weight: 10
+    pattern: 2
   - entityData: {fileID: 11400000, guid: 889abcccf8943fa44b8b2c960d6afdee, type: 2}
-    minCount: 3
-    maxCount: 6
+    minCount: 10
+    maxCount: 20
+    weight: 10
+    pattern: 0
+  - entityData: {fileID: 11400000, guid: 889abcccf8943fa44b8b2c960d6afdee, type: 2}
+    minCount: 5
+    maxCount: 10
+    weight: 40
+    pattern: 0
+  - entityData: {fileID: 11400000, guid: 598d0472740af2d4883b14e2e66d41c4, type: 2}
+    minCount: 10
+    maxCount: 20
     weight: 50
     pattern: 0
+  - entityData: {fileID: 11400000, guid: 598d0472740af2d4883b14e2e66d41c4, type: 2}
+    minCount: 5
+    maxCount: 10
+    weight: 30
+    pattern: 0
   specialWaves:
-  - timeOffSet: 7
+  - timeOffSet: 17
     spawns:
-    - entityData: {fileID: 11400000, guid: 598d0472740af2d4883b14e2e66d41c4, type: 2}
+    - entityData: {fileID: 11400000, guid: e56696012da47194d8e837041d61b836, type: 2}
+      minCount: 5
+      maxCount: 10
+      weight: 3
+      pattern: 0
+  - timeOffSet: 28
+    spawns:
+    - entityData: {fileID: 11400000, guid: e56696012da47194d8e837041d61b836, type: 2}
       minCount: 6
       maxCount: 8
       weight: 3
       pattern: 0
+  - timeOffSet: 43
+    spawns:
+    - entityData: {fileID: 11400000, guid: e56696012da47194d8e837041d61b836, type: 2}
+      minCount: 20
+      maxCount: 20
+      weight: 5
+      pattern: 2

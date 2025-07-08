@@ -75,7 +75,7 @@ public class DropManager : MonoBehaviour {
         float dynamicChance = GetDynamicDropChance(entry);
         float roll = Random.value * 100f;
 
-        Debug.Log($"DropManager: Roll={roll:F1} vs chance={dynamicChance:F1}");
+        //Debug.Log($"DropManager: Roll={roll:F1} vs chance={dynamicChance:F1}");
 
         if (roll <= dynamicChance) {
             var ind = Random.Range(0, entry.dropTablesAllowed.Length);
@@ -89,15 +89,14 @@ public class DropManager : MonoBehaviour {
             Debug.Log("DropManager: No drops configured.");
             return;
         }
-
         // Compute total weight
         float totalWeight = 0f;
+
         foreach (var entry in table.drops)
             totalWeight += entry.weight;
-
-        float roll = UnityEngine.Random.value * totalWeight;
-
+        float roll = Random.value * totalWeight;
         float cumulative = 0f;
+
         foreach (var entry in table.drops) {
             cumulative += entry.weight;
             if (roll <= cumulative) {
@@ -140,8 +139,9 @@ public class DropManager : MonoBehaviour {
         //float killFactor = GameController.Instance.CurrentKillStreak / GameController.Instance.TotalKills;
         float killFactor = 0.5f;
         float pityFactor = noDropCurve.Evaluate(lastDropTimer.Time);
-        float dynamicChance = globalDropChance.Evaluate ((timeFactor - killFactor + pityFactor) * entry.weight) * 100f;
+        float dynamicChance = globalDropChance.Evaluate ((timeFactor - killFactor) * entry.weight) * 100f;
+        //Debug.Log("pity factor: " + pityFactor + ", time factor: " + timeFactor + " final eval: " + dynamicChance);
 
-        return Mathf.Clamp(dynamicChance, 0f, 100f);
+        return Mathf.Clamp(dynamicChance * pityFactor, 0f, 100f);
     }
 }

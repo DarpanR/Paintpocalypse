@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Vector3 = UnityEngine.Vector3;
 
 public static class GameEvents {
@@ -39,6 +40,7 @@ public static class GameEvents {
     }
 
     public static void RaiseGameEnd() {
+        UnityEngine.Debug.Log("ended game");
         GameController.Instance.ChangeState(GameState.End);
         OnGameEnd?.Invoke();
     }

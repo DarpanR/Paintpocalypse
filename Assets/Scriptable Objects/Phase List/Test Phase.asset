@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20285bddea4a34840af54414678c3d71, type: 3}
+  m_Name: Test Phase
+  m_EditorClassIdentifier: 
+  discription: 
+  duration: 30
+  periodicInterval: 5
+  periodicSpawns: []
+  specialWaves:
+  - timeOffSet: 5
+    spawns:
+    - entityData: {fileID: 11400000, guid: e56696012da47194d8e837041d61b836, type: 2}
+      minCount: 2
+      maxCount: 3
+      weight: 10
+      pattern: 0
+  - timeOffSet: 13
+    spawns:
+    - entityData: {fileID: 11400000, guid: 889abcccf8943fa44b8b2c960d6afdee, type: 2}
+      minCount: 5
+      maxCount: 6
+      weight: 10
+      pattern: 0

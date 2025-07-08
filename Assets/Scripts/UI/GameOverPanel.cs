@@ -35,8 +35,8 @@ public class VictoryScreenPanel : MonoBehaviour
 
     public void Restart()   // Button restart game
     {
-        GameEvents.RaiseGameStart();
         SceneManager.LoadScene("MainScene");
+        GameEvents.RaiseGameStart();
     }
 
     public void Quit()      // Button quit game

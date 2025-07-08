@@ -19,13 +19,13 @@ MonoBehaviour:
   baseStats:
     statList:
     - type: 5
-      value: 2
+      value: 5
     - type: 6
       value: 0.4
     - type: 2
       value: 15
     - type: 7
-      value: 2
+      value: 0.5
   basePenetration: 1
   baseProjectileCount: 3
   LevelStats:

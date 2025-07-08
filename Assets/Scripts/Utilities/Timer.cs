@@ -156,6 +156,7 @@ public class ClockTimer : StopWatchTimer {
     }
 
     public void Reset(float newTime, List<float> newAlarms) {
+        newAlarms.Sort();
         alarms = newAlarms ?? alarms;
         Reset(newTime);
     }

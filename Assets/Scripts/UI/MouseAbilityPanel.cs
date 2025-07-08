@@ -113,6 +113,7 @@ public class MouseAbilityPanel : MonoBehaviour {
 
     private void SetupButtonVisuals(Button button, AbilityConfig ability) {
         var iconImage = button.transform.Find("Icon").GetComponent<Image>();
+
         if (ability.Icon != null) {
             iconImage.sprite = Sprite.Create(
                 ability.Icon,
@@ -124,9 +125,9 @@ public class MouseAbilityPanel : MonoBehaviour {
 
     private Image GetBackgroundImage(Button button) {
         var background = button.transform.Find("Background");
+
         if (background == null)
             throw new Exception($"Button '{button.gameObject.name}' is missing a 'Background' child.");
-
         if (!background.TryGetComponent<Image>(out var image))
             throw new Exception($"'Background' under button '{button.gameObject.name}' has no Image component.");
         return image;
@@ -145,7 +146,7 @@ public class MouseAbilityPanel : MonoBehaviour {
 
     void ActivateAbility(int newIndex) {
         int oldIndex = activeIndex;
-        Debug.Log($"activeIndex: {oldIndex}, newindex: {newIndex}");
+        //Debug.Log($"activeIndex: {oldIndex}, newindex: {newIndex}");
 
         // Deactivate the current ability
         DeactivateCurrentAbility(newIndex == 0);
@@ -210,11 +211,12 @@ public class MouseAbilityPanel : MonoBehaviour {
     void HandleAbilityEnd(IAbilityHandler ability) {
         var cooldownTimer = Cooldowns[activeIndex - 1].Timer;
         var usage = (ability.TotalUsage - ability.RemainingUsage) / ability.TotalUsage;
-        var remainingTime = abilities[activeIndex].Cooldown * cooldownTimer.Progress;
-        var reduction = usage * cdOffset;
+        var remainingTime = abilities[activeIndex].Cooldown;
+        var reduction = usage + cdOffset;
         var finalValue = Mathf.Max(globalCD, remainingTime * reduction);
 
-        Debug.Log($"Usage: {usage}, RemainingTime: {remainingTime}, Reduction: {reduction}, FinalValue: {finalValue}");
+        //Debug.Log($"Cooldown: {cooldownTimer.Time}, Total Usage: {ability.TotalUsage}, Remaining Usage: {ability.RemainingUsage}");
+        //Debug.Log($"Usage: {usage}, RemainingTime: {remainingTime}, Reduction: {reduction}, FinalValue: {finalValue}");
 
         cooldownTimer.Reset(finalValue);
     }

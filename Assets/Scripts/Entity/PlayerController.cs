@@ -9,10 +9,11 @@ public class PlayerController : BaseEntity {
     // Remember last non-zero aim so you keep facing when no arrow is pressed
     Vector2 lastAim = Vector2.up;
     CountdownTimer timer = new CountdownTimer(10);
-    bool stop = false;
+    Animator animator;
 
     protected override void Awake() {
         rb = GetComponent<Rigidbody2D>();
+        animator = transform.Find("Sprite").GetComponent<Animator>();
 
         //if (Instance != null && this != Instance) Destroy(gameObject);
         //Instance = this;
@@ -39,6 +40,9 @@ public class PlayerController : BaseEntity {
         if (GameInputManager.Instance.IsKeyPressed(KeyCode.A)) move.x -= 1;
         move = move.normalized * CurrentStats[StatType.Speed].value;
         rb.velocity = move;
+
+        rend.flipX = move.x < 0;
+        animator.SetFloat("Velocity", move.magnitude);
 
         // 2) Facing/Aiming with arrows
         Vector2 aim = Vector2.zero;
