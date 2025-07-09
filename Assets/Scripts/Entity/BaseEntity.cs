@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using System.Collections;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -73,13 +75,23 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
         if (isInvincible) return;
         float duration = CurrentStats.GetValueOrDefault(StatType.InvincibilityDuration, 0f);
 
-        if (duration > 0) {
-            isInvincible = true;
-            flasher?.Trigger(StatEffectType.Damage, duration, () => isInvincible = false);
-        } else {
-            flasher?.Trigger(StatEffectType.Damage, 0.2f);
+        if (tag != "Player")
+            if (duration > 0) {
+                isInvincible = true;
+                flasher?.Trigger(StatEffectType.Damage, duration, () => isInvincible = false);
+            } else {
+                flasher?.Trigger(StatEffectType.Damage, 0.2f);
+            }
+        else {
+            StartCoroutine("BecomeInvincible");
         }
-        statBroker.UpdateBaseStat(operation);
+            statBroker.UpdateBaseStat(operation);
+    }
+
+    IEnumerator BecomeInvincible () {
+        isInvincible = true;
+        yield return new WaitForSeconds(CurrentStats[StatType.InvincibilityDuration].value);
+        isInvincible = false;
     }
 
     protected virtual void OnStatUpdated() {

@@ -11,7 +11,8 @@ public enum StatType {
     InvincibilityDuration,
     Damage,
     FireRate,
-    Lifetime
+    Lifetime,
+    Penetration
 }
 public enum SettableType { 
     Single, 

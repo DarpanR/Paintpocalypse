@@ -462,6 +462,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3217796827752766921, guid: 7d399750cfa812d4fbfd5c281ab3c2a7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3425353267876616281, guid: 7d399750cfa812d4fbfd5c281ab3c2a7, type: 3}
       propertyPath: tables.Array.size
       value: 1
@@ -634,6 +638,18 @@ PrefabInstance:
     - target: {fileID: 2529848145055744522, guid: 5e1558d0266721349af8aa466cbd7427, type: 3}
       propertyPath: m_FlipX
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2529848145055744522, guid: 5e1558d0266721349af8aa466cbd7427, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2529848145055744522, guid: 5e1558d0266721349af8aa466cbd7427, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2529848145055744522, guid: 5e1558d0266721349af8aa466cbd7427, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2587998748629643423, guid: 5e1558d0266721349af8aa466cbd7427, type: 3}
       propertyPath: m_AnchorMax.x

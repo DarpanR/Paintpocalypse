@@ -7,15 +7,14 @@ public abstract class WeaponData : ScriptableObject, IPickupData {
     [Header("Base Stats")]
     public string weaponName;
     public int maxLevel = 5;
-    public OperationType operationType = OperationType.Addition;
     public StatType affectedType = StatType.CurrentHealth;
     public StatSet baseStats = new StatSet(
         new Stat(StatType.Damage, 10f),
         new Stat(StatType.FireRate, 1f),
         new Stat(StatType.Speed, 5f),
-        new Stat(StatType.Lifetime, 2f)
+        new Stat(StatType.Lifetime, 2f),
+        new Stat(StatType.Penetration, 1f)
     );
-    public int basePenetration = 1;
     public int baseProjectileCount = 1;
 
     [Header("Levelling Stats")]
@@ -40,21 +39,7 @@ public abstract class WeaponData : ScriptableObject, IPickupData {
     public TargetingType dropOperationType = TargetingType.OverMouse;
     public float dropRadius = 3f;
 
-    [SerializeField, HideInInspector]
-    string guid = Guid.NewGuid().ToString();
-
-    public string GUID {
-        get {
-            if (string.IsNullOrEmpty(guid))
-                guid = Guid.NewGuid().ToString();
-#if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
-#endif
-            return guid;
-        }
-    }
-
-    public abstract IWeaponModule CreateModule(Transform firePoint, MonoBehaviour runner, string targetTag);
+    public abstract IWeaponModule CreateModule(Transform firePoint, string targetTag);
 
     public String PickupName => weaponName;
     public Sprite PickupIcon => pickupIcon;

@@ -13,8 +13,6 @@ public abstract class Projectile : MonoBehaviour {
 
     // Runtime State
     protected StatSet stats;
-    protected IoperationStrategy operation;
-    protected int penetration;
     protected string targetTag;
     protected CountdownTimer lifetime;
 
@@ -25,12 +23,12 @@ public abstract class Projectile : MonoBehaviour {
     /// <summary>
     /// Initialize all parameters. Call immediately after Instantiate().
     /// </summary>
-    public virtual void Init(StatSet _stats, string _targetTag, IoperationStrategy _operation, int _penetration) {
+    public virtual void Init(StatSet _stats, string _targetTag) {
         stats = _stats;
-        operation = _operation;
-        penetration = _penetration;
         targetTag = _targetTag;
+
         hits = 0;
+        enemiesHit.Clear();
 
         lifetime = new CountdownTimer(stats[StatType.Lifetime].value);
         lifetime.Start();
