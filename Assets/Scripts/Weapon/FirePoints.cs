@@ -55,8 +55,12 @@ public class RandomArcFirePoint : IFirePointBehavior {
     public void Tick(float deltaTime) {}
 }
 
+/// <summary>
+/// Dont use this one yet.
+/// </summary>
 public class ArcFirePoint : IFirePointBehavior {
     float arcAngle;
+    float projectileCount;
     int direction = 0;
     int swingStep = 0;
 
@@ -94,7 +98,6 @@ public class ArcFirePoint : IFirePointBehavior {
 
 public class RevolvingFirePoint : IFirePointBehavior {
     float rotationSpeed;
-
     float curAngle;
 
     public RevolvingFirePoint(float rotationalSpeed) {
@@ -107,11 +110,11 @@ public class RevolvingFirePoint : IFirePointBehavior {
             float baseAngle = Mathf.Atan2(firePoint.position.y, firePoint.position.x) * Mathf.Rad2Deg;
             float totalAngle = baseAngle + curAngle;
 
-            Vector2 localOffset = Quaternion.Euler(0, 0, totalAngle) * Vector2.right;
+            Vector2 localOffset = Quaternion.Euler(0, 0, totalAngle) * Vector2.right * radius;
 
             yield return new FirePoint {
                 position = origin.position + (Vector3)localOffset,
-                angle = totalAngle + origin.eulerAngles.z
+                angle = totalAngle + firePoint.angle + origin.eulerAngles.z
             };
         }
     }
