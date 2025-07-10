@@ -1,9 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+public enum AttackBehaviorType {
+    Projectile,
+    Raycast,
+    Beam
+}
+
 public interface IAttackBehavior {
-    void Fire(Vector3 orgin, Quaternion rotation, StatSet stats, string targetTag, IDamageBehavior damageBehavior);
+    void Fire(FirePoint firePoint, StatSet stats, string targetTag, IDamageBehavior damageBehavior);
 }
 
 public class ProjectileAttack : IAttackBehavior {
@@ -13,14 +17,29 @@ public class ProjectileAttack : IAttackBehavior {
         this.prefab = projectilePrefab;
     }
 
-    public void Fire(Vector3 orgin, Quaternion rotation, StatSet stats, string targetTag, IDamageBehavior damageBehavior) {
+    public void Fire(FirePoint firePoint, StatSet stats, string targetTag, IDamageBehavior damageBehavior) {
         var go = ProjectileManager.Instance.Request(prefab);
-        go.transform.SetPositionAndRotation(orgin, rotation);
+        go.transform.SetPositionAndRotation(firePoint.position, Quaternion.Euler(0f,0f,firePoint.angle));
 
-        if (go.TryGetComponent(out StraightProjectile proj)) {
+        if (go.TryGetComponent(out Projectile proj)) {
             proj.Init(stats, targetTag, damageBehavior);
             proj.onDestroyed = () => ProjectileManager.Instance.Return(go);
-
         }
+    }
+}
+
+public class RaycastAttack : IAttackBehavior {
+    private GameObject prefab;
+
+    public void Fire(FirePoint firePoint, StatSet stats, string targetTag, IDamageBehavior damageBehavior) {
+        throw new System.NotImplementedException();
+    }
+} 
+
+public class BeamAttack : IAttackBehavior {
+    private GameObject prefab;
+
+    public void Fire(FirePoint firePoint, StatSet stats, string targetTag, IDamageBehavior damageBehavior) {
+        throw new System.NotImplementedException();
     }
 }

@@ -15,6 +15,7 @@ public abstract class Projectile : MonoBehaviour {
     protected StatSet stats;
     protected string targetTag;
     protected CountdownTimer lifetime;
+    protected IDamageBehavior damageBehavior;
 
     // internal Counters
     protected int hits;
@@ -23,7 +24,7 @@ public abstract class Projectile : MonoBehaviour {
     /// <summary>
     /// Initialize all parameters. Call immediately after Instantiate().
     /// </summary>
-    public virtual void Init(StatSet _stats, string _targetTag) {
+    public virtual void Init(StatSet _stats, string _targetTag, IDamageBehavior damageBehavior) {
         stats = _stats;
         targetTag = _targetTag;
 
@@ -36,6 +37,7 @@ public abstract class Projectile : MonoBehaviour {
 
         enemiesHit.Clear();
     }
+
     protected void Die() {
         // Fire the pool callback if set
         if (onDestroyed != null) {

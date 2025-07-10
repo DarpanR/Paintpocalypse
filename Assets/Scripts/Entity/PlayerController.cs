@@ -21,7 +21,6 @@ public class PlayerController : BaseEntity {
     }
 
     public override void Init(EntityData entityData, string guid) {
-        eData = entityData;
         base.Init(entityData, guid);
         timer.Start();
 

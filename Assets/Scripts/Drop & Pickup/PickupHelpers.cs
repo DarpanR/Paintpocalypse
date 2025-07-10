@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum PickupType { 
@@ -16,7 +15,6 @@ public struct PickupData {
     public Sprite dropIcon;
     [TagMaskField]
     public string pickupTag;
-    public PickupType pickupType;
     [Min(-1)]
     public float lifeTime;
     [Min(-1)]

@@ -1048,7 +1048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityData: {fileID: 11400000, guid: 72c795452024f3b40b4e8805e365d564, type: 2}
-  rend: {fileID: 0}
+  rend: {fileID: 2529848145055744522}
   flasher: {fileID: 969050326792976569}
 --- !u!114 &969050326792976569
 MonoBehaviour:

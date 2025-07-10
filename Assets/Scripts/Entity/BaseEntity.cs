@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,7 +12,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     public EntityData entityData;
     public SpriteRenderer rend;
 
-    protected EntityData eData;
+    protected EntityData data;
 
     [SerializeField]
     StatFlasher flasher;
@@ -22,7 +24,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
 
     public event Func<StatModData, bool> OnAddStatModifier;
 
-    public string TargetTag => eData.targetTag;
+    public string TargetTag => data.targetTag;
     public string GUID { get; private set; }
     public StatSet CurrentStats => statBroker.CurrentStats;
     public WeaponManager WeaponManager => weaponManager;
@@ -36,7 +38,7 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
 
     protected virtual void Start() {
         if (entityData != null) Init(entityData, entityData.GUID);
-        flasher.Init(eData.VisualStatusEffects);
+        flasher.Init(data.VisualStatusEffects);
         statBroker.UpdateStats += OnStatUpdated;
         isInvincible = false;
     }
@@ -47,17 +49,17 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     }
 
     public virtual void Init(EntityData entityData, string guid) {
-        eData = entityData;
+        data = entityData;
         GUID = guid;
 
-        //EntityManager.Instance.RegisterEntity(guid, eData);
+        //EntityManager.Instance.RegisterEntity(guid, data);
 
         statBroker = new StatBroker(InitializeStat());
-        weaponManager = new WeaponManager(transform, eData.loadOutWeapons, eData.targetTag, this);
+        weaponManager = new WeaponManager(transform, data.loadOutWeapons, data.targetTag);
     }
 
     StatSet InitializeStat() {
-        StatSet sSet = eData.baseStats.Clone();
+        StatSet sSet = data.baseStats.Clone();
 
         // Ensure MaxHealth exists before accessing its value
         float maxHealth = sSet.GetValueOrAdd(StatType.MaxHealth, 100f);

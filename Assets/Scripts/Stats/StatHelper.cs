@@ -4,16 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum StatType {
+    //Entity
     MaxHealth,
     CurrentHealth,
-    Speed,
     LocalScale,
     InvincibilityDuration,
+
+    Speed,
+
+    //Weapon
     Damage,
     FireRate,
     Lifetime,
-    Penetration
+    Penetration,
+    ProjectileCount,
+    Cooldown,
+    FirePointAngle,
 }
+
 public enum SettableType { 
     Single, 
     Timer, 

@@ -5,12 +5,10 @@ using UnityEngine;
 public class StraightProjectile : Projectile
 {
     Vector3 velocity;
-    IDamageBehavior damageBehavior;
 
-    public void Init(StatSet _stats, string _targetTag, IDamageBehavior _damageBehavior) {
-        base.Init(_stats, _targetTag);
+    public override void Init(StatSet _stats, string _targetTag, IDamageBehavior _damageBehavior) {
+        base.Init(_stats, _targetTag, _damageBehavior);
         velocity = transform.up * _stats[StatType.Speed].value;
-        damageBehavior = _damageBehavior;
     }
 
     protected override void Update() {
