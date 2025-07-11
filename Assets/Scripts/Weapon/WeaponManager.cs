@@ -17,6 +17,17 @@ public class WeaponManager {
             Equip(weapon);
     }
 
+    public void AddStatModifier (StatModData def) {
+        var wMods = def.statMods.FindAll(a => a.GetModCapabilities == ModCapabilities.Weapon);
+
+        if (wMods.Count > 0) {
+            var wStatMod = new StatModifier<WeaponStatType>(wMods, def.GUID, def.duration);
+            
+            foreach (var weapon in Weapons)
+                weapon.AddStatModifier(wStatMod, def.settable);
+        }
+    }
+
     public void Update() {
         // each weapon shoots at its own fire-rate
         foreach (var weapon in weapons.Values)

@@ -12,8 +12,9 @@ public abstract class Projectile : MonoBehaviour {
     public Action onDestroyed;
 
     // Runtime State
-    protected StatSet stats;
+    protected StatSet<WeaponStatType> stats;
     protected string targetTag;
+    protected EntityStatType affectedType;
     protected CountdownTimer lifetime;
     protected IDamageBehavior damageBehavior;
 
@@ -24,14 +25,15 @@ public abstract class Projectile : MonoBehaviour {
     /// <summary>
     /// Initialize all parameters. Call immediately after Instantiate().
     /// </summary>
-    public virtual void Init(StatSet _stats, string _targetTag, IDamageBehavior damageBehavior) {
+    public virtual void Init(StatSet<WeaponStatType> _stats, string _targetTag, EntityStatType _affectedType, IDamageBehavior damageBehavior) {
         stats = _stats;
+        affectedType = _affectedType;
         targetTag = _targetTag;
 
         hits = 0;
         enemiesHit.Clear();
 
-        lifetime = new CountdownTimer(stats[StatType.Lifetime].value);
+        lifetime = new CountdownTimer(stats[WeaponStatType.Lifetime].value);
         lifetime.Start();
         lifetime.OnTimerStop += Die;
 

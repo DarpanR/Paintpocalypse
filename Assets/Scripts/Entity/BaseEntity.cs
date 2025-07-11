@@ -2,13 +2,15 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+
 
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManagerTarget {
+public abstract class BaseEntity : MonoBehaviour, IWeaponManagerTarget {
     public EntityData entityData;
     public SpriteRenderer rend;
 
@@ -17,16 +19,16 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
     [SerializeField]
     StatFlasher flasher;
 
-    protected StatBroker statBroker;
+    protected StatBroker<EntityStatType> statBroker;
     WeaponManager weaponManager;
 
     protected bool isInvincible = false;
 
-    public event Func<StatModData, bool> OnAddStatModifier;
+    public event Action<StatModData> OnAddStatModifier;
 
     public string TargetTag => data.targetTag;
     public string GUID { get; private set; }
-    public StatSet CurrentStats => statBroker.CurrentStats;
+    public StatSet<EntityStatType> CurrentStats => statBroker.CurrentStats;
     public WeaponManager WeaponManager => weaponManager;
 
     protected virtual void Awake() {
@@ -54,28 +56,30 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
 
         //EntityManager.Instance.RegisterEntity(guid, data);
 
-        statBroker = new StatBroker(InitializeStat());
+        statBroker = new StatBroker<EntityStatType>(InitializeStat());
         weaponManager = new WeaponManager(transform, data.loadOutWeapons, data.targetTag);
+
+        OnAddStatModifier += weaponManager.AddStatModifier;
     }
 
-    StatSet InitializeStat() {
-        StatSet sSet = data.baseStats.Clone();
+    StatSet<EntityStatType> InitializeStat() {
+        StatSet<EntityStatType> sSet = data.baseStats.Clone();
 
         // Ensure MaxHealth exists before accessing its value
-        float maxHealth = sSet.GetValueOrAdd(StatType.MaxHealth, 100f);
+        float maxHealth = sSet.GetValueOrAdd(EntityStatType.MaxHealth, 100f);
 
         // Then initialize CurrentHealth if missing
-        sSet.GetValueOrAdd(StatType.CurrentHealth, maxHealth);
+        sSet.GetValueOrAdd(EntityStatType.CurrentHealth, maxHealth);
         // Set LocalScale
-        sSet.GetValueOrAdd(StatType.LocalScale, 1f);
-        sSet.GetValueOrAdd(StatType.Speed, 2f);
+        sSet.GetValueOrAdd(EntityStatType.LocalScale, 1f);
+        sSet.GetValueOrAdd(EntityStatType.Speed, 2f);
 
         return sSet;
     }
 
-    public virtual void TakeDamage(IoperationStrategy operation) {
+    public virtual void TakeDamage(IoperationStrategy<EntityStatType> operation) {
         if (isInvincible) return;
-        float duration = CurrentStats.GetValueOrDefault(StatType.InvincibilityDuration, 0f);
+        float duration = CurrentStats.GetValueOrDefault(EntityStatType.InvincibilityDuration, 0f);
 
         if (tag != "Player")
             if (duration > 0) {
@@ -92,24 +96,28 @@ public abstract class BaseEntity : MonoBehaviour, IstatSetTarget, IWeaponManager
 
     IEnumerator BecomeInvincible () {
         isInvincible = true;
-        yield return new WaitForSeconds(CurrentStats[StatType.InvincibilityDuration].value);
+        yield return new WaitForSeconds(CurrentStats[EntityStatType.InvincibilityDuration].value);
         isInvincible = false;
     }
 
     protected virtual void OnStatUpdated() {
-        if (CurrentStats[StatType.CurrentHealth].value <= 0) Die();
+        if (CurrentStats[EntityStatType.CurrentHealth].value <= 0) Die();
     }
 
     public bool AddStatModifier(StatModData def) {
-        bool weaponCapable = (def.Capabilities & ModifierCapabilities.Weapon) != 0;
+        bool success = false;
 
-        if (weaponCapable) {
-            foreach (var weapon in weaponManager.Weapons)
-                if (weapon is IstatSetTarget statTarget)
-                    statTarget.AddStatModifier(def);
+        var eMods = def.statMods.FindAll(a => a.GetModCapabilities == ModCapabilities.Entity);
+
+        if (eMods.Count > 0) {
+            var eStatMod = new StatModifier<EntityStatType>(eMods, def.GUID, def.duration);
+            success = statBroker.Add(eStatMod, def.settable);
         }
-        OnAddStatModifier?.Invoke(def);
-        return statBroker.Add(def);
+
+        if (success)
+            OnAddStatModifier?.Invoke(def);
+
+        return success;
     }
 
     protected virtual void Die() {

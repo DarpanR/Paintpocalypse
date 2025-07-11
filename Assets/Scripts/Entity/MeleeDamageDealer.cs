@@ -10,9 +10,9 @@ public class CollisionAttack : MonoBehaviour {
     public string targetTag = "Untagged";
    
     public OperationType operationType;
-    public StatType affectedType;
+    public EntityStatType affectedType;
 
-    StatBroker statBroker;
+    StatBroker<WeaponStatType> statBroker;
 
     private void Awake() {
         var collider = GetComponent<Collider2D>();
@@ -21,27 +21,35 @@ public class CollisionAttack : MonoBehaviour {
 
     private void Start() {
         targetTag = targetTag == "Untagged" ? ownerEntity.TargetTag : targetTag;
-        damage = (damage > 0) ? damage : (int)ownerEntity.CurrentStats.GetValueOrDefault(
-            StatType.Damage, 0f);
-        statBroker = new StatBroker(
-            new StatSet(
-                new Stat(StatType.Damage, damage)
+        damage = (damage > 0) ? damage : 10;
+        statBroker = new StatBroker<WeaponStatType>(
+            new StatSet<WeaponStatType>(
+                new Stat<WeaponStatType>(WeaponStatType.Damage, damage)
             )
         );
-        ownerEntity.OnAddStatModifier += statBroker.Add;
+        ownerEntity.OnAddStatModifier += AddStatModifier;
     }
 
     public void LateUpdate() {
         statBroker.Tick(Time.deltaTime);
     }
 
+    public void AddStatModifier(StatModData def) {
+        var wMod = def.statMods.FindAll(a => a.GetModCapabilities == ModCapabilities.Weapon);
+
+        if (wMod.Count > 0) {
+            var wStatMod = new StatModifier<WeaponStatType>(wMod, def.GUID, def.duration);
+            statBroker.Add(wStatMod, def.settable);
+        }
+    }
+
     protected void OnTriggerStay2D(Collider2D collision) {
         if (collision.CompareTag(targetTag)) {
             collision.GetComponent<BaseEntity>().TakeDamage(
-                OperationFactory.GetOperation(
+                OperationFactory<EntityStatType>.GetOperation(
                     operationType,
                     affectedType,
-                    -statBroker.CurrentStats[StatType.Damage].value
+                    -statBroker.CurrentStats[WeaponStatType.Damage].value
             ));
         }
     }

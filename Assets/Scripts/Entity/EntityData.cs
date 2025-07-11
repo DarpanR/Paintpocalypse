@@ -12,10 +12,10 @@ public class EntityData : ScriptableObject
     public string entityName;
     [TagMaskField]
     public string targetTag = "Untagged";
-    public StatSet baseStats = new StatSet(
-        new Stat(StatType.MaxHealth, 50f),
-        new Stat(StatType.Speed, 2f),
-        new Stat(StatType.LocalScale, 1f)
+    public StatSet<EntityStatType> baseStats = new StatSet<EntityStatType>(
+        new Stat<EntityStatType>(EntityStatType.MaxHealth, 50f),
+        new Stat<EntityStatType>(EntityStatType.Speed, 2f),
+        new Stat<EntityStatType>(EntityStatType.LocalScale, 1f)
     );
     public List<WeaponData> loadOutWeapons;
     public List<StatFlashEffect> VisualStatusEffects = new List<StatFlashEffect> {

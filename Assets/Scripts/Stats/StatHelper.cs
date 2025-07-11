@@ -1,18 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public enum StatType {
-    //Entity
+public enum EntityStatType {
     MaxHealth,
     CurrentHealth,
+    MaxShield,
+    CurrentShield,
     LocalScale,
     InvincibilityDuration,
-
     Speed,
+}
 
-    //Weapon
+public enum WeaponStatType { 
+    Speed,
     Damage,
     FireRate,
     Lifetime,
@@ -20,6 +23,7 @@ public enum StatType {
     ProjectileCount,
     Cooldown,
     FirePointAngle,
+    FirePointSweepSpeed,
 }
 
 public enum SettableType { 
@@ -35,53 +39,53 @@ public enum ModifierCapabilities {
 }
 
 [Serializable]
-public class Stat {
-    public StatType type;
+public class Stat<T> {
+    public T type;
     public float value;
 
-    public Stat(StatType type, float value) {
+    public Stat(T type, float value) {
         this.type = type;
         this.value = value;
     }
 
-    public void Apply(IoperationStrategy operation) {
+    public void Apply(IoperationStrategy<T> operation) {
         value = operation.Calculate(value);
     }
 }
 
 [Serializable]
-public class StatSet : ISerializationCallbackReceiver {
+public class StatSet<T> : ISerializationCallbackReceiver {
     [SerializeField]
-    List<Stat> statList = new List<Stat>();
-    Dictionary<StatType, Stat> stats = new Dictionary<StatType, Stat>();
+    List<Stat<T>> statList = new ();
+    Dictionary<T, Stat<T>> stats = new ();
 
-    public List<Stat> StatList => statList;
+    public List<Stat<T>> StatList => statList;
 
     public StatSet() {
         RebuildDictionary();
     }
 
-    public StatSet(params Stat[] stats) {
-        statList = new List<Stat>(stats);
+    public StatSet(params Stat<T>[] stats) {
+        foreach (var s in stats)
+            AddStat(s); 
         RebuildDictionary();
     }
 
-    public Stat this[StatType type] => stats[type];
+    public Stat<T> this[T type] => stats[type];
 
-    public void AddStat(StatType type, float baseValue) {
-        AddStat(new Stat(type, baseValue));
+    public void AddStat(T type, float baseValue) {
+        AddStat(new Stat<T>(type, baseValue));
     }
 
-    public void AddStat(Stat stat) {
-        var existing = statList.Find(s=>s.type == stat.type);
-
-        if(existing != null) existing.value = stat.value;
-        else statList.Add(stat);
+    public void AddStat(Stat<T> stat) {
+        statList.RemoveAll(s => s.type.Equals(stat.type));
+        statList.Add(stat);
+        stats[stat.type] = stat;
         RebuildDictionary();
     }
 
-    public StatSet Clone() {
-        var clone = new StatSet();
+    public StatSet<T> Clone() {
+        StatSet<T> clone = new ();
 
         foreach (var s in statList)
             clone.AddStat(s.type, s.value);
@@ -89,38 +93,34 @@ public class StatSet : ISerializationCallbackReceiver {
     }
 
     void RebuildDictionary() {
-        stats = new Dictionary<StatType, Stat>();
+        stats = new Dictionary<T, Stat<T>>();
 
         foreach (var s in statList)
             stats[s.type] = s;
     }
 
-    public float GetValueOrAdd(StatType type, float defaultVal = 0f) {
+    public float GetValueOrAdd(T type, float defaultVal = 0f) {
         if (!stats.TryGetValue(type, out var s)) {
-            s = new Stat(type, defaultVal);
+            s = new Stat<T>(type, defaultVal);
             statList.Add(s);
             stats[type] = s; 
         }
         return s.value;
     }
 
-    public bool HasStat(StatType type) => stats.ContainsKey(type);
+    public bool HasStat(T type) => stats.ContainsKey(type);
     
-    public Stat GetStatOrNull(StatType type) => stats.TryGetValue(type, out var s) ? s : null;
+    public Stat<T> GetStatOrNull(T type) => stats.TryGetValue(type, out var s) ? s : null;
     
-    public float GetValueOrDefault(StatType type, float defaultValue = 0f) => 
+    public float GetValueOrDefault(T type, float defaultValue = 0f) => 
         stats.TryGetValue(type, out var s) ? s.value : defaultValue;
     public void OnAfterDeserialize() => RebuildDictionary();
     
     public void OnBeforeSerialize() { }
 }
 
-public interface IStatSetModifier {
-    List<IoperationStrategy> Activate();
-}
-
-public interface IstatSetTarget {
-    StatSet CurrentStats { get; }
+public interface IstatSetTarget<T> {
+    StatSet<T> CurrentStats { get; }
     bool AddStatModifier(StatModData modifier);
 }
 

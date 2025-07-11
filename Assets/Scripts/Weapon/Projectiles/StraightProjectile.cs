@@ -6,9 +6,9 @@ public class StraightProjectile : Projectile
 {
     Vector3 velocity;
 
-    public override void Init(StatSet _stats, string _targetTag, IDamageBehavior _damageBehavior) {
-        base.Init(_stats, _targetTag, _damageBehavior);
-        velocity = transform.up * _stats[StatType.Speed].value;
+    public override void Init(StatSet<WeaponStatType> _stats, string _targetTag, EntityStatType _affectedType, IDamageBehavior _damageBehavior) {
+        base.Init(_stats, _targetTag, _affectedType, _damageBehavior);
+        velocity = transform.up * _stats[WeaponStatType.Speed].value;
     }
 
     protected override void Update() {
@@ -17,10 +17,10 @@ public class StraightProjectile : Projectile
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag(targetTag)) {
-            damageBehavior?.ApplyDamage(other.gameObject, stats, targetTag);
+            damageBehavior?.ApplyDamage(other.gameObject, targetTag, stats, affectedType);
             hits++;
 
-            if (hits >= stats[StatType.Penetration].value)
+            if (hits >= stats[WeaponStatType.Penetration].value)
                 Die();
         }
     }

@@ -9,28 +9,28 @@ public enum DamageBehaviorType {
 }
 
 public interface IDamageBehavior {
-    void ApplyDamage(GameObject target, StatSet stats, string TargetTag);
+    void ApplyDamage(GameObject target, string TargetTag, StatSet<WeaponStatType> stats, EntityStatType affectedType);
 }
 
 public class DirectDamage : IDamageBehavior {
-    public void ApplyDamage(GameObject target, StatSet stats, string TargetTag) {
+    public void ApplyDamage(GameObject target, string TargetTag, StatSet<WeaponStatType> stats, EntityStatType affectedType) {
         if (!target.CompareTag(TargetTag)) return;
 
         if (target.TryGetComponent(out BaseEntity entity)) {
-            float damage = stats[StatType.Damage].value;
-            entity.TakeDamage(OperationFactory.GetOperation(OperationType.Addition, StatType.CurrentHealth, -damage));
+            float damage = stats[WeaponStatType.Damage].value;
+            entity.TakeDamage(OperationFactory<EntityStatType>.GetOperation(OperationType.Addition, affectedType, -damage));
         }
     }
 }
 
 public class AoeDamage : IDamageBehavior {
-    public void ApplyDamage(GameObject target, StatSet stats, string TargetTag) {
+    public void ApplyDamage(GameObject target, string TargetTag, StatSet<WeaponStatType> stats, EntityStatType affectedType) {
         throw new System.NotImplementedException();
     }
 }
 
 public class DotDamage : IDamageBehavior {
-    public void ApplyDamage(GameObject target, StatSet stats, string TargetTag) {
+    public void ApplyDamage(GameObject target, string TargetTag, StatSet<WeaponStatType> stats, EntityStatType affectedType) {
         throw new System.NotImplementedException();
     }
 }

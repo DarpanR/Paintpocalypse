@@ -6,6 +6,7 @@ using UnityEngine;
 
 [Serializable]
 public struct WeaponBehavior {
+    public IOrbitalBehavior oribital;
     public IAttackBehavior attack;
     public IDamageBehavior damage;
     public IFireMode fireMode;
@@ -16,15 +17,15 @@ public struct WeaponBehavior {
 public static class WeaponFactory {
     public static readonly Dictionary<FireModeType, Func<WeaponData, IFireMode>> fireModeMap = new() { 
         { FireModeType.Burst, data => new BurstFire(
-            data.baseStats.GetValueOrDefault(StatType.FireRate, 1f),
-            (int)data.baseStats.GetValueOrDefault(StatType.ProjectileCount, 3f),
-            data.baseStats.GetValueOrDefault(StatType.Cooldown, 3f))
+            data.baseStats.GetValueOrDefault(WeaponStatType.FireRate, 1f),
+            (int)data.baseStats.GetValueOrDefault(WeaponStatType.ProjectileCount, 3f),
+            data.baseStats.GetValueOrDefault(WeaponStatType.Cooldown, 3f))
         },
         { FireModeType.RateFire, data => new RateFire(
-            data.baseStats.GetValueOrDefault(StatType.FireRate, 1f))
+            data.baseStats.GetValueOrDefault(WeaponStatType.FireRate, 1f))
         },
         { FireModeType.FullAuto, data => new FullAutoFire(
-            data.baseStats.GetValueOrDefault(StatType.FireRate, 1f))
+            data.baseStats.GetValueOrDefault(WeaponStatType.FireRate, 1f))
         }
     };
 
@@ -44,13 +45,13 @@ public static class WeaponFactory {
         { FirePointBehaviorType.Straight, data => new StraightFirePoint() 
         },
         { FirePointBehaviorType.Arc,data => new ArcFirePoint(
-            data.baseStats.GetValueOrDefault(StatType.FirePointAngle, 45f)) 
+            data.baseStats.GetValueOrDefault(WeaponStatType.FirePointAngle, 45f)) 
         },
         { FirePointBehaviorType.Revolving,data => new RevolvingFirePoint(
-            data.baseStats.GetValueOrDefault(StatType.FirePointAngle, 90f)) 
+            data.baseStats.GetValueOrDefault(WeaponStatType.FirePointAngle, 90f)) 
         },
         { FirePointBehaviorType.RandomArc, data => new RandomArcFirePoint(
-            data.baseStats.GetValueOrDefault(StatType.FirePointAngle, 30f)) }
+            data.baseStats.GetValueOrDefault(WeaponStatType.FirePointAngle, 30f)) }
     };
 
     public static readonly Dictionary<FiringPatternType, Func<IFiringPattern>> firingPatternMap = new() {

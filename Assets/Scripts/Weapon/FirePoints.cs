@@ -60,12 +60,13 @@ public class RandomArcFirePoint : IFirePointBehavior {
 /// </summary>
 public class ArcFirePoint : IFirePointBehavior {
     float arcAngle;
-    float projectileCount;
+    float sweepSpeed;
     int direction = 0;
     int swingStep = 0;
 
-    public ArcFirePoint(float arcAngle) {
+    public ArcFirePoint(float arcAngle, float sweepSpeed) {
         this.arcAngle = arcAngle;
+        this.sweepSpeed = sweepSpeed;
     }
 
     public IEnumerable<FirePoint> GetFirePoints(Transform origin,FirePoint firePoint, int count) {
@@ -114,7 +115,7 @@ public class RevolvingFirePoint : IFirePointBehavior {
 
             yield return new FirePoint {
                 position = origin.position + (Vector3)localOffset,
-                angle = totalAngle + firePoint.angle + origin.eulerAngles.z
+                angle = totalAngle + firePoint.angle
             };
         }
     }

@@ -16,7 +16,7 @@ public class EnemyAI : BaseEntity, IAttractable {
 
     public override void Init(EntityData entityData, string guid) {
         base.Init(entityData, guid);
-        hitTimer = new CountdownTimer(CurrentStats.GetValueOrDefault(StatType.InvincibilityDuration, 0.05f));
+        hitTimer = new CountdownTimer(CurrentStats.GetValueOrDefault(EntityStatType.InvincibilityDuration, 0.05f));
     }
 
     // Update is called once per frame
@@ -29,7 +29,7 @@ public class EnemyAI : BaseEntity, IAttractable {
 
         if (target != null) {
             Vector2 direction = (target.position - transform.position).normalized;
-            transform.position += (Vector3)direction * CurrentStats[StatType.Speed].value * Time.deltaTime;
+            transform.position += (Vector3)direction * CurrentStats[EntityStatType.Speed].value * Time.deltaTime;
 
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
 
@@ -42,13 +42,13 @@ public class EnemyAI : BaseEntity, IAttractable {
         base.LateUpdate();
     }
 
-    public override void TakeDamage(IoperationStrategy operation) {
+    public override void TakeDamage(IoperationStrategy<EntityStatType> operation) {
         base.TakeDamage(operation);
         hitTimer.Reset();
     }
 
     protected override void OnStatUpdated() {
-        var newScale = CurrentStats.GetStatOrNull(StatType.LocalScale).value;
+        var newScale = CurrentStats.GetStatOrNull(EntityStatType.LocalScale).value;
 
         if (!Mathf.Approximately(newScale, transform.localScale.x))
             transform.localScale = new Vector3(newScale, newScale);

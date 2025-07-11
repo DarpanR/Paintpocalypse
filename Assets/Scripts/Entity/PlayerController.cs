@@ -25,8 +25,8 @@ public class PlayerController : BaseEntity {
         timer.Start();
 
         GameEvents.RaiseHealthBarUpdate(
-            (int)CurrentStats[StatType.CurrentHealth].value,
-            (int)CurrentStats[StatType.MaxHealth].value);
+            (int)CurrentStats[EntityStatType.CurrentHealth].value,
+            (int)CurrentStats[EntityStatType.MaxHealth].value);
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class PlayerController : BaseEntity {
         if (GameInputManager.Instance.IsKeyPressed(KeyCode.S)) move.y -= 1;
         if (GameInputManager.Instance.IsKeyPressed(KeyCode.D)) move.x += 1;
         if (GameInputManager.Instance.IsKeyPressed(KeyCode.A)) move.x -= 1;
-        move = move.normalized * CurrentStats[StatType.Speed].value;
+        move = move.normalized * CurrentStats[EntityStatType.Speed].value;
         rb.velocity = move;
 
         rend.flipX = move.x < 0;
@@ -58,12 +58,12 @@ public class PlayerController : BaseEntity {
         }
     }
 
-    public override void TakeDamage(IoperationStrategy operation) {
+    public override void TakeDamage(IoperationStrategy<EntityStatType> operation) {
         base.TakeDamage(operation);
 
         GameEvents.RaiseHealthBarUpdate(
-            (int)CurrentStats[StatType.CurrentHealth].value,
-            (int)CurrentStats[StatType.MaxHealth].value
+            (int)CurrentStats[EntityStatType.CurrentHealth].value,
+            (int)CurrentStats[EntityStatType.MaxHealth].value
         );
     }
 

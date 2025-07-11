@@ -7,7 +7,7 @@ public enum AttackBehaviorType {
 }
 
 public interface IAttackBehavior {
-    void Fire(FirePoint firePoint, StatSet stats, string targetTag, IDamageBehavior damageBehavior);
+    void Fire(FirePoint firePoint, StatSet<WeaponStatType> stats, string targetTag, EntityStatType affectedType, IDamageBehavior damageBehavior);
 }
 
 public class ProjectileAttack : IAttackBehavior {
@@ -17,12 +17,12 @@ public class ProjectileAttack : IAttackBehavior {
         this.prefab = projectilePrefab;
     }
 
-    public void Fire(FirePoint firePoint, StatSet stats, string targetTag, IDamageBehavior damageBehavior) {
+    public void Fire(FirePoint firePoint, StatSet<WeaponStatType> stats, string targetTag, EntityStatType affectedType, IDamageBehavior damageBehavior) {
         var go = ProjectileManager.Instance.Request(prefab);
         go.transform.SetPositionAndRotation(firePoint.position, Quaternion.Euler(0f,0f,firePoint.angle));
 
         if (go.TryGetComponent(out Projectile proj)) {
-            proj.Init(stats, targetTag, damageBehavior);
+            proj.Init(stats, targetTag, affectedType, damageBehavior);
             proj.onDestroyed = () => ProjectileManager.Instance.Return(go);
         }
     }
@@ -31,7 +31,7 @@ public class ProjectileAttack : IAttackBehavior {
 public class RaycastAttack : IAttackBehavior {
     private GameObject prefab;
 
-    public void Fire(FirePoint firePoint, StatSet stats, string targetTag, IDamageBehavior damageBehavior) {
+    public void Fire(FirePoint firePoint, StatSet<WeaponStatType> stats, string targetTag, EntityStatType affectedType, IDamageBehavior damageBehavior) {
         throw new System.NotImplementedException();
     }
 } 
@@ -39,7 +39,7 @@ public class RaycastAttack : IAttackBehavior {
 public class BeamAttack : IAttackBehavior {
     private GameObject prefab;
 
-    public void Fire(FirePoint firePoint, StatSet stats, string targetTag, IDamageBehavior damageBehavior) {
+    public void Fire(FirePoint firePoint, StatSet<WeaponStatType> stats, string targetTag, EntityStatType affectedType, IDamageBehavior damageBehavior) {
         throw new System.NotImplementedException();
     }
 }

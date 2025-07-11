@@ -936,6 +936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MouseAbilityPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 6484029754287275450, guid: 9c855d40bef76d64ca22497777919904, type: 3}
+      propertyPath: abilities.Array.data[0].PickupData
+      value: 
+      objectReference: {fileID: 11400000, guid: f1e8d3dd8a68d8d47bf97c41f4cc9e5a, type: 2}
     - target: {fileID: 8635746352939322884, guid: 9c855d40bef76d64ca22497777919904, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

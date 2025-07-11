@@ -27,21 +27,21 @@ public class WeaponData : ScriptableObject, IPickupData {
 
     [Header("Base Stats")]
     public int maxLevel = 5;
-    public StatType affectedType = StatType.CurrentHealth;
-    public StatSet baseStats = new StatSet(
-        new Stat(StatType.Damage, 10f),
-        new Stat(StatType.FireRate, 1f),
-        new Stat(StatType.Speed, 5f),
-        new Stat(StatType.Lifetime, 2f),
-        new Stat(StatType.Penetration, 1f),
-        new Stat(StatType.ProjectileCount, 1f),
-        new Stat(StatType.Cooldown, 1f),
-        new Stat(StatType.FirePointAngle, 30f)
+    public EntityStatType affectedType = EntityStatType.CurrentHealth;
+    public StatSet<WeaponStatType> baseStats = new (
+        new Stat<WeaponStatType>(WeaponStatType.Damage, 10f),
+        new Stat<WeaponStatType>(WeaponStatType.FireRate, 1f),
+        new Stat<WeaponStatType>(WeaponStatType.Speed, 5f),
+        new Stat<WeaponStatType>(WeaponStatType.Lifetime, 2f),
+        new Stat<WeaponStatType>(WeaponStatType.Penetration, 1f),
+        new Stat<WeaponStatType>(WeaponStatType.ProjectileCount, 1f),
+        new Stat<WeaponStatType>(WeaponStatType.Cooldown, 1f),
+        new Stat<WeaponStatType>(WeaponStatType.FirePointAngle, 30f)
     );
 
     [Header("Levelling Stats")]
-    public StatSet LevelStats = new StatSet(
-        new Stat (StatType.Damage, 10)
+    public StatSet<WeaponStatType> LevelStats = new (
+        new Stat<WeaponStatType>(WeaponStatType.Damage, 10)
     );
 
     [Header("Projectile Settings")]

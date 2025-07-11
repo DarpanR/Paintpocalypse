@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public class StatBroker {
-    Dictionary<String, StatModifier> activeAbilityMods = new();
-    StatSet stats;
+public class StatBroker<T> {
+    Dictionary<String, StatModifier<T>> activeAbilityMods = new();
+    StatSet<T> stats;
 
-    public StatSet CurrentStats { get; private set; }
+    public StatSet<T> CurrentStats { get; private set; }
     public event Action UpdateStats = delegate { };
 
-    public StatBroker(StatSet baseStats) {
+    public StatBroker(StatSet<T> baseStats) {
         stats = baseStats.Clone();
         CurrentStats = stats.Clone();
         CalculateStat();
     }
 
-    public bool Add(StatModData data) {
-        string guid = data.GUID;
+    public bool Add(StatModifier<T> mod, SettableType setType) {
+        string guid = mod.GUID;
 
-        if (activeAbilityMods.TryGetValue(guid, out StatModifier existing)) {
-            switch (data.settable) {
+        if (activeAbilityMods.TryGetValue(guid, out StatModifier<T> existing)) {
+            switch (setType) {
                 case SettableType.Timer:
                     if (existing != null) {
                         existing.Reset();
@@ -36,8 +36,8 @@ public class StatBroker {
                     break;
             }
         }
-        activeAbilityMods[guid] = data.CreateModule(data);
-        activeAbilityMods[guid].OnDispose += _ => activeAbilityMods.Remove(guid);
+        activeAbilityMods.Add(guid, mod);
+
         CalculateStat();
         return true;
     }
@@ -67,18 +67,18 @@ public class StatBroker {
         if (shouldRecalculate) CalculateStat();
     }
 
-    static readonly List<IoperationStrategy> _addOpsBuffer = new();
-    static readonly List<IoperationStrategy> _mulOpsBuffer = new();
+    static readonly List<IoperationStrategy<T>> _addOpsBuffer = new();
+    static readonly List<IoperationStrategy<T>> _mulOpsBuffer = new();
 
     void CalculateStat() {
-        StatSet modifiedStats = stats.Clone();
+        StatSet<T> modifiedStats = stats.Clone();
         _addOpsBuffer.Clear();
         _mulOpsBuffer.Clear();
 
         foreach (var mod in activeAbilityMods.Values) {
             foreach (var op in mod.Activate()) {
                 if (modifiedStats.HasStat(op.Type)) {
-                    if (op is AddOperation) _addOpsBuffer.Add(op);
+                    if (op is AddOperation<T>) _addOpsBuffer.Add(op);
                     else _mulOpsBuffer.Add(op);
                 }
             }
@@ -92,28 +92,28 @@ public class StatBroker {
             modifiedStats[op.Type].Apply(op);
 
         // Clamp CurrentHealth between 0 and MaxHealth
-        if (modifiedStats.HasStat(StatType.CurrentHealth) &&
-            modifiedStats.HasStat(StatType.MaxHealth)) {
+        //if (modifiedStats.HasStat(T.CurrentHealth) &&
+        //    modifiedStats.HasStat(T.MaxHealth)) {
 
-            float max = modifiedStats[StatType.MaxHealth].value;
-            float current = modifiedStats[StatType.CurrentHealth].value;
+        //    float max = modifiedStats[T.MaxHealth].value;
+        //    float current = modifiedStats[T.CurrentHealth].value;
 
-            modifiedStats[StatType.CurrentHealth].value = Mathf.Clamp(current, 0, max);
-        }
+        //    modifiedStats[T.CurrentHealth].value = Mathf.Clamp(current, 0, max);
+        //}
         CurrentStats = modifiedStats;
         UpdateStats.Invoke();
     }
 
-    public void UpdateBaseStat(StatType type, float value) {
+    public void UpdateBaseStat(T type, float value) {
         stats.AddStat(type, value);
         CalculateStat();
     }
 
-    public void UpdateBaseStat(IoperationStrategy operation) {
+    public void UpdateBaseStat(IoperationStrategy<T> operation) {
         UpdateBaseStat(operation.Type, operation.Calculate(stats[operation.Type].value));
     }
 
-    public void UpdateBaseStat(Stat newStat) {
+    public void UpdateBaseStat(Stat<T> newStat) {
         UpdateBaseStat(newStat.type, newStat.value);
     }
 }

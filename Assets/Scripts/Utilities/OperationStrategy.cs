@@ -8,46 +8,44 @@ public enum OperationType {
     Multiplication,
 }
 
-public interface IoperationStrategy {
-    StatType Type { get; }
+public interface IoperationStrategy<T> {
+    T Type { get; }
     float Value { get; }
     float Calculate(float value);
 }
 
-public class AddOperation : IoperationStrategy {
-    StatType type;
+public class AddOperation<T> : IoperationStrategy<T> {
+    T type;
     float value;
 
-    public AddOperation(StatType type, float value) {
+    public AddOperation(T type, float value) {
         this.type = type;
         this.value = value;
     }
 
-    public StatType Type => type;
+    public T Type => type;
     public float Value => value;
-
     public float Calculate(float value) => value + this.value;
 }
-public class MultiplyOperation : IoperationStrategy {
-    StatType type;
+public class MultiplyOperation<T> : IoperationStrategy<T> {
+    T type;
     float value;
 
-    public MultiplyOperation(StatType type, float value) {
+    public MultiplyOperation(T type, float value) {
         this.type = type; 
         this.value = value;
     }
 
-    public StatType Type => type;
+    public T Type => type;
     public float Value => value;
-
     public float Calculate(float value) => value * this.value;
 }
 
-public static class OperationFactory {
-    public static IoperationStrategy GetOperation(OperationType operationType, StatType statType, float value) {
+public static class OperationFactory<T> {
+    public static IoperationStrategy<T> GetOperation(OperationType operationType, T statType, float value) {
         switch (operationType) {
-            case OperationType.Addition: return new AddOperation(statType, value);
-            case OperationType.Multiplication: return new MultiplyOperation(statType, value);
+            case OperationType.Addition: return new AddOperation<T>(statType, value);
+            case OperationType.Multiplication: return new MultiplyOperation<T>(statType, value);
             default: return null;
         }
     }
